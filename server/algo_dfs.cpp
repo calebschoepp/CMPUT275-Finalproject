@@ -1,10 +1,12 @@
 #include "algo_dfs.h"
 
-Dfs::Dfs(std::queue<std::tuple<int, int, int>> & displayQueue,
-        gridArr board) {
+#include <iostream>
+
+Dfs::Dfs(std::queue<gridNum> *displayQueue,
+        gridArr boardCopy) {
     // Constructor, copy board over
-    gridArr board = board;
-    std::queue<std::tuple<int, int, int>> outputQueue = displayQueue;
+    board = boardCopy;
+    outputQueue = displayQueue;
 }
 
 Dfs::~Dfs() {
@@ -21,7 +23,11 @@ bool Dfs::checkSolvability() {
     return solveRecur(board, false);
 }
 
-bool solveRecur(gridArr board, bool output) {
+bool Dfs::solveRecur(gridArr board, bool output) {
+    // Output to be true if it should output to outputQueue
+    // Pass board by value to remember changes for backtracking
+    
+    // Get a new location
     std::pair<int, int> newCell = newLocation(board);
 
     if (newCell == FULL) {
@@ -36,7 +42,11 @@ bool solveRecur(gridArr board, bool output) {
 
             // Output to queue for serial comms
             if (output) {
-                // TODO
+                gridNum change;
+                change.row = newCell.first;
+                change.col = newCell.second;
+                change.num = numAttempt;
+                outputQueue->push(change);  
             }
 
             if (solveRecur(board, output)) {
@@ -53,7 +63,11 @@ bool solveRecur(gridArr board, bool output) {
 
     // Output to queue for serial comms
     if (output) {
-        // TODO    
+        gridNum change;
+        change.row = newCell.first;
+        change.col = newCell.second;
+        change.num = 0;
+        outputQueue->push(change);  
     }
 
     return false;

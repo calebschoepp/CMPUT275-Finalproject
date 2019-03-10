@@ -2,19 +2,23 @@
 #define ALGO_DFS_H
 
 #include <queue>
-#include <tuple>
 #include <array>
 #include <utility>
 
 // Constants and definitions
 #define FULL std::make_pair(-1, -1)
 typedef std::array<std::array<int, 9>, 9> gridArr;
+struct gridNum {
+    int row;
+    int col;
+    int num;
+};
 
 class Dfs {
 public:
     // Constructors and deconstructors
-    Dfs(std::queue<std::tuple<int, int, int>> & displayQueue,
-        gridArr board);
+    Dfs(std::queue<gridNum> *displayQueue,
+        gridArr boardCopy);
     ~Dfs();
 
     // Primary interface
@@ -22,8 +26,8 @@ public:
     bool checkSolvability();
 
 private:
-
     gridArr board;
+    std::queue<gridNum> *outputQueue;
 
     // Main recursive DFS solver
     bool solveRecur(gridArr board, bool output);

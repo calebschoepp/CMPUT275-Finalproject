@@ -40,7 +40,7 @@ int main() {
 
     cout << changeQueue.size() << endl;
 
-    while (!changeQueue.empty()) {
+    while (!changeQueue.empty()) /*for (int i = 0; i < 10; ++i)*/ {
         gridNum change = changeQueue.front();
         changeQueue.pop();
         board[change.row][change.col] = change.num;

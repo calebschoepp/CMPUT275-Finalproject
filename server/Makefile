@@ -1,5 +1,5 @@
 CC=g++
-CFLAGS=-c -Wall -std=c++11
+CFLAGS=-c -Wall -std=c++11 -g
 
 test_algo_dfs: algo_dfs.o test_algo_dfs.o
 	$(CC) algo_dfs.o test_algo_dfs.o -o test_algo_dfs

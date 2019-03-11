@@ -54,21 +54,34 @@ bool Dfs::solveRecur(gridArr board, bool output) {
             }
             // If we get here we have backtracked and the number didn't work
             // Try again with a new number
+
+            // All numbers attempted have failed and we must backtrack
+            // Set the cell to blank (0)
+            board[newCell.first][newCell.second] = 0;
+
+            // Output to queue for serial comms
+            if (output) {
+                gridNum change;
+                change.row = newCell.first;
+                change.col = newCell.second;
+                change.num = 0;
+                outputQueue->push(change);  
+            }
         }
     }
         
-    // All numbers attempted have failed and we must backtrack
-    // Set the cell to blank (0)
-    board[newCell.first][newCell.second] = 0;
+    // // All numbers attempted have failed and we must backtrack
+    // // Set the cell to blank (0)
+    // board[newCell.first][newCell.second] = 0;
 
-    // Output to queue for serial comms
-    if (output) {
-        gridNum change;
-        change.row = newCell.first;
-        change.col = newCell.second;
-        change.num = 0;
-        outputQueue->push(change);  
-    }
+    // // Output to queue for serial comms
+    // if (output) {
+    //     gridNum change;
+    //     change.row = newCell.first;
+    //     change.col = newCell.second;
+    //     change.num = 0;
+    //     outputQueue->push(change);  
+    // }
 
     return false;
 }
@@ -104,8 +117,31 @@ bool Dfs::colPermitted(const gridArr &board, int col, int num) {
     return true;
 }
 
-bool Dfs::squarePermitted(const gridArr &board, int row_start, int col_start, int num) {
+bool Dfs::squarePermitted(const gridArr &board, int realRow, int realCol, int num) {
     // Return true if num is not found in given square of the board
+    int row_start = -1;
+    int col_start = -1;
+
+    if (realRow >= 0 && realRow < 3) {
+        row_start = 0;
+    } else if (realRow >= 3 && realRow < 6) {
+        row_start = 3;
+    } else {
+        row_start = 6;
+    }
+
+    if (realCol >= 0 && realCol < 3) {
+        col_start = 0;
+    } else if (realCol >= 3 && realCol < 6) {
+        col_start = 3;
+    } else {
+        col_start = 6;
+    }
+
+    if (row_start == -1 || col_start == -1) {
+        return false;
+    }
+
     for (int row = row_start; row < row_start + 3; ++row) {
         for (int col = col_start; col < col_start + 3; ++col) {
             if (board[row][col] == num) {

@@ -1,2 +1,3 @@
 *.o
 test_algo_dfs
+.vscode

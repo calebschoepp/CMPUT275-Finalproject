@@ -32,6 +32,8 @@ using namespace std;
 
 int main() {
     init();
+    tft.begin();
+    tft.setRotation(3);
     tft.fillScreen(ILI9341_BLACK);
     tft.print("Hello World!");
     return 0;

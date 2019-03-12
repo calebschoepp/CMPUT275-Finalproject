@@ -4,7 +4,7 @@
 #include <Arduino.h>
 #include <Adafruit_ILI9341.h>
 #include <Adafruit_GFX.h>
-#include <Touchscreen.h>
+#include <TouchScreen.h>
 #include "lcd_image.h"
 
 #define TFT_DC 9

@@ -23,3 +23,14 @@ It will transition between states based on touch input or serial response
 providing the proper output, and calling the next state function as necessary ?
 
 */
+
+
+// Just some test stuff
+#include "consts_and_types.h"
+
+using namespace std;
+
+int main() {
+    tft.print("Hello World!");
+    return 0;
+}

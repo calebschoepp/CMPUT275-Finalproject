@@ -96,10 +96,5 @@ int main() {
     tft.print("BACK");
 
     // Fill square testing
-    fillSquare(1, 1);
-    fillSquare(6, 8);
-    fillNum(1, 1, 3);
-    fillSquare(6, 6);
-    fillNum(6, 6, 7);
     return 0;
 }

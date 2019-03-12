@@ -31,6 +31,6 @@ providing the proper output, and calling the next state function as necessary ?
 using namespace std;
 
 int main() {
-    tft.print("Hello World!");
+    tft->print("Hello World!");
     return 0;
 }

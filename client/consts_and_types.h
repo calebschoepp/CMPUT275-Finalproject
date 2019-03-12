@@ -44,14 +44,6 @@ namespace displayconsts {
   // physical dimensions of the tft display
   const int16_t tft_width = 320;
   const int16_t tft_height = 240;
-
-  // dimensions of the bottom "display" that has the FROM? or TO? prompt
-  const int16_t msg_width = tft_width;
-  const int16_t msg_height = 24;
-
-  // the display window size for the map of edmonton
-  const int16_t display_width = tft_width;
-  const int16_t display_height = tft_height - msg_height;
 };
 
 // constants related to the touchcreen

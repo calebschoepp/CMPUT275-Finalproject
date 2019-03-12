@@ -10,6 +10,12 @@
 #define TFT_DC 9
 #define TFT_CS 10
 
+// Touch screen pins
+#define YP A2
+#define XM A3
+#define YM 5
+#define XP 4
+
 Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
 TouchScreen ts = TouchScreen(XP, YP, XM, YM, 300);
 

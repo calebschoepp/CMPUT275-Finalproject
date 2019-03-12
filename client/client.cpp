@@ -50,7 +50,7 @@ int main() {
     tft.setRotation(3);
     tft.fillScreen(ILI9341_WHITE);
     tft.setTextColor(ILI9341_BLACK);
-    tft.setTextSize(3);
+    tft.setTextSize(2);
 
     int x = 10; // 9
     int y = 6; // 5
@@ -73,6 +73,10 @@ int main() {
     // Horizontal
     for (int i = 0; i < 10; ++i) {
         tft.drawLine(x, y, x + 216, y, ILI9341_BLACK);
+        if (i % 3 == 0) {
+            tft.drawLine(x, y + 1, x + 216, y + 1, ILI9341_BLACK);
+            tft.drawLine(x, y - 1, x + 216, y - 1, ILI9341_BLACK);
+        }
         y += 26;
     }
     x = 5;
@@ -80,6 +84,10 @@ int main() {
     // Vertical
     for (int i = 0; i < 10; ++i) {
         tft.drawLine(x, y, x, y + 234, ILI9341_BLACK);
+        if (i % 3 == 0) {
+            tft.drawLine(x, y, x, y + 234, ILI9341_BLACK);
+            tft.drawLine(x + 1, y, x + 1, y + 234, ILI9341_BLACK);
+        }
         x += 24;
     }
 

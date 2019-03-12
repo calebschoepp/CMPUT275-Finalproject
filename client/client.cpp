@@ -30,6 +30,20 @@ providing the proper output, and calling the next state function as necessary ?
 
 using namespace std;
 
+void fillSquare(int gridx, int gridy) {
+    int x = 6 + 24 * gridx;
+    int y = 4 + 26 * gridy;
+    tft.fillRect(x, y, 23, 25, ILI9341_LIGHTGREY);
+}
+
+void fillNum(int gridx, int gridy, int num) {
+    int x = 6 + 4 + 24 * gridx;
+    int y = 4 + 2 + 26 * gridy;
+    tft.setCursor(x, y);
+    tft.setTextSize(3);
+    tft.print(num);
+}
+
 int main() {
     init();
     tft.begin();
@@ -38,8 +52,8 @@ int main() {
     tft.setTextColor(ILI9341_BLACK);
     tft.setTextSize(3);
 
-    int x = 9;
-    int y = 5;
+    int x = 10; // 9
+    int y = 6; // 5
 
     // Print numbers
     for (int i = 0; i < 9; ++i) {
@@ -49,7 +63,7 @@ int main() {
             tft.print(j);
 
         }
-        x = 9;
+        x = 10;
         y += 26;
     }
 
@@ -80,5 +94,12 @@ int main() {
     tft.print("STOP");
     tft.setCursor(229 + 20, 30 + 5 + 78 + 78);
     tft.print("BACK");
+
+    // Fill square testing
+    fillSquare(1, 1);
+    fillSquare(6, 8);
+    fillNum(1, 1, 3);
+    fillSquare(6, 6);
+    fillNum(6, 6, 7);
     return 0;
 }

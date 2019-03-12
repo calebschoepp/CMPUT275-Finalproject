@@ -30,14 +30,79 @@ providing the proper output, and calling the next state function as necessary ?
 
 using namespace std;
 
+void fillSquare(int gridx, int gridy) {
+    int x = 6 + 24 * gridx;
+    int y = 4 + 26 * gridy;
+    tft.fillRect(x, y, 23, 25, ILI9341_LIGHTGREY);
+}
+
+void fillNum(int gridx, int gridy, int num) {
+    int x = 6 + 4 + 24 * gridx;
+    int y = 4 + 2 + 26 * gridy;
+    tft.setCursor(x, y);
+    tft.setTextSize(3);
+    tft.print(num);
+}
+
 int main() {
     init();
     tft.begin();
     tft.setRotation(3);
-    tft.fillScreen(ILI9341_BLACK);
-    tft.print("Hello World!");
-    tft.fillScreen(ILI9341_BLACK);
-    tft.setTextColor(ILI9341_BLACK, ILI9341_WHITE);
+    tft.fillScreen(ILI9341_WHITE);
+    tft.setTextColor(ILI9341_BLACK);
+    tft.setTextSize(2);
 
+    int x = 10; // 9
+    int y = 6; // 5
+
+    // Print numbers
+    for (int i = 0; i < 9; ++i) {
+        for (int j = 1; j < 10; ++j) {
+            tft.setCursor(x, y);
+            x += 24;
+            tft.print(j);
+
+        }
+        x = 10;
+        y += 26;
+    }
+
+    // Print gridlines
+    x = 5;
+    y = 3;
+    // Horizontal
+    for (int i = 0; i < 10; ++i) {
+        tft.drawLine(x, y, x + 216, y, ILI9341_BLACK);
+        if (i % 3 == 0) {
+            tft.drawLine(x, y + 1, x + 216, y + 1, ILI9341_BLACK);
+            tft.drawLine(x, y - 1, x + 216, y - 1, ILI9341_BLACK);
+        }
+        y += 26;
+    }
+    x = 5;
+    y = 3;
+    // Vertical
+    for (int i = 0; i < 10; ++i) {
+        tft.drawLine(x, y, x, y + 234, ILI9341_BLACK);
+        if (i % 3 == 0) {
+            tft.drawLine(x, y, x, y + 234, ILI9341_BLACK);
+            tft.drawLine(x + 1, y, x + 1, y + 234, ILI9341_BLACK);
+        }
+        x += 24;
+    }
+
+    // Draw buttons
+    tft.fillRect(229, 5, 86, 73, ILI9341_GREEN);
+    tft.fillRect(229, 83, 86, 73, ILI9341_RED);
+    tft.fillRect(229, 161, 86, 73, ILI9341_BLUE);
+    tft.setCursor(229 + 20, 30 + 5);
+    tft.setTextSize(2);
+    tft.print("MAKE");
+    tft.setCursor(229 + 20, 30 + 5 + 78 );
+    tft.print("STOP");
+    tft.setCursor(229 + 20, 30 + 5 + 78 + 78);
+    tft.print("BACK");
+
+    // Fill square testing
     return 0;
 }

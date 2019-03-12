@@ -1,29 +1,25 @@
-#include "algo_dfs.h"
+#include "algo_backtracking.h"
 
 #include <iostream>
 
-Dfs::Dfs(std::queue<gridNum> *displayQueue,
+Backtracking::Backtracking(std::queue<gridNum> *displayQueue,
         gridArr boardCopy) {
     // Constructor, copy board over
     board = boardCopy;
     outputQueue = displayQueue;
 }
 
-Dfs::~Dfs() {
-
-}
-
-void Dfs::solve() {
+void Backtracking::solve() {
     // Wrapper on solveRecur() for public access
     solveRecur(board, true);
 }
 
-bool Dfs::checkSolvability() {
+bool Backtracking::checkSolvability() {
     // Wrapper on solveRecur() to see if given board is solvable
     return solveRecur(board, false);
 }
 
-bool Dfs::solveRecur(gridArr board, bool output) {
+bool Backtracking::solveRecur(gridArr board, bool output) {
     // Output to be true if it should output to outputQueue
     // Pass board by value to remember changes for backtracking
     
@@ -86,7 +82,7 @@ bool Dfs::solveRecur(gridArr board, bool output) {
     return false;
 }
 
-bool Dfs::cellPermitted(const gridArr &board, int row, int col, int num) {
+bool Backtracking::cellPermitted(const gridArr &board, int row, int col, int num) {
     if (!rowPermitted(board, row, num)) {
         return false;
     } else if (!colPermitted(board, col, num)) {
@@ -97,7 +93,7 @@ bool Dfs::cellPermitted(const gridArr &board, int row, int col, int num) {
     return true;
 }
 
-bool Dfs::rowPermitted(const gridArr &board, int row, int num) {
+bool Backtracking::rowPermitted(const gridArr &board, int row, int num) {
     // Return true if num is not found in row of board
     for (int col = 0; col < 9; ++col) {
         if (board[row][col] == num) {
@@ -107,7 +103,7 @@ bool Dfs::rowPermitted(const gridArr &board, int row, int num) {
     return true;
 }
 
-bool Dfs::colPermitted(const gridArr &board, int col, int num) {
+bool Backtracking::colPermitted(const gridArr &board, int col, int num) {
     // Return true if num is not found in col of board
     for (int row = 0; row < 9; ++row) {
         if (board[row][col] == num) {
@@ -117,7 +113,7 @@ bool Dfs::colPermitted(const gridArr &board, int col, int num) {
     return true;
 }
 
-bool Dfs::squarePermitted(const gridArr &board, int realRow, int realCol, int num) {
+bool Backtracking::squarePermitted(const gridArr &board, int realRow, int realCol, int num) {
     // Return true if num is not found in given square of the board
     int row_start = -1;
     int col_start = -1;
@@ -152,7 +148,7 @@ bool Dfs::squarePermitted(const gridArr &board, int realRow, int realCol, int nu
     return true;
 }
 
-std::pair<int, int> Dfs::newLocation(gridArr board) {
+std::pair<int, int> Backtracking::newLocation(gridArr board) {
     // Return a pair with an empty cell to be filled
     // Return a pair <-1, -1> if the board is full
     for (int row = 0; row < 9; ++row) {

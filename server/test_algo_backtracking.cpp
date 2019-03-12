@@ -1,4 +1,4 @@
-#include "algo_dfs.h"
+#include "algo_backtracking.h"
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -33,7 +33,7 @@ int main() {
     gridArr board = readInSudoku("./sudokus/easy-00.txt");
     queue<gridNum> changeQueue;
 
-    Dfs solver(&changeQueue, board);
+    Backtracking solver(&changeQueue, board);
     solver.solve();
     
     printBoard(board);

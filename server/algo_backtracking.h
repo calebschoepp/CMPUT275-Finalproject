@@ -1,5 +1,5 @@
-#ifndef ALGO_DFS_H
-#define ALGO_DFS_H
+#ifndef ALGO_BACKTRACKING_H
+#define ALGO_BACKTRACKING_H
 
 #include <queue>
 #include <array>
@@ -14,12 +14,11 @@ struct gridNum {
     int num;
 };
 
-class Dfs {
+class Backtracking {
 public:
     // Constructors and deconstructors
-    Dfs(std::queue<gridNum> *displayQueue,
+    Backtracking(std::queue<gridNum> *displayQueue,
         gridArr boardCopy);
-    ~Dfs();
 
     // Primary interface
     void solve();

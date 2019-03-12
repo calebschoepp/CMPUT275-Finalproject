@@ -31,6 +31,8 @@ providing the proper output, and calling the next state function as necessary ?
 using namespace std;
 
 int main() {
+    init();
+    tft.fillScreen(ILI9431_BLACK);
     tft.print("Hello World!");
     return 0;
 }

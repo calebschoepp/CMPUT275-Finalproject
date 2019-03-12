@@ -36,5 +36,15 @@ int main() {
     tft.setRotation(3);
     tft.fillScreen(ILI9341_BLACK);
     tft.print("Hello World!");
+    tft.fillScreen(ILI9341_BLACK);
+    tft.setTextColor(ILI9341_BLACK, ILI9341_WHITE)
+
+    int j = 0;
+    for (int i = 0; i < 5000; ++i) {
+        j += 1;
+        j = j % 9;
+        tft.setCursor(0, 0);
+        tft.print(j);
+    }
     return 0;
 }

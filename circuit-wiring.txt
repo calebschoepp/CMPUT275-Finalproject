@@ -21,12 +21,6 @@ TFT Display:
 
     19 CCS          Pin 6
 
-Zoom in and out buttons:
-
-    Button          Arduino Mega Pin
-    Zoom In         Pin 2
-    Zoom Out        Pin 3
-
 Joystick connections:
 
     Joystick Pin    Arduino Mega Pin

@@ -22,9 +22,6 @@ TouchScreen ts = TouchScreen(XP, YP, XM, YM, 300);
 
 // collect all pins in a namespace
 namespace clientpins {
-  // Pins and for the zoom in and out buttons.
-  const uint8_t zoom_in_pin = 2;
-  const uint8_t zoom_out_pin = 3;
 
   // the pins used to connect to the AdaFruit display
   const uint8_t sd_cs = 6;

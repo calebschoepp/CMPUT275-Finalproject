@@ -30,11 +30,9 @@ providing the proper output, and calling the next state function as necessary ?
 #include "touch.h"
 #include "joy.h"
 #include "serial_comm.h"
+#include "consts_and_types.h"
 
 using namespace std;
-
-// Different states for the FSM
-enum state {MAIN_MENU, SETTINGS, SOLVE, TRY_IT};
 
 // Globally shared state variables
 shared_vars shared;
@@ -42,9 +40,6 @@ shared_vars shared;
 void setup() {
     // Initialize the Arduino
     init();
-
-    // Do I put touch, joy, render, serial initialization in here?
-    // Do I build the objects in here or in main?
 }
 
 state main_menu() {
@@ -52,9 +47,14 @@ state main_menu() {
     // Draw buttons
     while (true) {
         // Take in touch input
-        // touch = solve -> return SOLVE
-        // touch = try_it -> return TRY_IT
-        // touch = settings -> return SETTINGS
+        button touchInput = touch.readButtons();
+        if (touchInput == button::TOP) {
+            return state::SOLVE;
+        } else if (touchInput == button::MIDDLE) {
+            return state::TRY_IT;
+        } else if (touchInput == button::BOTTOM) {
+            return state::SETTINGS;
+        }
     }
 }
 
@@ -63,6 +63,14 @@ state settings() {
     // Draw buttons
     while (true) {
         // Take in touch input
+        button touchInput = touch.readButtons();
+        if (touchInput == button::TOP) {
+
+        } else if (touchInput == button::MIDDLE) {
+
+        } else if (touchInput == button::BOTTOM) {
+            
+        }
         // touch = algo -> switch algo and redraw button
         // touch = board -> switch board and redraw board and redraw button
         // touch = back -> return MAIN_MENU
@@ -113,6 +121,12 @@ int main() {
     // Setup the arduino
     setup();
 
+    // Build the Arduino interfacing objets
+    Render render = Render();
+    SerialComm serial_comm = SerialComm();
+    Touch touch = Touch();
+    Joy joy = Joy();
+
     // Start at the main menu when arduino is turned on or reset
     state curr_state = MAIN_MENU;
 
@@ -120,19 +134,19 @@ int main() {
     while (true) {
         // curr_state will change after each state based on return
         switch (curr_state) {
-            case MAIN_MENU:
+            case state::MAIN_MENU:
                 curr_state = main_menu();
                 break;
 
-            case SETTINGS:
+            case state::SETTINGS:
                 curr_state = settings();
                 break;
 
-            case SOLVE:
+            case state::SOLVE:
                 curr_state = solve();
                 break;
 
-            case TRY_IT:
+            case state::TRY_IT:
                 curr_state = try_it();
                 break;
         

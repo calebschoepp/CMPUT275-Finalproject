@@ -17,10 +17,21 @@
 #define XP 4
 
 Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
-TouchScreen ts = TouchScreen(XP, YP, XM, YM, 300);
+
+// Different states for the FSM
+enum class state {MAIN_MENU, SETTINGS, SOLVE, TRY_IT};
+
+// Different button spots
+enum class button {TOP, MIDDLE, BOTTOM, NONE};
+
+// Different joystick directions
+enum class direction {UP, DOWN, LEFT, RIGHT, NONE};
+
+// Algorithm choices
+enum class algo {BACKTRACKING}
 
 struct shared_vars {
-    
+
 };
 
 // collect all pins in a namespace
@@ -56,8 +67,17 @@ namespace touchconsts {
     #define TS_MAXY 940
 
     // Thresholds to determine if there was a touch.
-    #define MINPRESSURE   10
+    #define MINPRESSURE 10
     #define MAXPRESSURE 1000
+}
+
+// constants related to joystick
+namespace joyconsts {
+    #define JOY_VERT  A1 // should connect A1 to pin VRx.
+    #define JOY_HORIZ A0 // should connect A0 to pin VRy.
+    #define JOY_SEL   8
+    #define JOY_CENTER   512
+    #define JOY_DEADZONE 64
 }
 
 #endif

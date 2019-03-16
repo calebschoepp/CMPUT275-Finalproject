@@ -23,6 +23,9 @@ It will transition between states based on touch input or serial response
 providing the proper output, and calling the next state function as necessary ?
 
 */
+
+#include <Arduino.h>
+
 #include "render.h"
 #include "touch.h"
 #include "joy.h"
@@ -30,10 +33,18 @@ providing the proper output, and calling the next state function as necessary ?
 
 using namespace std;
 
+// Different states for the FSM
 enum state {MAIN_MENU, SETTINGS, SOLVE, TRY_IT};
 
-void setup() {
+// Globally shared state variables
+shared_vars shared;
 
+void setup() {
+    // Initialize the Arduino
+    init();
+
+    // Do I put touch, joy, render, serial initialization in here?
+    // Do I build the objects in here or in main?
 }
 
 state main_menu() {
@@ -61,6 +72,7 @@ int main() {
 
     // Infinite loop finite state machine that client will always live in
     while (true) {
+        // curr_state will change after each state based on return
         switch (curr_state) {
             case MAIN_MENU:
                 curr_state = main_menu();

@@ -65,15 +65,20 @@ state settings() {
         // Take in touch input
         button touchInput = touch.readButtons();
         if (touchInput == button::TOP) {
+            // Iterate to next algorithm
+            shared.algorithm++;
+            // Redraw the button
 
         } else if (touchInput == button::MIDDLE) {
+            // Iterate to the next board
+            shared.board++;
+            // Redraw the button
+
+            // Redraw the board
 
         } else if (touchInput == button::BOTTOM) {
-            
+            return state::MAIN_MENU;
         }
-        // touch = algo -> switch algo and redraw button
-        // touch = board -> switch board and redraw board and redraw button
-        // touch = back -> return MAIN_MENU
     }
 }
 
@@ -88,14 +93,18 @@ state solve() {
     // Load in series of changes into an array through serial comms
     // Display time that loading took
 
-    while (array is not empty) {
+    for (elements in array)) {
         // Display new change onto board
+        /
     }
     // Display how long displaying took
 
     while (true) {
         // Take in touch input
-        // touch = back -> return MAIN_MENU
+        button touchInput = touch.readButtons();
+        if (touchInput == button::BOTTOM) {
+            return state::MAIN_MENU;
+        }
     }
 }
 
@@ -106,9 +115,18 @@ state try_it() {
 
     while(true) {
         // Take in touch input
-        // touch = back -> return MAIN_MENU
+        button touchInput = touch.readButtons();
+        if (touchInput == button::BOTTOM) {
+            return state::MAIN_MENU;
+        }
 
         // Take in joystick input
+        if (joy.joyPressed()) {
+            // Cycle number displayed in current square
+            // TODO
+            continue;
+        }
+        direction joyInput = joy.joyMoved();
         // joystick pressed -> cycle number in square and continue while loop
         // joystick moved -> move selected square and run check
             // Check serially communicates with server to see if it is right

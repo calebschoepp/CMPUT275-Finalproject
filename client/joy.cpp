@@ -9,5 +9,5 @@ bool Joy::joyPressed() {
 }
 
 direction Joy::joyMoved() {
-    
+
 }

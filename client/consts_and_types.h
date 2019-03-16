@@ -16,6 +16,7 @@
 #define YM 5
 #define XP 4
 
+// TO GO
 Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
 
 // Different states for the FSM
@@ -28,10 +29,33 @@ enum class button {TOP, MIDDLE, BOTTOM, NONE};
 enum class direction {UP, DOWN, LEFT, RIGHT, NONE};
 
 // Algorithm choices
-enum class algo {BACKTRACKING}
+enum class algo {BACKTRACKING, END_OF_ALGO}
+
+// ++ overloading for algo to iterate through it
+algo& operator++(algo &a) {
+  a = static_cast<algo>(static_cast<int>(a) + 1);
+  if (a == algo::END_OF_ALGO)
+    a = algo::BACKTRACKING;
+  return a;
+}
+
+// Board choices
+enum class board {EASY_00, MED_00, HARD_00, END_OF_BOARD};
+
+// ++ overloading for board to iterate through it
+board& operator++(board &a) {
+  a = static_cast<board>(static_cast<int>(a) + 1);
+  if (a == board::END_OF_BOARD)
+    a = board::EASY_00;
+  return a;
+}
 
 struct shared_vars {
+    // Algorithm to be used in solve menu
+    algo algorithm;
 
+    // Current board
+    board board
 };
 
 // collect all pins in a namespace

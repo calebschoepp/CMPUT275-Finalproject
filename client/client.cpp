@@ -23,86 +23,64 @@ It will transition between states based on touch input or serial response
 providing the proper output, and calling the next state function as necessary ?
 
 */
-
-
-// Just some test stuff
-#include "consts_and_types.h"
+#include "render.h"
+#include "touch.h"
+#include "joy.h"
+#include "serial_comm.h"
 
 using namespace std;
 
-void fillSquare(int gridx, int gridy) {
-    int x = 6 + 24 * gridx;
-    int y = 4 + 26 * gridy;
-    tft.fillRect(x, y, 23, 25, ILI9341_LIGHTGREY);
+enum state {MAIN_MENU, SETTINGS, SOLVE, TRY_IT};
+
+void setup() {
+
 }
 
-void fillNum(int gridx, int gridy, int num) {
-    int x = 6 + 4 + 24 * gridx;
-    int y = 4 + 2 + 26 * gridy;
-    tft.setCursor(x, y);
-    tft.setTextSize(3);
-    tft.print(num);
+state main_menu() {
+
+}
+
+state settings() {
+
+}
+
+state solve() {
+
+}
+
+state try_it() {
+
 }
 
 int main() {
-    init();
-    tft.begin();
-    tft.setRotation(3);
-    tft.fillScreen(ILI9341_WHITE);
-    tft.setTextColor(ILI9341_BLACK);
-    tft.setTextSize(2);
+    // Setup the arduino
+    setup();
 
-    int x = 10; // 9
-    int y = 6; // 5
+    // Start at the main menu when arduino is turned on or reset
+    state curr_state = MAIN_MENU;
 
-    // Print numbers
-    for (int i = 0; i < 9; ++i) {
-        for (int j = 1; j < 10; ++j) {
-            tft.setCursor(x, y);
-            x += 24;
-            tft.print(j);
+    // Infinite loop finite state machine that client will always live in
+    while (true) {
+        switch (curr_state) {
+            case MAIN_MENU:
+                curr_state = main_menu();
+                break;
 
+            case SETTINGS:
+                curr_state = settings();
+                break;
+
+            case SOLVE:
+                curr_state = solve();
+                break;
+
+            case TRY_IT:
+                curr_state = try_it();
+                break;
+        
+            default:
+                break;
         }
-        x = 10;
-        y += 26;
     }
-
-    // Print gridlines
-    x = 5;
-    y = 3;
-    // Horizontal
-    for (int i = 0; i < 10; ++i) {
-        tft.drawLine(x, y, x + 216, y, ILI9341_BLACK);
-        if (i % 3 == 0) {
-            tft.drawLine(x, y + 1, x + 216, y + 1, ILI9341_BLACK);
-            tft.drawLine(x, y - 1, x + 216, y - 1, ILI9341_BLACK);
-        }
-        y += 26;
-    }
-    x = 5;
-    y = 3;
-    // Vertical
-    for (int i = 0; i < 10; ++i) {
-        tft.drawLine(x, y, x, y + 234, ILI9341_BLACK);
-        if (i % 3 == 0) {
-            tft.drawLine(x, y, x, y + 234, ILI9341_BLACK);
-            tft.drawLine(x + 1, y, x + 1, y + 234, ILI9341_BLACK);
-        }
-        x += 24;
-    }
-
-    // Draw buttons
-    tft.fillRect(229, 5, 86, 73, ILI9341_GREEN);
-    tft.fillRect(229, 83, 86, 73, ILI9341_RED);
-    tft.fillRect(229, 161, 86, 73, ILI9341_BLUE);
-    tft.setCursor(229 + 20, 30 + 5);
-    tft.setTextSize(2);
-    tft.print("MAKE");
-    tft.setCursor(229 + 20, 30 + 5 + 78 );
-    tft.print("STOP");
-    tft.setCursor(229 + 20, 30 + 5 + 78 + 78);
-    tft.print("BACK");
-
-    // Fill square testing
     return 0;
 }

@@ -48,19 +48,65 @@ void setup() {
 }
 
 state main_menu() {
-
+    // Draw board
+    // Draw buttons
+    while (true) {
+        // Take in touch input
+        // touch = solve -> return SOLVE
+        // touch = try_it -> return TRY_IT
+        // touch = settings -> return SETTINGS
+    }
 }
 
 state settings() {
-
+    // Draw board
+    // Draw buttons
+    while (true) {
+        // Take in touch input
+        // touch = algo -> switch algo and redraw button
+        // touch = board -> switch board and redraw board and redraw button
+        // touch = back -> return MAIN_MENU
+    }
 }
 
 state solve() {
+    // Draw board
+    // Draw button
+    // Draw start of messaging area
 
+    // Serially communicate with server to start solving
+    // Display time that solving took
+
+    // Load in series of changes into an array through serial comms
+    // Display time that loading took
+
+    while (array is not empty) {
+        // Display new change onto board
+    }
+    // Display how long displaying took
+
+    while (true) {
+        // Take in touch input
+        // touch = back -> return MAIN_MENU
+    }
 }
 
 state try_it() {
+    // Draw board
+    // Draw button
+    // Draw start of messaging area
 
+    while(true) {
+        // Take in touch input
+        // touch = back -> return MAIN_MENU
+
+        // Take in joystick input
+        // joystick pressed -> cycle number in square and continue while loop
+        // joystick moved -> move selected square and run check
+            // Check serially communicates with server to see if it is right
+
+        // If the board is full and it can be solved then display solved
+    }
 }
 
 int main() {

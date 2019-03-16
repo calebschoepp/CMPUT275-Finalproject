@@ -2,8 +2,6 @@
 #define __CONSTS_AND_TYPES_H
 
 #include <Arduino.h>
-#include <Adafruit_ILI9341.h>
-#include <Adafruit_GFX.h>
 #include <TouchScreen.h>
 #include "lcd_image.h"
 

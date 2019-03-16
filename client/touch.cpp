@@ -1,5 +1,7 @@
 #include "touch.h"
 
+#include <TouchScreen.h>
+
 Touch::Touch() {
     ts = TouchScreen(XP, YP, XM, YM, 300);
 }

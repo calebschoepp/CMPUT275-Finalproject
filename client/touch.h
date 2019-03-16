@@ -1,7 +1,6 @@
 #ifndef TOUCH_H
 #define TOUCH_H
 
-#include <TouchScreen.h>
 #include "consts_and_types.h"
 
 class Touch {

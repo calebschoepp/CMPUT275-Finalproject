@@ -9,3 +9,12 @@ etc.
 This should be very deterministic
 
 */
+
+#include "render.h"
+
+#include <Adafruit_ILI9341.h>
+#include <Adafruit_GFX.h>
+
+Render::Render() {
+    tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
+}

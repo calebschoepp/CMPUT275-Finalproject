@@ -15,6 +15,10 @@ This should be very deterministic
 #include <Adafruit_ILI9341.h>
 #include <Adafruit_GFX.h>
 
+extern 
+
 Render::Render() {
     tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
+    tft.begin();
+    tft.setRotation(3);
 }

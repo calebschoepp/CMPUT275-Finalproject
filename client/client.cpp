@@ -37,6 +37,12 @@ using namespace std;
 // Globally shared state variables
 shared_vars shared;
 
+// Arduino interfacing objets
+Render render = Render();
+SerialComm serial_comm = SerialComm();
+Touch touch = Touch();
+Joy joy = Joy();
+
 void setup() {
     // Initialize the Arduino
     init();
@@ -138,12 +144,6 @@ state try_it() {
 int main() {
     // Setup the arduino
     setup();
-
-    // Build the Arduino interfacing objets
-    Render render = Render();
-    SerialComm serial_comm = SerialComm();
-    Touch touch = Touch();
-    Joy joy = Joy();
 
     // Start at the main menu when arduino is turned on or reset
     state curr_state = MAIN_MENU;

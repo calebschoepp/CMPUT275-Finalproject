@@ -1,4 +1,5 @@
 #include "touch.h"
+#include "consts_and_types.h"
 
 #include <TouchScreen.h>
 

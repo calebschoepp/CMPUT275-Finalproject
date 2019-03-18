@@ -26,6 +26,8 @@ providing the proper output, and calling the next state function as necessary ?
 
 
 // Just some test stuff
+
+/*
 #include "consts_and_types.h"
 
 using namespace std;
@@ -106,3 +108,5 @@ int main() {
     // Fill square testing
     return 0;
 }
+
+*/

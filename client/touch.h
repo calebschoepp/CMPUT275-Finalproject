@@ -1,8 +1,6 @@
 #ifndef TOUCH_H
 #define TOUCH_H
 
-#include "consts_and_types.h"
-
 class Touch {
 public:
     // Constructor

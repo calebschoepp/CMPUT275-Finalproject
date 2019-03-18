@@ -12,13 +12,20 @@ This should be very deterministic
 
 #include "render.h"
 
-#include <Adafruit_ILI9341.h>
-#include <Adafruit_GFX.h>
-
-extern 
+extern shared_vars shared;
 
 Render::Render() {
     tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
     tft.begin();
     tft.setRotation(3);
 }
+
+// void Render::drawGrid() {
+//     // Horizontal lines
+//     int x = 5;
+//     int y = 3;
+//     // Vertical lines
+//     for (int i = 0; i < 10; ++i) {
+//         tft.drawLine();
+//     }
+// }

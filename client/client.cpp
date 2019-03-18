@@ -24,8 +24,6 @@ providing the proper output, and calling the next state function as necessary ?
 
 */
 
-#include <Arduino.h>
-
 #include "render.h"
 #include "touch.h"
 #include "joy.h"

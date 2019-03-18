@@ -2,8 +2,6 @@
 #define __CONSTS_AND_TYPES_H
 
 #include <Arduino.h>
-#include <TouchScreen.h>
-#include "lcd_image.h"
 
 #define TFT_DC 9
 #define TFT_CS 10
@@ -13,9 +11,6 @@
 #define XM A3
 #define YM 5
 #define XP 4
-
-// TO GO
-Adafruit_ILI9341 tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
 
 // Different states for the FSM
 enum class state {MAIN_MENU, SETTINGS, SOLVE, TRY_IT};
@@ -27,7 +22,7 @@ enum class button {TOP, MIDDLE, BOTTOM, NONE};
 enum class direction {UP, DOWN, LEFT, RIGHT, NONE};
 
 // Algorithm choices
-enum class algo {BACKTRACKING, END_OF_ALGO}
+enum class algo {BACKTRACKING, END_OF_ALGO};
 
 // ++ overloading for algo to iterate through it
 algo& operator++(algo &a) {
@@ -53,7 +48,7 @@ struct shared_vars {
     algo algorithm;
 
     // Current board
-    board board
+    board curr_board;
 };
 
 // collect all pins in a namespace

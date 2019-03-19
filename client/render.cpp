@@ -6,8 +6,6 @@ render method correlating to each state in client.cpp. There will be one large s
 containing struct it will have access to with things like current selected board, algo,
 etc.
 
-This should be very deterministic
-
 */
 
 #include "render.h"
@@ -15,9 +13,9 @@ This should be very deterministic
 extern shared_vars shared;
 
 Render::Render() {
-    tft = new Adafruit_ILI9341(clientpins::tft_cs, clientpins::tft_dc);
-    tft->begin();
-    tft->setRotation(3);
+    // tft = Adafruit_ILI9341(clientpins::tft_cs, clientpins::tft_dc);
+    tft.begin();
+    tft.setRotation(3);
 }
 
 // void Render::drawGrid() {

@@ -1,6 +1,10 @@
 #ifndef TOUCH_H
 #define TOUCH_H
 
+#include "consts_and_types.h"
+
+#include <TouchScreen.h>
+
 class Touch {
 public:
     // Constructor
@@ -10,7 +14,7 @@ public:
     button readButtons();
 
 private:
-    TouchScreen ts;
+    TouchScreen ts = TouchScreen(XP, YP, XM, YM, 300);
 
 };
 

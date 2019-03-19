@@ -3,9 +3,6 @@
 
 #include <Arduino.h>
 
-// #define TFT_DC 9
-// #define TFT_CS 10
-
 // Touch screen pins
 #define YP A2
 #define XM A3
@@ -78,14 +75,14 @@ namespace displayconsts {
 namespace touchconsts {
     // Calibration data for the touch screen, obtained from documentation.
     // The minimum/maximum possible readings from the touch point.
-    #define TS_MINX 150
-    #define TS_MINY 120
-    #define TS_MAXX 920
-    #define TS_MAXY 940
+    const int TS_MINX = 150;
+    const int TS_MINY = 120;
+    const int TS_MAXX = 920;
+    const int TS_MAXY = 940;
 
     // Thresholds to determine if there was a touch.
-    #define MINPRESSURE 10
-    #define MAXPRESSURE 1000
+    const int MINPRESSURE = 10;
+    const int MAXPRESSURE = 1000;
 }
 
 // constants related to joystick

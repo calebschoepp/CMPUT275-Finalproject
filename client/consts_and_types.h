@@ -3,8 +3,8 @@
 
 #include <Arduino.h>
 
-#define TFT_DC 9
-#define TFT_CS 10
+// #define TFT_DC 9
+// #define TFT_CS 10
 
 // Touch screen pins
 #define YP A2

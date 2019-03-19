@@ -15,9 +15,9 @@ This should be very deterministic
 extern shared_vars shared;
 
 Render::Render() {
-    tft = Adafruit_ILI9341(TFT_CS, TFT_DC);
-    tft.begin();
-    tft.setRotation(3);
+    tft = new Adafruit_ILI9341(clientpins::tft_cs, clientpins::tft_dc);
+    tft->begin();
+    tft->setRotation(3);
 }
 
 // void Render::drawGrid() {

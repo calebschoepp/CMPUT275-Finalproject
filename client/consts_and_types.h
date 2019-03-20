@@ -22,7 +22,7 @@ enum class direction {UP, DOWN, LEFT, RIGHT, NONE};
 enum class algo {BACKTRACKING, END_OF_ALGO};
 
 // ++ overloading for algo to iterate through it
-algo& operator++(algo &a) {
+inline algo& operator++(algo &a) {
   a = static_cast<algo>(static_cast<int>(a) + 1);
   if (a == algo::END_OF_ALGO)
     a = algo::BACKTRACKING;
@@ -33,7 +33,7 @@ algo& operator++(algo &a) {
 enum class board {EASY_00, MED_00, HARD_00, END_OF_BOARD};
 
 // ++ overloading for board to iterate through it
-board& operator++(board &a) {
+inline board& operator++(board &a) {
   a = static_cast<board>(static_cast<int>(a) + 1);
   if (a == board::END_OF_BOARD)
     a = board::EASY_00;
@@ -45,7 +45,7 @@ struct shared_vars {
     algo algorithm;
 
     // Current board
-    board curr_board;
+    board board_type;
 };
 
 // collect all pins in a namespace

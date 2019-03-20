@@ -7,9 +7,9 @@ Joy::Joy() {
 }
 
 bool Joy::joyPressed() {
-
+    return false;
 }
 
 direction Joy::joyMoved() {
-
+    return direction::NONE;
 }

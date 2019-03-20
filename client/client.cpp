@@ -70,12 +70,12 @@ state settings() {
         button touchInput = touch.readButtons();
         if (touchInput == button::TOP) {
             // Iterate to next algorithm
-            shared.algorithm++;
+            ++shared.algorithm;
             // Redraw the button
 
         } else if (touchInput == button::MIDDLE) {
             // Iterate to the next board
-            shared.board++;
+            ++shared.board_type;
             // Redraw the button
 
             // Redraw the board
@@ -97,10 +97,10 @@ state solve() {
     // Load in series of changes into an array through serial comms
     // Display time that loading took
 
-    for (elements in array)) {
-        // Display new change onto board
-        /
-    }
+    // for (elements in array)) {
+    //     // Display new change onto board
+    //     /
+    // }
     // Display how long displaying took
 
     while (true) {
@@ -144,7 +144,7 @@ int main() {
     setup();
 
     // Start at the main menu when arduino is turned on or reset
-    state curr_state = MAIN_MENU;
+    state curr_state = state::MAIN_MENU;
 
     // Infinite loop finite state machine that client will always live in
     while (true) {

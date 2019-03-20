@@ -24,6 +24,7 @@ providing the proper output, and calling the next state function as necessary ?
 
 */
 
+#include <Arduino.h>
 #include "render.h"
 #include "touch.h"
 #include "joy.h"
@@ -48,6 +49,14 @@ void setup() {
 
 state main_menu() {
     // Draw board
+
+    // TESSSSSSSSSSSSSSSSST
+
+    render.drawGrid();
+
+    // TESSSSSSSSSSSSSSSSST
+
+
     // Draw buttons
     while (true) {
         // Take in touch input
@@ -142,6 +151,9 @@ state try_it() {
 int main() {
     // Setup the arduino
     setup();
+
+    // Clear screen
+    render.reset();
 
     // Start at the main menu when arduino is turned on or reset
     state curr_state = state::MAIN_MENU;

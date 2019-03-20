@@ -9,8 +9,11 @@ class Render {
 public:
     // Constructor
     Render();
+    void drawGrid();
+    void reset();
 private:
     Adafruit_ILI9341 tft = Adafruit_ILI9341(clientpins::tft_cs, clientpins::tft_dc);
+
 };
 
 #endif

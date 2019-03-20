@@ -13,17 +13,40 @@ etc.
 extern shared_vars shared;
 
 Render::Render() {
-    // tft = Adafruit_ILI9341(clientpins::tft_cs, clientpins::tft_dc);
     tft.begin();
     tft.setRotation(3);
+    tft.fillScreen(ILI9341_BLUE);
 }
 
-// void Render::drawGrid() {
-//     // Horizontal lines
-//     int x = 5;
-//     int y = 3;
-//     // Vertical lines
-//     for (int i = 0; i < 10; ++i) {
-//         tft.drawLine();
-//     }
-// }
+void Render::reset() {
+    // Draw a blank white screen
+    tft.fillScreen(ILI9341_WHITE);
+}
+
+void Render::drawGrid() {
+    // Horizontal lines
+    int x = 5;
+    int y = 3;
+    for (int i = 0; i < 10; ++i) {
+        tft.drawLine(x, y, x + 216, y, ILI9341_BLACK);
+        // Thicker lines every 3
+        if (i % 3 == 0) {
+            tft.drawLine(x, y + 1, x + 216, y + 1, ILI9341_BLACK);
+            tft.drawLine(x, y - 1, x + 216, y - 1, ILI9341_BLACK);
+        }
+        y += 26;
+    }
+
+    // Vertical lines
+    x = 5;
+    y = 3;
+    for (int i = 0; i < 10; ++i) {
+        tft.drawLine(x, y, x, y + 234, ILI9341_BLACK);
+        // Thicker lines every 3
+        if (i % 3 == 0) {
+            tft.drawLine(x, y, x, y + 234, ILI9341_BLACK);
+            tft.drawLine(x + 1, y, x + 1, y + 234, ILI9341_BLACK);
+        }
+        x += 24;
+    }
+}

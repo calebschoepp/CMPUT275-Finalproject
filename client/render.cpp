@@ -15,7 +15,7 @@ extern shared_vars shared;
 Render::Render() {
     tft.begin();
     tft.setRotation(3);
-    tft.fillScreen(ILI9341_BLUE);
+    tft.fillScreen(ILI9341_RED);
 }
 
 void Render::reset() {
@@ -44,7 +44,7 @@ void Render::drawGrid() {
         tft.drawLine(x, y, x, y + 234, ILI9341_BLACK);
         // Thicker lines every 3
         if (i % 3 == 0) {
-            tft.drawLine(x, y, x, y + 234, ILI9341_BLACK);
+            tft.drawLine(x - 1, y, x - 1, y + 234, ILI9341_BLACK);
             tft.drawLine(x + 1, y, x + 1, y + 234, ILI9341_BLACK);
         }
         x += 24;

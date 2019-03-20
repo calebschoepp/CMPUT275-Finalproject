@@ -5,8 +5,6 @@
 
 class Joy {
 public:
-    // Constructor
-    Joy();
     bool joyPressed();
     direction joyMoved();
 private:

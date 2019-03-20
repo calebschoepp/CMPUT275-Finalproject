@@ -37,14 +37,21 @@ using namespace std;
 shared_vars shared;
 
 // Arduino interfacing objets
-Render render = Render();
-SerialComm serial_comm = SerialComm();
-Touch touch = Touch();
-Joy joy = Joy();
+Render *render;
+SerialComm *serial_comm;
+Touch *touch;
+Joy *joy;
 
 void setup() {
     // Initialize the Arduino
     init();
+
+    // Instantiate interface objects
+    render = new Render();
+    serial_comm = new SerialComm();
+    touch = new Touch();
+    joy = new Joy();
+
 }
 
 state main_menu() {
@@ -52,7 +59,7 @@ state main_menu() {
 
     // TESSSSSSSSSSSSSSSSST
 
-    render.drawGrid();
+    render->drawGrid();
 
     // TESSSSSSSSSSSSSSSSST
 
@@ -60,7 +67,7 @@ state main_menu() {
     // Draw buttons
     while (true) {
         // Take in touch input
-        button touchInput = touch.readButtons();
+        button touchInput = touch->readButtons();
         if (touchInput == button::TOP) {
             return state::SOLVE;
         } else if (touchInput == button::MIDDLE) {
@@ -76,7 +83,7 @@ state settings() {
     // Draw buttons
     while (true) {
         // Take in touch input
-        button touchInput = touch.readButtons();
+        button touchInput = touch->readButtons();
         if (touchInput == button::TOP) {
             // Iterate to next algorithm
             ++shared.algorithm;
@@ -114,7 +121,7 @@ state solve() {
 
     while (true) {
         // Take in touch input
-        button touchInput = touch.readButtons();
+        button touchInput = touch->readButtons();
         if (touchInput == button::BOTTOM) {
             return state::MAIN_MENU;
         }
@@ -128,18 +135,18 @@ state try_it() {
 
     while(true) {
         // Take in touch input
-        button touchInput = touch.readButtons();
+        button touchInput = touch->readButtons();
         if (touchInput == button::BOTTOM) {
             return state::MAIN_MENU;
         }
 
         // Take in joystick input
-        if (joy.joyPressed()) {
+        if (joy->joyPressed()) {
             // Cycle number displayed in current square
             // TODO
             continue;
         }
-        direction joyInput = joy.joyMoved();
+        direction joyInput = joy->joyMoved();
         // joystick pressed -> cycle number in square and continue while loop
         // joystick moved -> move selected square and run check
             // Check serially communicates with server to see if it is right
@@ -153,7 +160,7 @@ int main() {
     setup();
 
     // Clear screen
-    render.reset();
+    render->reset();
 
     // Start at the main menu when arduino is turned on or reset
     state curr_state = state::MAIN_MENU;

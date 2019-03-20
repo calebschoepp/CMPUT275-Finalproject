@@ -1,9 +1,5 @@
 #include "touch.h"
 
-Touch::Touch() {
-    
-}
-
 button Touch::readButtons() {
     TSPoint touch = ts.getPoint();
 

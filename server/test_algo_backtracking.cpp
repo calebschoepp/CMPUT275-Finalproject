@@ -30,12 +30,12 @@ void printBoard(const gridArr &board) {
 }
 
 int main() {
-    gridArr board = readInSudoku("./sudokus/easy-00.txt");
+    gridArr board = readInSudoku("./sudokus/hard-01.txt");
     queue<gridNum> changeQueue;
 
     Backtracking solver(&changeQueue, board);
     solver.solve();
-    
+
     printBoard(board);
 
     cout << changeQueue.size() << endl;

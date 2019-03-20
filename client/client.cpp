@@ -24,85 +24,170 @@ providing the proper output, and calling the next state function as necessary ?
 
 */
 
-
-// Just some test stuff
+#include <Arduino.h>
+#include "render.h"
+#include "touch.h"
+#include "joy.h"
+#include "serial_comm.h"
 #include "consts_and_types.h"
 
 using namespace std;
 
-void fillSquare(int gridx, int gridy) {
-    int x = 6 + 24 * gridx;
-    int y = 4 + 26 * gridy;
-    tft.fillRect(x, y, 23, 25, ILI9341_LIGHTGREY);
+// Globally shared state variables
+shared_vars shared;
+
+// Arduino interfacing objets
+Render *render;
+SerialComm *serial_comm;
+Touch *touch;
+Joy *joy;
+
+void setup() {
+    // Initialize the Arduino
+    init();
+
+    // Instantiate interface objects
+    render = new Render();
+    serial_comm = new SerialComm();
+    touch = new Touch();
+    joy = new Joy();
+
 }
 
-void fillNum(int gridx, int gridy, int num) {
-    int x = 6 + 4 + 24 * gridx;
-    int y = 4 + 2 + 26 * gridy;
-    tft.setCursor(x, y);
-    tft.setTextSize(3);
-    tft.print(num);
+state main_menu() {
+    // Draw board
+
+    // TESSSSSSSSSSSSSSSSST
+
+    render->drawGrid();
+
+    // TESSSSSSSSSSSSSSSSST
+
+
+    // Draw buttons
+    while (true) {
+        // Take in touch input
+        button touchInput = touch->readButtons();
+        if (touchInput == button::TOP) {
+            return state::SOLVE;
+        } else if (touchInput == button::MIDDLE) {
+            return state::TRY_IT;
+        } else if (touchInput == button::BOTTOM) {
+            return state::SETTINGS;
+        }
+    }
+}
+
+state settings() {
+    // Draw board
+    // Draw buttons
+    while (true) {
+        // Take in touch input
+        button touchInput = touch->readButtons();
+        if (touchInput == button::TOP) {
+            // Iterate to next algorithm
+            ++shared.algorithm;
+            // Redraw the button
+
+        } else if (touchInput == button::MIDDLE) {
+            // Iterate to the next board
+            ++shared.board_type;
+            // Redraw the button
+
+            // Redraw the board
+
+        } else if (touchInput == button::BOTTOM) {
+            return state::MAIN_MENU;
+        }
+    }
+}
+
+state solve() {
+    // Draw board
+    // Draw button
+    // Draw start of messaging area
+
+    // Serially communicate with server to start solving
+    // Display time that solving took
+
+    // Load in series of changes into an array through serial comms
+    // Display time that loading took
+
+    // for (elements in array)) {
+    //     // Display new change onto board
+    //     /
+    // }
+    // Display how long displaying took
+
+    while (true) {
+        // Take in touch input
+        button touchInput = touch->readButtons();
+        if (touchInput == button::BOTTOM) {
+            return state::MAIN_MENU;
+        }
+    }
+}
+
+state try_it() {
+    // Draw board
+    // Draw button
+    // Draw start of messaging area
+
+    while(true) {
+        // Take in touch input
+        button touchInput = touch->readButtons();
+        if (touchInput == button::BOTTOM) {
+            return state::MAIN_MENU;
+        }
+
+        // Take in joystick input
+        if (joy->joyPressed()) {
+            // Cycle number displayed in current square
+            // TODO
+            continue;
+        }
+        direction joyInput = joy->joyMoved();
+        // joystick pressed -> cycle number in square and continue while loop
+        // joystick moved -> move selected square and run check
+            // Check serially communicates with server to see if it is right
+
+        // If the board is full and it can be solved then display solved
+    }
 }
 
 int main() {
-    init();
-    tft.begin();
-    tft.setRotation(3);
-    tft.fillScreen(ILI9341_WHITE);
-    tft.setTextColor(ILI9341_BLACK);
-    tft.setTextSize(2);
+    // Setup the arduino
+    setup();
 
-    int x = 10; // 9
-    int y = 6; // 5
+    // Clear screen
+    render->reset();
 
-    // Print numbers
-    for (int i = 0; i < 9; ++i) {
-        for (int j = 1; j < 10; ++j) {
-            tft.setCursor(x, y);
-            x += 24;
-            tft.print(j);
+    // Start at the main menu when arduino is turned on or reset
+    state curr_state = state::MAIN_MENU;
 
+    // Infinite loop finite state machine that client will always live in
+    while (true) {
+        // curr_state will change after each state based on return
+        switch (curr_state) {
+            case state::MAIN_MENU:
+                curr_state = main_menu();
+                break;
+
+            case state::SETTINGS:
+                curr_state = settings();
+                break;
+
+            case state::SOLVE:
+                curr_state = solve();
+                break;
+
+            case state::TRY_IT:
+                curr_state = try_it();
+                break;
+        
+            default:
+                break;
         }
-        x = 10;
-        y += 26;
     }
-
-    // Print gridlines
-    x = 5;
-    y = 3;
-    // Horizontal
-    for (int i = 0; i < 10; ++i) {
-        tft.drawLine(x, y, x + 216, y, ILI9341_BLACK);
-        if (i % 3 == 0) {
-            tft.drawLine(x, y + 1, x + 216, y + 1, ILI9341_BLACK);
-            tft.drawLine(x, y - 1, x + 216, y - 1, ILI9341_BLACK);
-        }
-        y += 26;
-    }
-    x = 5;
-    y = 3;
-    // Vertical
-    for (int i = 0; i < 10; ++i) {
-        tft.drawLine(x, y, x, y + 234, ILI9341_BLACK);
-        if (i % 3 == 0) {
-            tft.drawLine(x, y, x, y + 234, ILI9341_BLACK);
-            tft.drawLine(x + 1, y, x + 1, y + 234, ILI9341_BLACK);
-        }
-        x += 24;
-    }
-
-    // Draw buttons
-    tft.fillRect(229, 5, 86, 73, ILI9341_GREEN);
-    tft.fillRect(229, 83, 86, 73, ILI9341_RED);
-    tft.fillRect(229, 161, 86, 73, ILI9341_BLUE);
-    tft.setCursor(229 + 20, 30 + 5);
-    tft.setTextSize(2);
-    tft.print("MAKE");
-    tft.setCursor(229 + 20, 30 + 5 + 78 );
-    tft.print("STOP");
-    tft.setCursor(229 + 20, 30 + 5 + 78 + 78);
-    tft.print("BACK");
-
-    // Fill square testing
     return 0;
 }

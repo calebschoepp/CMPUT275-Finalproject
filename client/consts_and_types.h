@@ -30,13 +30,13 @@ inline algo& operator++(algo &a) {
 }
 
 // Board choices
-enum class board {EASY_00, MED_00, HARD_00, END_OF_BOARD};
+enum class board_type {EASY_00, MED_00, HARD_00, END_OF_BOARD};
 
 // ++ overloading for board to iterate through it
-inline board& operator++(board &a) {
-  a = static_cast<board>(static_cast<int>(a) + 1);
-  if (a == board::END_OF_BOARD)
-    a = board::EASY_00;
+inline board_type& operator++(board_type &a) {
+  a = static_cast<board_type>(static_cast<int>(a) + 1);
+  if (a == board_type::END_OF_BOARD)
+    a = board_type::EASY_00;
   return a;
 }
 
@@ -44,8 +44,14 @@ struct shared_vars {
     // Algorithm to be used in solve menu
     algo algorithm;
 
-    // Current board
-    board board_type;
+    // Current board type
+    board_type _board_type;
+
+    // Whether or not to redraw board on entry into new state
+    bool redraw_board;
+
+    // Current board but number representation [x][y]
+    int board[9][9];
 };
 
 // collect all pins in a namespace
@@ -92,6 +98,18 @@ namespace joyconsts {
     #define JOY_SEL   8
     #define JOY_CENTER   512
     #define JOY_DEADZONE 64
+}
+
+// Constants for drawing to arduino
+namespace renderconsts {
+    const int cell_width = 24;
+    const int cell_height = 26;
+    const int border_pad = 3;
+    const int num_lines = 10;
+    const int num_cells = 9;
+    const int button_width = 91;
+    const int button_height = 76;
+    const int button_start_x = 226;
 }
 
 #endif

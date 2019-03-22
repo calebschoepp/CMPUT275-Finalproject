@@ -11,6 +11,16 @@ public:
     Render();
     void drawGrid();
     void reset();
+    void test();
+    void fillNum(int gridx, int gridy, int num, uint16_t color);
+    void select(int gridx, int gridy, uint16_t color);
+    void _button(button btn, uint16_t color);
+    void buttonText(button btn, int msg);
+    void textBox();
+    void drawBoard();
+    void cleanGridArea();
+    void drawButton(button btn, int msg, uint16_t color);
+
 private:
     Adafruit_ILI9341 tft = Adafruit_ILI9341(clientpins::tft_cs, clientpins::tft_dc);
 

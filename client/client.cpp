@@ -56,15 +56,15 @@ void setup() {
 
 state main_menu() {
     // Draw board
-
-    // TESSSSSSSSSSSSSSSSST
-
-    render->drawGrid();
-
-    // TESSSSSSSSSSSSSSSSST
-
-
+    if (shared.redraw_board) {
+        render->drawBoard();
+        shared.redraw_board = false;
+    }
     // Draw buttons
+    render->drawButton(button::TOP, 1, ILI9341_GREEN);
+    render->drawButton(button::MIDDLE, 2, ILI9341_ORANGE);
+    render->drawButton(button::BOTTOM, 3, ILI9341_PURPLE);
+
     while (true) {
         // Take in touch input
         button touchInput = touch->readButtons();
@@ -80,7 +80,15 @@ state main_menu() {
 
 state settings() {
     // Draw board
+    if (shared.redraw_board) {
+        render->drawBoard();
+        shared.redraw_board = false;
+    }
     // Draw buttons
+    render->drawButton(button::TOP, 4, ILI9341_YELLOW);
+    render->drawButton(button::MIDDLE, 5, ILI9341_BLUE);
+    render->drawButton(button::BOTTOM, 6, ILI9341_RED);
+
     while (true) {
         // Take in touch input
         button touchInput = touch->readButtons();
@@ -91,7 +99,7 @@ state settings() {
 
         } else if (touchInput == button::MIDDLE) {
             // Iterate to the next board
-            ++shared.board_type;
+            ++shared._board_type;
             // Redraw the button
 
             // Redraw the board
@@ -104,8 +112,15 @@ state settings() {
 
 state solve() {
     // Draw board
+    if (shared.redraw_board) {
+        render->drawBoard();
+        shared.redraw_board = false;
+    }
     // Draw button
+    render->drawButton(button::BOTTOM, 6, ILI9341_RED);
+
     // Draw start of messaging area
+    render->textBox();
 
     // Serially communicate with server to start solving
     // Display time that solving took
@@ -130,8 +145,15 @@ state solve() {
 
 state try_it() {
     // Draw board
+    if (shared.redraw_board) {
+        render->drawBoard();
+        shared.redraw_board = false;
+    }
     // Draw button
+    render->drawButton(button::BOTTOM, 6, ILI9341_RED);
+
     // Draw start of messaging area
+    render->textBox();
 
     while(true) {
         // Take in touch input
@@ -159,11 +181,38 @@ int main() {
     // Setup the arduino
     setup();
 
-    // Clear screen
-    render->reset();
-
     // Start at the main menu when arduino is turned on or reset
     state curr_state = state::MAIN_MENU;
+
+    // Redraw board should initially be true
+    shared.redraw_board = true;
+
+    for (int i = 0; i < 9; ++i) {
+        for (int j = 0; j < 9; ++j) {
+            shared.board[i][j] = 2;
+        }
+    }
+
+    /// TEST
+    // render->drawBoard();
+    // render->drawGrid();
+    // render->fillNum(0, 0, 5, ILI9341_BLACK);
+    // render->fillNum(1,1,3, ILI9341_BLACK);
+    // render->fillNum(0, 8, 4, ILI9341_BLACK);
+    // render->fillNum(3, 8, 7, ILI9341_BLACK);
+    // render->fillNum(5, 2, 8, ILI9341_BLACK);
+    // render->fillNum(6, 6, 9, ILI9341_BLACK);
+    // render->select(0, 0, ILI9341_RED);
+    // render->select(3, 5, ILI9341_RED);
+    // render->select(6, 6, ILI9341_RED);
+    // render->select(7, 7, ILI9341_RED);
+    // // render->drawButton(button::TOP, ILI9341_GREEN);
+    // // render->drawButton(button::MIDDLE, ILI9341_BLUE);
+    // render->drawButton(button::BOTTOM, ILI9341_RED);
+    // render->textBox();
+
+
+
 
     // Infinite loop finite state machine that client will always live in
     while (true) {

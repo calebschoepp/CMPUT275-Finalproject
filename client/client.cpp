@@ -10,7 +10,7 @@ this into responses for the server through serial-mon and visual outputs on the 
 
 It will exsist in a number of states. These could include:
 - Main menu
-- Settings menu
+- Setup menu
 - Try it screen
 - Solving (communicating with server/no touch input)
 - Checking (communicating with server/no touch input)
@@ -61,9 +61,10 @@ state main_menu() {
         shared.redraw_board = false;
     }
     // Draw buttons
-    render->drawButton(button::TOP, 1, ILI9341_GREEN);
-    render->drawButton(button::MIDDLE, 2, ILI9341_ORANGE);
-    render->drawButton(button::BOTTOM, 3, ILI9341_PURPLE);
+    render->cleanButtonArea();
+    render->drawButton(button::TOP, "SOLVE", ILI9341_GREEN);
+    render->drawButton(button::MIDDLE, "TRY IT", ILI9341_ORANGE);
+    render->drawButton(button::BOTTOM, "SETUP", ILI9341_PINK);
 
     while (true) {
         // Take in touch input
@@ -73,7 +74,7 @@ state main_menu() {
         } else if (touchInput == button::MIDDLE) {
             return state::TRY_IT;
         } else if (touchInput == button::BOTTOM) {
-            return state::SETTINGS;
+            return state::SETUP;
         }
     }
 }
@@ -85,9 +86,10 @@ state settings() {
         shared.redraw_board = false;
     }
     // Draw buttons
-    render->drawButton(button::TOP, 4, ILI9341_YELLOW);
-    render->drawButton(button::MIDDLE, 5, ILI9341_BLUE);
-    render->drawButton(button::BOTTOM, 6, ILI9341_RED);
+    render->cleanButtonArea();
+    render->drawButton(button::TOP, "ALGO", ILI9341_YELLOW);
+    render->drawButton(button::MIDDLE, "BOARD", ILI9341_BLUE);
+    render->drawButton(button::BOTTOM, "BACK", ILI9341_RED);
 
     while (true) {
         // Take in touch input
@@ -96,11 +98,14 @@ state settings() {
             // Iterate to next algorithm
             ++shared.algorithm;
             // Redraw the button
+            render->drawButton(button::TOP, "ALGO", ILI9341_YELLOW);
+
 
         } else if (touchInput == button::MIDDLE) {
             // Iterate to the next board
             ++shared._board_type;
             // Redraw the button
+            render->drawButton(button::MIDDLE, "BOARD", ILI9341_BLUE);
 
             // Redraw the board
 
@@ -117,7 +122,8 @@ state solve() {
         shared.redraw_board = false;
     }
     // Draw button
-    render->drawButton(button::BOTTOM, 6, ILI9341_RED);
+    render->cleanButtonArea();
+    render->drawButton(button::BOTTOM, "BACK", ILI9341_RED);
 
     // Draw start of messaging area
     render->textBox();
@@ -150,7 +156,8 @@ state try_it() {
         shared.redraw_board = false;
     }
     // Draw button
-    render->drawButton(button::BOTTOM, 6, ILI9341_RED);
+    render->cleanButtonArea();
+    render->drawButton(button::BOTTOM, "BACK", ILI9341_RED);
 
     // Draw start of messaging area
     render->textBox();
@@ -184,8 +191,10 @@ int main() {
     // Start at the main menu when arduino is turned on or reset
     state curr_state = state::MAIN_MENU;
 
-    // Redraw board should initially be true
+    // Initial shared states
     shared.redraw_board = true;
+    shared._board_type = board_type::EASY_00;
+    shared.algorithm = algo::BACKTRACKING;
 
     for (int i = 0; i < 9; ++i) {
         for (int j = 0; j < 9; ++j) {
@@ -222,7 +231,7 @@ int main() {
                 curr_state = main_menu();
                 break;
 
-            case state::SETTINGS:
+            case state::SETUP:
                 curr_state = settings();
                 break;
 

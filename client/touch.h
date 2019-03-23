@@ -7,7 +7,6 @@
 
 class Touch {
 public:
-
     // Returns which button was pressed
     button readButtons();
 

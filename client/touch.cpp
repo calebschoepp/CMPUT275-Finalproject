@@ -1,5 +1,7 @@
 #include "touch.h"
 
+using namespace renderconsts;
+
 button Touch::readButtons() {
     TSPoint touch = ts.getPoint();
 
@@ -19,15 +21,14 @@ button Touch::readButtons() {
                        displayconsts::tft_height - 1,
                        0);     
 
-    // if (in the correct horizontal position) {
-    //     if (first vert position) {
-    //         return button::TOP;
-    //     } else if (second vert position) {
-    //         return button::MIDDLE;
-    //     } else if (third vert position) {
-    //         return button::BOTTOM;
-    //     }
-    // }
-    // return buttons::NONE;
+    if (x > button_start_x) {
+        if (y > 0 && y < button_height + border_pad) {
+            return button::BOTTOM;
+        } else if (y > button_height + border_pad && y < 2 * button_height + 2 * border_pad) {
+            return button::MIDDLE;
+        } else if (y > 2 * button_height + 2 * border_pad) {
+            return button::TOP;
+        }
+    }
     return button::NONE;
 }

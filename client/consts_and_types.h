@@ -10,7 +10,7 @@
 #define XP 4
 
 // Different states for the FSM
-enum class state {MAIN_MENU, SETTINGS, SOLVE, TRY_IT};
+enum class state {MAIN_MENU, SETUP, SOLVE, TRY_IT};
 
 // Different button spots
 enum class button {TOP, MIDDLE, BOTTOM, NONE};
@@ -30,7 +30,7 @@ inline algo& operator++(algo &a) {
 }
 
 // Board choices
-enum class board_type {EASY_00, MED_00, HARD_00, END_OF_BOARD};
+enum class board_type {EASY_00, MED_00, HARD_00, HARD_01, HARD_02, HARD_03, END_OF_BOARD};
 
 // ++ overloading for board to iterate through it
 inline board_type& operator++(board_type &a) {
@@ -110,6 +110,7 @@ namespace renderconsts {
     const int button_width = 91;
     const int button_height = 76;
     const int button_start_x = 226;
+    const int button_max_char = 7;
 }
 
 #endif

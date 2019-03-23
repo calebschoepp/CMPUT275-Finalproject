@@ -97,17 +97,41 @@ void Render::_button(button btn, uint16_t color) {
     tft.fillRect(x + 3, y + 3, button_width - 6, button_height - 6, color);
 }
 
-void Render::buttonText(button btn, int msg) {
-    /*
-    1 SOLVE
-    2 TRY IT
-    3 SETTINGS
-    4 ALGORITHM
-    5 BOARD
-    6 BACK
-    */
+void Render::buttonText(button btn, char * msg) {
     tft.setTextSize(2);
     tft.setTextColor(ILI9341_BLACK);
+
+    // Special cases for algorithm and board
+    if (msg == "ALGO") {
+        switch (shared.algorithm) {
+            case algo::BACKTRACKING:
+                msg = "BACKTRK";
+                break;
+        }
+    }
+
+    if (msg == "BOARD") {
+        switch (shared._board_type) {
+            case board_type::EASY_00:
+                msg = "EASY 00";
+                break;
+            case board_type::MED_00:
+                msg = "MED 00";
+                break;
+            case board_type::HARD_00:
+                msg = "HARD 00";
+                break;
+            case board_type::HARD_01:
+                msg = "HARD 01";
+                break;
+            case board_type::HARD_02:
+                msg = "HARD 02";
+                break;
+            case board_type::HARD_03:
+                msg = "HARD 03";
+                break;
+        }
+    }
 
     // y
     int mod = (button_height - 14) / 2;
@@ -122,38 +146,18 @@ void Render::buttonText(button btn, int msg) {
 
     // x
     int x = button_start_x;
-    switch (msg) {
-        case 1:
-            x += 5;
-            tft.setCursor(x, y);
-            tft.print("SOLVE");
-            break;
-        case 2:
-            x += 5;
-            tft.setCursor(x, y);
-            tft.print("TRY IT");
-            break;
-        case 3:
-            x += 5;
-            tft.setCursor(x, y);
-            tft.print("SETTINGS");
-            break;
-        case 4:
-            x += 5;
-            tft.setCursor(x, y);
-            tft.print("ALGORITHM");
-            break;
-        case 5:
-            x += 5;
-            tft.setCursor(x, y);
-            tft.print("BOARD");
-            break;
-        case 6:
-            x += 5;
-            tft.setCursor(x, y);
-            tft.print("BACK");
-            break;
-    }   
+    int len = strlen(msg);
+    if (len > button_max_char) {
+        return;
+    }
+    int text_width = len * 12;
+    int blank_space = button_width - text_width;
+    x += blank_space / 2;
+    x += 1;
+
+    // print
+    tft.setCursor(x, y);
+    tft.print(msg);  
 }
 
 void Render::textBox() {
@@ -181,15 +185,20 @@ void Render::cleanGridArea() {
     tft.fillRect(0, 0, 222, 240, ILI9341_WHITE);
 }
 
-void Render::drawButton(button btn, int msg, uint16_t color) {
+void Render::drawButton(button btn, char* msg, uint16_t color) {
     _button(btn, color);
     buttonText(btn, msg);
 }
 
+void Render::cleanButtonArea() {
+    tft.fillRect(222, 0, 320, 240, ILI9341_WHITE);
+}
 
 void Render::test() {
-    int x = border_pad + 2;
+    int x = button_start_x;
     int y = border_pad + 2 + cell_height;
-    tft.drawRect(x, y, cell_width - 3, cell_height -3, ILI9341_RED);
-    tft.drawRect(x + 1, y + 1, cell_width - 5, cell_height - 5, ILI9341_RED);
+    tft.setCursor(x, y);
+    tft.setTextSize(2);
+    char* s = "SETUP";
+    tft.print(s);
 }

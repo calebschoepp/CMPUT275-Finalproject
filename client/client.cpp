@@ -221,11 +221,12 @@ state try_it() {
         if (joyInput != direction::NONE) {
             // Reselect
             render->select(sel_x, sel_y, ILI9341_RED);
-            num_to_enter = 0;
+            num_to_enter = shared.board_input[sel_x][sel_y];
             delay(250);
 
             // Check solvability
             // TODO
+            // serial_comm->
         }
 
         // If the board is full and it can be solved then display solved
@@ -250,6 +251,8 @@ int main() {
             shared.board[i][j] = 0;
         }
     }
+
+    shared.board[1][5] = 3;
 
     /// TEST
     // render->drawBoard();

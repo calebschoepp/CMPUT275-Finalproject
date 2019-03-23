@@ -52,6 +52,10 @@ struct shared_vars {
 
     // Current board but number representation [x][y]
     int board[9][9];
+
+    // Board representation that holds user input as well
+    // Used to send back to server to check for solvability
+    int board_input[9][9];
 };
 
 // collect all pins in a namespace

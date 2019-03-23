@@ -11,6 +11,7 @@ public:
     Render();
     void drawGrid();
     void reset();
+    void clearNum(int gridx, int gridy);
     void test();
     void fillNum(int gridx, int gridy, int num, uint16_t color);
     void select(int gridx, int gridy, uint16_t color);

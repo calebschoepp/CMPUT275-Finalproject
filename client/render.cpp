@@ -53,11 +53,20 @@ void Render::drawGrid() {
     }
 }
 
+void Render::clearNum(int gridx, int gridy) {
+    // 5 is experimental
+    int x = border_pad + 5 + cell_width * gridx;
+    int y = border_pad + 5 + cell_height * gridy;
+    tft.fillRect(x, y, cell_width - 9, cell_height - 9, ILI9341_WHITE);
+}
+
 void Render::fillNum(int gridx, int gridy, int num, uint16_t color) {
     // Grid is 0 indexed
     if (num == 0) {
+        clearNum(gridx, gridy);
         return;
     }
+    clearNum(gridx, gridy);
     // 7 is experimental value for centering text
     int x = border_pad + 7 + cell_width * gridx;
     // 6 is experimental value for centering text

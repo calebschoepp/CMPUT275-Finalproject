@@ -46,6 +46,9 @@ void setup() {
     // Initialize the Arduino
     init();
 
+    // Hardware pin pullups
+    pinMode(JOY_SEL, INPUT_PULLUP);
+
     // Instantiate interface objects
     render = new Render();
     serial_comm = new SerialComm();
@@ -88,7 +91,7 @@ state settings() {
     // Draw buttons
     render->cleanButtonArea();
     render->drawButton(button::TOP, "ALGO", ILI9341_YELLOW);
-    render->drawButton(button::MIDDLE, "BOARD", ILI9341_BLUE);
+    render->drawButton(button::MIDDLE, "BOARD", ILI9341_CYAN);
     render->drawButton(button::BOTTOM, "BACK", ILI9341_RED);
 
     while (true) {
@@ -99,15 +102,18 @@ state settings() {
             ++shared.algorithm;
             // Redraw the button
             render->drawButton(button::TOP, "ALGO", ILI9341_YELLOW);
+            delay(250);
 
 
         } else if (touchInput == button::MIDDLE) {
             // Iterate to the next board
             ++shared._board_type;
             // Redraw the button
-            render->drawButton(button::MIDDLE, "BOARD", ILI9341_BLUE);
+            render->drawButton(button::MIDDLE, "BOARD", ILI9341_CYAN);
+            delay(250);
 
             // Redraw the board
+            render->drawBoard();
 
         } else if (touchInput == button::BOTTOM) {
             return state::MAIN_MENU;
@@ -140,6 +146,8 @@ state solve() {
     // }
     // Display how long displaying took
 
+    shared.redraw_board = true;
+
     while (true) {
         // Take in touch input
         button touchInput = touch->readButtons();
@@ -162,25 +170,66 @@ state try_it() {
     // Draw start of messaging area
     render->textBox();
 
+    // Vars for user entry
+    int num_to_enter = 0;
+    int sel_x = 0;
+    int sel_y = 0;
+
+    render->select(sel_x, sel_y, ILI9341_RED);
+
     while(true) {
         // Take in touch input
         button touchInput = touch->readButtons();
         if (touchInput == button::BOTTOM) {
+            shared.redraw_board = true;
             return state::MAIN_MENU;
         }
 
         // Take in joystick input
         if (joy->joyPressed()) {
             // Cycle number displayed in current square
-            // TODO
+            if (shared.board[sel_x][sel_y] == 0) {
+                num_to_enter += 1;
+                num_to_enter %= 10;
+                render->fillNum(sel_x, sel_y, num_to_enter, ILI9341_BLUE);
+                shared.board_input[sel_x][sel_y] = num_to_enter;
+                delay(150);
+            }
             continue;
         }
         direction joyInput = joy->joyMoved();
-        // joystick pressed -> cycle number in square and continue while loop
-        // joystick moved -> move selected square and run check
-            // Check serially communicates with server to see if it is right
+
+        if (joyInput != direction::NONE) {
+            // Deselect
+            render->select(sel_x, sel_y, ILI9341_WHITE);
+        }
+
+        if (joyInput == direction::UP) {
+            sel_y -= 1;
+            sel_y = constrain(sel_y, 0, 8);
+        } else if (joyInput == direction::DOWN) {
+            sel_y += 1;
+            sel_y = constrain(sel_y, 0, 8);
+        } else if (joyInput == direction::LEFT) {
+            sel_x -= 1;
+            sel_x = constrain(sel_x, 0, 8);
+        } else if (joyInput == direction::RIGHT) {
+            sel_x += 1;
+            sel_x = constrain(sel_x, 0, 8);
+        }
+
+        if (joyInput != direction::NONE) {
+            // Reselect
+            render->select(sel_x, sel_y, ILI9341_RED);
+            num_to_enter = 0;
+            delay(250);
+
+            // Check solvability
+            // TODO
+        }
 
         // If the board is full and it can be solved then display solved
+        // TODO
     }
 }
 
@@ -198,7 +247,7 @@ int main() {
 
     for (int i = 0; i < 9; ++i) {
         for (int j = 0; j < 9; ++j) {
-            shared.board[i][j] = 2;
+            shared.board[i][j] = 0;
         }
     }
 

@@ -22,7 +22,7 @@ bool Backtracking::checkSolvability() {
 bool Backtracking::solveRecur(gridArr board, bool output) {
     // Output to be true if it should output to outputQueue
     // Pass board by value to remember changes for backtracking
-    
+
     // Get a new location
     std::pair<int, int> newCell = newLocation(board);
 
@@ -42,7 +42,7 @@ bool Backtracking::solveRecur(gridArr board, bool output) {
                 change.row = newCell.first;
                 change.col = newCell.second;
                 change.num = numAttempt;
-                outputQueue->push(change);  
+                outputQueue->push(change);
             }
 
             if (solveRecur(board, output)) {
@@ -61,11 +61,11 @@ bool Backtracking::solveRecur(gridArr board, bool output) {
                 change.row = newCell.first;
                 change.col = newCell.second;
                 change.num = 0;
-                outputQueue->push(change);  
+                outputQueue->push(change);
             }
         }
     }
-        
+
     // // All numbers attempted have failed and we must backtrack
     // // Set the cell to blank (0)
     // board[newCell.first][newCell.second] = 0;
@@ -76,7 +76,7 @@ bool Backtracking::solveRecur(gridArr board, bool output) {
     //     change.row = newCell.first;
     //     change.col = newCell.second;
     //     change.num = 0;
-    //     outputQueue->push(change);  
+    //     outputQueue->push(change);
     // }
 
     return false;

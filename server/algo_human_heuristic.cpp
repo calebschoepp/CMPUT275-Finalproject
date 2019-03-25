@@ -28,7 +28,7 @@ void HumanHeuristic::setboard(gridArr board, posInfo &probabilityBoard) {
     // Fill in the known positions into a queue.
     for (int row = 0; row < 9; row++) {
         for (int col = 0; col < 0; col++) {
-            if (boardCopy[row][col] != 0) {
+            if (board[row][col] != 0) {
                 knownPos.row = row;
                 knownPos.col = col;
                 knownPos.num = board[row][col];
@@ -53,6 +53,8 @@ void HumanHeuristic::removeRow(posInfo &probabilityBoard, gridNum &currentSpot, 
             for (int num = 0; num < 9; num++) {
                 if (probabilityBoard[i][currentSpot.col].possible[num] == true) {
                     newSpot.num = num + 1;  // +1 since 0 indexed.
+                    probabilityBoard[row][col].num = num + 1;
+                    break;
                 }
             }
             known.push(newSpot);
@@ -75,7 +77,9 @@ void HumanHeuristic::removeCol(posInfo &probabilityBoard, gridNum &currentSpot, 
             newSpot.col = i;
             for (int num = 0; num < 9; num++) {
                 if (probabilityBoard[currentSpot.row][i].possible[num] == true) {
+                    probabilityBoard[row][col].num = num + 1;
                     newSpot.num = num + 1;  // +1 since 0 indexed.
+                    break;
                 }
             }
             known.push(newSpot);
@@ -117,7 +121,9 @@ void HumanHeuristic::removeSquare(posInfo& probabilityBoard, gridNum& currentSpo
                 newSpot.col = col;
                 for (int num = 0; num < 9; num++) {
                     if (probabilityBoard[row][col].possible[num] == true) {
+                        probabilityBoard[row][col].num = num + 1;
                         newSpot.num = num + 1;
+                        break;
                     }
                 }
                 known.push(newSpot);
@@ -139,8 +145,10 @@ bool HumanHeuristic::getAvailable(posInfo &probabilityBoard, queue<gridNum> &pos
                 checkNum.col = col;
                 for (int num = 0; num < 9; num++) {
                     if (probabilityBoard[row][col].possible[num] == true) {
+                        probabilityBoard[row][col].num = num + 1;
                         checkNum.num = num + 1;
                         possibleNums.push(checkNum);
+                        break;
                     }
                 }
                 return true;
@@ -167,6 +175,20 @@ bool HumanHeuristic::solveHeuristically(gridArr board, bool output) {
         queue<gridNum> possibleNums;
         if (getAvailable(probabilityBoard, possibleNums)) {
             // Calculate the new board to pass in to recursively solve now.
+            gridArr newBoard;
+            for (int row = 0; row < 9; row++) {
+                for (int col = 0; col < 9; col++) {
+                    newBoard[row][col] = probabilityBoard[row][col].num;
+                }
+            }
+            for (int i = 0; i < possibleNums.size(); i++) {
+                gridNum tryNum = possibleNums.front();
+                possibleNums.pop();
+                newBoard[tryNum.row][tryNum.col] = tryNum.num;
+                if (solveHeuristically(newBoard, output)) {
+                    return true;
+                }
+            }
         }
     }
     return false;

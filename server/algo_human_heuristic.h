@@ -19,7 +19,7 @@ struct posInfo {
     int num = 0;
     int possibilities = 9;
     bool possible[9] = {true};
-}
+};
 
 class HumanHeuristic {
 public:
@@ -39,6 +39,7 @@ private:
     void removeRow(posInfo& probabilityBoard, gridNum& currentSpot, bool output);
     void removeCol(posInfo& probabilityBoard, gridNum& currentSpot);
     void removeSquare(posInfo& probabilityBoard, gridNum& currentSpot);
+    bool getAvailable(posInfo &probabilityBoard, queue<gridNum> &possibleNums);
     bool solveHeuristically(gridArr board, bool output);
 
     queue<gridNum> known;

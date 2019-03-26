@@ -23,7 +23,7 @@ bool HumanHeuristic::checkSolvability() {
     return solveHeuristically(board, false);
 }
 
-void HumanHeuristic::setboard(gridArr board, posInfo &probabilityBoard) {
+void HumanHeuristic::setboard(gridArr board, posInfo (&probabilityBoard)[9][9]) {
     gridNum knownPos;
     // Fill in the known positions into a queue.
     for (int row = 0; row < 9; row++) {
@@ -41,7 +41,7 @@ void HumanHeuristic::setboard(gridArr board, posInfo &probabilityBoard) {
     }
 }
 
-void HumanHeuristic::removeRow(posInfo &probabilityBoard, gridNum &currentSpot, bool output) {
+void HumanHeuristic::removeRow(posInfo (&probabilityBoard)[9][9], gridNum &currentSpot, bool output) {
     for (int i = 0; i < 9; i++) {
         probabilityBoard[i][currentSpot.col].possible[currentSpot.num - 1] = false;
         probabilityBoard[i][currentSpot.col].possibilities -= 1;
@@ -66,7 +66,7 @@ void HumanHeuristic::removeRow(posInfo &probabilityBoard, gridNum &currentSpot, 
     }
 }
 
-void HumanHeuristic::removeCol(posInfo &probabilityBoard, gridNum &currentSpot, bool output) {
+void HumanHeuristic::removeCol(posInfo (&probabilityBoard)[9][9], gridNum &currentSpot, bool output) {
     for (int i = 0; i < 9; i++) {
         probabilityBoard[currentSpot.row][i].possible[currentSpot.num - 1] = false;
         probabilityBoard[currentSpot.row][i].possibilities -= 1;
@@ -91,7 +91,7 @@ void HumanHeuristic::removeCol(posInfo &probabilityBoard, gridNum &currentSpot, 
     }
 }
 
-void HumanHeuristic::removeSquare(posInfo& probabilityBoard, gridNum& currentSpot) {
+void HumanHeuristic::removeSquare(posInfo (&probabilityBoard)[9][9], gridNum& currentSpot, bool output) {
     int rowStart;
     int colStart;
     if (currentSpot.row >= 0 && currentSpot.row < 3) {
@@ -136,7 +136,7 @@ void HumanHeuristic::removeSquare(posInfo& probabilityBoard, gridNum& currentSpo
     }
 }
 
-bool HumanHeuristic::getAvailable(posInfo &probabilityBoard, queue<gridNum> &possibleNums) {
+bool HumanHeuristic::getAvailable(posInfo (&probabilityBoard)[9][9], queue<gridNum> &possibleNums) {
     for (int row = 0; row < 9; row++) {
         for (int col = 0; col < 0; col++) {
             if (probabilityBoard[row][col].possibilities != 0) {

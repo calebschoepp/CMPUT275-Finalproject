@@ -35,11 +35,11 @@ private:
     gridArr board;
     queue<gridNum> *outputQueue;
 
-    void setboard(gridArr board, posInfo &probabilityBoard);
-    void removeRow(posInfo& probabilityBoard, gridNum& currentSpot, bool output);
-    void removeCol(posInfo& probabilityBoard, gridNum& currentSpot);
-    void removeSquare(posInfo& probabilityBoard, gridNum& currentSpot);
-    bool getAvailable(posInfo &probabilityBoard, queue<gridNum> &possibleNums);
+    void setboard(gridArr board, posInfo (&probabilityBoard)[9][9]);
+    void removeRow(posInfo (&probabilityBoard)[9][9], gridNum& currentSpot, bool output);
+    void removeCol(posInfo (&probabilityBoard)[9][9], gridNum& currentSpot, bool output);
+    void removeSquare(posInfo (&probabilityBoard)[9][9], gridNum& currentSpot, bool output);
+    bool getAvailable(posInfo (&probabilityBoard)[9][9], queue<gridNum> &possibleNums);
     bool solveHeuristically(gridArr board, bool output);
 
     queue<gridNum> known;

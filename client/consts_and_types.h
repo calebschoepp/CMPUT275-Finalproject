@@ -58,6 +58,12 @@ struct shared_vars {
     int board_input[9][9];
 };
 
+struct point_change {
+    int row;
+    int col;
+    int num;
+};
+
 // collect all pins in a namespace
 namespace clientpins {
 

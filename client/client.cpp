@@ -102,6 +102,8 @@ state settings() {
             ++shared.algorithm;
             // Redraw the button
             render->drawButton(TOP, "ALGO", ILI9341_YELLOW);
+            // Update server algo
+            serial_comm->selectAlgo();
             delay(250);
 
 
@@ -110,6 +112,13 @@ state settings() {
             ++shared._board_type;
             // Redraw the button
             render->drawButton(MIDDLE, "BOARD", ILI9341_CYAN);
+            // Update server board type
+            point_change changes[81];
+            serial_comm->selectBoard(changes);
+
+            // Update board
+            
+
             delay(250);
 
             // Redraw the board
@@ -134,17 +143,32 @@ state solve() {
     // Draw start of messaging area
     render->textBox();
 
-    // Serially communicate with server to start solving
-    // Display time that solving took
+    while (true) {
+        bool communication = true;
+        // Serially communicate with server to start solving
+        int time = serial_comm->solve();
 
-    // Load in series of changes into an array through serial comms
-    // Display time that loading took
+        // Display time that solving took
 
-    // for (elements in array)) {
-    //     // Display new change onto board
-    //     /
-    // }
-    // Display how long displaying took
+
+        int disp_size = serial_comm->solvedSize();
+        point_change change
+
+        for (int change = 0; change < disp_size; ++change) {
+            bool breakout = serial_comm->getChange(change);
+
+            if (breakout) {
+                communication = false;
+                break;
+            }
+
+            // Display the change
+
+        }
+        if (communication) {
+            break;
+        }
+    }
 
     shared.redraw_board = true;
 
@@ -174,6 +198,9 @@ state try_it() {
     int num_to_enter = 0;
     int sel_x = 0;
     int sel_y = 0;
+
+
+    ///////////////// bool yes serial_comm->checkSolvability(point_change change);
 
     render->select(sel_x, sel_y, ILI9341_RED);
 

@@ -89,11 +89,11 @@ void Render::_button(button btn, uint16_t color) {
     // Draw a button with no text
     int x = button_start_x;
     int y;
-    if (btn == button::TOP) {
+    if (btn == TOP) {
         y = border_pad;
-    } else if (btn == button::MIDDLE) {
+    } else if (btn == MIDDLE) {
         y = 2 * border_pad + button_height;
-    } else if (btn == button::BOTTOM) {
+    } else if (btn == BOTTOM) {
         y = 3 * border_pad + 2 * button_height;
     }
     
@@ -145,11 +145,11 @@ void Render::buttonText(button btn, char * msg) {
     // y
     int mod = (button_height - 14) / 2;
     int y;
-    if (btn == button::TOP) {
+    if (btn == TOP) {
         y = border_pad + mod;
-    } else if (btn == button::MIDDLE) {
+    } else if (btn == MIDDLE) {
         y = 2 * border_pad + button_height + mod;
-    } else if (btn == button::BOTTOM) {
+    } else if (btn == BOTTOM) {
         y = 3 * border_pad + 2 * button_height + mod;
     }
 

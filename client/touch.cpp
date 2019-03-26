@@ -8,7 +8,7 @@ button Touch::readButtons() {
     // If the touch is too soft not button registered
     if (touch.z < touchconsts::MINPRESSURE ||
         touch.z > touchconsts::MAXPRESSURE) {
-        return button::NONE;
+        return NONE_B;
     }
 
     // Convert x and y to on screen coords
@@ -23,12 +23,12 @@ button Touch::readButtons() {
 
     if (x > button_start_x) {
         if (y > 0 && y < button_height + border_pad) {
-            return button::BOTTOM;
+            return BOTTOM;
         } else if (y > button_height + border_pad && y < 2 * button_height + 2 * border_pad) {
-            return button::MIDDLE;
+            return MIDDLE;
         } else if (y > 2 * button_height + 2 * border_pad) {
-            return button::TOP;
+            return TOP;
         }
     }
-    return button::NONE;
+    return NONE_B;
 }

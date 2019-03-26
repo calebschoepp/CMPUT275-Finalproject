@@ -10,33 +10,33 @@
 #define XP 4
 
 // Different states for the FSM
-enum class state {MAIN_MENU, SETUP, SOLVE, TRY_IT};
+enum state {MAIN_MENU, SETUP, SOLVE, TRY_IT};
 
 // Different button spots
-enum class button {TOP, MIDDLE, BOTTOM, NONE};
+enum button {TOP, MIDDLE, BOTTOM, NONE_B};
 
 // Different joystick directions
-enum class direction {UP, DOWN, LEFT, RIGHT, NONE};
+enum direction {UP, DOWN, LEFT, RIGHT, NONE_D};
 
 // Algorithm choices
-enum class algo {BACKTRACKING, END_OF_ALGO};
+enum algo {BACKTRACKING, END_OF_ALGO};
 
 // ++ overloading for algo to iterate through it
 inline algo& operator++(algo &a) {
   a = static_cast<algo>(static_cast<int>(a) + 1);
-  if (a == algo::END_OF_ALGO)
-    a = algo::BACKTRACKING;
+  if (a == END_OF_ALGO)
+    a = BACKTRACKING;
   return a;
 }
 
 // Board choices
-enum class board_type {EASY_00, MED_00, HARD_00, HARD_01, HARD_02, HARD_03, END_OF_BOARD};
+enum board_type {EASY_00, MED_00, HARD_00, HARD_01, HARD_02, HARD_03, END_OF_BOARD};
 
 // ++ overloading for board to iterate through it
 inline board_type& operator++(board_type &a) {
   a = static_cast<board_type>(static_cast<int>(a) + 1);
-  if (a == board_type::END_OF_BOARD)
-    a = board_type::EASY_00;
+  if (a == END_OF_BOARD)
+    a = EASY_00;
   return a;
 }
 

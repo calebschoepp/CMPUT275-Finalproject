@@ -16,14 +16,14 @@ direction Joy::joyMoved() {
 
     // x is inverted
     if (xVal - JOY_DEADZONE - JOY_CENTER > 0) {
-        return direction::LEFT;
+        return LEFT;
     } else if((1024 - xVal) - JOY_DEADZONE - JOY_CENTER > 0) {
-        return direction::RIGHT;
+        return RIGHT;
     } else if (yVal - JOY_DEADZONE - JOY_CENTER > 0) {
-        return direction::DOWN;
+        return DOWN;
     } else if ((1024 - yVal) - JOY_DEADZONE - JOY_CENTER > 0) {
-        return direction::UP;
+        return UP;
     }
 
-    return direction::NONE;
+    return direction::NONE_D;
 }

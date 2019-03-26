@@ -65,19 +65,19 @@ state main_menu() {
     }
     // Draw buttons
     render->cleanButtonArea();
-    render->drawButton(button::TOP, "SOLVE", ILI9341_GREEN);
-    render->drawButton(button::MIDDLE, "TRY IT", ILI9341_ORANGE);
-    render->drawButton(button::BOTTOM, "SETUP", ILI9341_PINK);
+    render->drawButton(TOP, "SOLVE", ILI9341_GREEN);
+    render->drawButton(MIDDLE, "TRY IT", ILI9341_ORANGE);
+    render->drawButton(BOTTOM, "SETUP", ILI9341_PINK);
 
     while (true) {
         // Take in touch input
         button touchInput = touch->readButtons();
-        if (touchInput == button::TOP) {
-            return state::SOLVE;
-        } else if (touchInput == button::MIDDLE) {
-            return state::TRY_IT;
-        } else if (touchInput == button::BOTTOM) {
-            return state::SETUP;
+        if (touchInput == TOP) {
+            return SOLVE;
+        } else if (touchInput == MIDDLE) {
+            return TRY_IT;
+        } else if (touchInput == BOTTOM) {
+            return SETUP;
         }
     }
 }
@@ -90,33 +90,33 @@ state settings() {
     }
     // Draw buttons
     render->cleanButtonArea();
-    render->drawButton(button::TOP, "ALGO", ILI9341_YELLOW);
-    render->drawButton(button::MIDDLE, "BOARD", ILI9341_CYAN);
-    render->drawButton(button::BOTTOM, "BACK", ILI9341_RED);
+    render->drawButton(TOP, "ALGO", ILI9341_YELLOW);
+    render->drawButton(MIDDLE, "BOARD", ILI9341_CYAN);
+    render->drawButton(BOTTOM, "BACK", ILI9341_RED);
 
     while (true) {
         // Take in touch input
         button touchInput = touch->readButtons();
-        if (touchInput == button::TOP) {
+        if (touchInput == TOP) {
             // Iterate to next algorithm
             ++shared.algorithm;
             // Redraw the button
-            render->drawButton(button::TOP, "ALGO", ILI9341_YELLOW);
+            render->drawButton(TOP, "ALGO", ILI9341_YELLOW);
             delay(250);
 
 
-        } else if (touchInput == button::MIDDLE) {
+        } else if (touchInput == MIDDLE) {
             // Iterate to the next board
             ++shared._board_type;
             // Redraw the button
-            render->drawButton(button::MIDDLE, "BOARD", ILI9341_CYAN);
+            render->drawButton(MIDDLE, "BOARD", ILI9341_CYAN);
             delay(250);
 
             // Redraw the board
             render->drawBoard();
 
-        } else if (touchInput == button::BOTTOM) {
-            return state::MAIN_MENU;
+        } else if (touchInput == BOTTOM) {
+            return MAIN_MENU;
         }
     }
 }
@@ -129,7 +129,7 @@ state solve() {
     }
     // Draw button
     render->cleanButtonArea();
-    render->drawButton(button::BOTTOM, "BACK", ILI9341_RED);
+    render->drawButton(BOTTOM, "BACK", ILI9341_RED);
 
     // Draw start of messaging area
     render->textBox();
@@ -151,8 +151,8 @@ state solve() {
     while (true) {
         // Take in touch input
         button touchInput = touch->readButtons();
-        if (touchInput == button::BOTTOM) {
-            return state::MAIN_MENU;
+        if (touchInput == BOTTOM) {
+            return MAIN_MENU;
         }
     }
 }
@@ -165,7 +165,7 @@ state try_it() {
     }
     // Draw button
     render->cleanButtonArea();
-    render->drawButton(button::BOTTOM, "BACK", ILI9341_RED);
+    render->drawButton(BOTTOM, "BACK", ILI9341_RED);
 
     // Draw start of messaging area
     render->textBox();
@@ -180,9 +180,9 @@ state try_it() {
     while(true) {
         // Take in touch input
         button touchInput = touch->readButtons();
-        if (touchInput == button::BOTTOM) {
+        if (touchInput == BOTTOM) {
             shared.redraw_board = true;
-            return state::MAIN_MENU;
+            return MAIN_MENU;
         }
 
         // Take in joystick input
@@ -199,26 +199,26 @@ state try_it() {
         }
         direction joyInput = joy->joyMoved();
 
-        if (joyInput != direction::NONE) {
+        if (joyInput != NONE_D) {
             // Deselect
             render->select(sel_x, sel_y, ILI9341_WHITE);
         }
 
-        if (joyInput == direction::UP) {
+        if (joyInput == UP) {
             sel_y -= 1;
             sel_y = constrain(sel_y, 0, 8);
-        } else if (joyInput == direction::DOWN) {
+        } else if (joyInput == DOWN) {
             sel_y += 1;
             sel_y = constrain(sel_y, 0, 8);
-        } else if (joyInput == direction::LEFT) {
+        } else if (joyInput == LEFT) {
             sel_x -= 1;
             sel_x = constrain(sel_x, 0, 8);
-        } else if (joyInput == direction::RIGHT) {
+        } else if (joyInput == RIGHT) {
             sel_x += 1;
             sel_x = constrain(sel_x, 0, 8);
         }
 
-        if (joyInput != direction::NONE) {
+        if (joyInput != NONE_D) {
             // Reselect
             render->select(sel_x, sel_y, ILI9341_RED);
             num_to_enter = shared.board_input[sel_x][sel_y];
@@ -239,12 +239,12 @@ int main() {
     setup();
 
     // Start at the main menu when arduino is turned on or reset
-    state curr_state = state::MAIN_MENU;
+    state curr_state = MAIN_MENU;
 
     // Initial shared states
     shared.redraw_board = true;
-    shared._board_type = board_type::EASY_00;
-    shared.algorithm = algo::BACKTRACKING;
+    shared._board_type = EASY_00;
+    shared.algorithm = BACKTRACKING;
 
     for (int i = 0; i < 9; ++i) {
         for (int j = 0; j < 9; ++j) {
@@ -267,9 +267,9 @@ int main() {
     // render->select(3, 5, ILI9341_RED);
     // render->select(6, 6, ILI9341_RED);
     // render->select(7, 7, ILI9341_RED);
-    // // render->drawButton(button::TOP, ILI9341_GREEN);
-    // // render->drawButton(button::MIDDLE, ILI9341_BLUE);
-    // render->drawButton(button::BOTTOM, ILI9341_RED);
+    // // render->drawButton(TOP, ILI9341_GREEN);
+    // // render->drawButton(MIDDLE, ILI9341_BLUE);
+    // render->drawButton(BOTTOM, ILI9341_RED);
     // render->textBox();
 
 
@@ -279,19 +279,19 @@ int main() {
     while (true) {
         // curr_state will change after each state based on return
         switch (curr_state) {
-            case state::MAIN_MENU:
+            case MAIN_MENU:
                 curr_state = main_menu();
                 break;
 
-            case state::SETUP:
+            case SETUP:
                 curr_state = settings();
                 break;
 
-            case state::SOLVE:
+            case SOLVE:
                 curr_state = solve();
                 break;
 
-            case state::TRY_IT:
+            case TRY_IT:
                 curr_state = try_it();
                 break;
         

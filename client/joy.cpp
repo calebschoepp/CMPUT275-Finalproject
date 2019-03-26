@@ -25,5 +25,5 @@ direction Joy::joyMoved() {
         return UP;
     }
 
-    return direction::NONE_D;
+    return NONE_D;
 }

@@ -53,7 +53,7 @@ void HumanHeuristic::removeRow(posInfo (&probabilityBoard)[9][9], gridNum &curre
             for (int num = 0; num < 9; num++) {
                 if (probabilityBoard[i][currentSpot.col].possible[num] == true) {
                     newSpot.num = num + 1;  // +1 since 0 indexed.
-                    probabilityBoard[row][col].num = num + 1;
+                    probabilityBoard[i][currentSpot.col].num = num + 1;
                     break;
                 }
             }
@@ -77,7 +77,7 @@ void HumanHeuristic::removeCol(posInfo (&probabilityBoard)[9][9], gridNum &curre
             newSpot.col = i;
             for (int num = 0; num < 9; num++) {
                 if (probabilityBoard[currentSpot.row][i].possible[num] == true) {
-                    probabilityBoard[row][col].num = num + 1;
+                    probabilityBoard[currentSpot.row][i].num = num + 1;
                     newSpot.num = num + 1;  // +1 since 0 indexed.
                     break;
                 }
@@ -114,7 +114,7 @@ void HumanHeuristic::removeSquare(posInfo (&probabilityBoard)[9][9], gridNum& cu
         for (int col = colStart; col < colStart + 3; col++) {
             probabilityBoard[row][col].possibilities -= 1;
             probabilityBoard[row][col].possible[currentSpot.num - 1] = false;
-            if (probabilityBoard[row][col] == 1) {
+            if (probabilityBoard[row][col].possibilities == 1) {
                 gridNum newSpot;
                 probabilityBoard[row][col].possibilities -= 1;
                 newSpot.row = row;

@@ -113,7 +113,7 @@ void Render::buttonText(button btn, char * msg) {
     // Special cases for algorithm and board
     if (msg == "ALGO") {
         switch (shared.algorithm) {
-            case algo::BACKTRACKING:
+            case BACKTRACKING:
                 msg = "BACKTRK";
                 break;
         }
@@ -121,22 +121,22 @@ void Render::buttonText(button btn, char * msg) {
 
     if (msg == "BOARD") {
         switch (shared._board_type) {
-            case board_type::EASY_00:
+            case EASY_00:
                 msg = "EASY 00";
                 break;
-            case board_type::MED_00:
+            case MED_00:
                 msg = "MED 00";
                 break;
-            case board_type::HARD_00:
+            case HARD_00:
                 msg = "HARD 00";
                 break;
-            case board_type::HARD_01:
+            case HARD_01:
                 msg = "HARD 01";
                 break;
-            case board_type::HARD_02:
+            case HARD_02:
                 msg = "HARD 02";
                 break;
-            case board_type::HARD_03:
+            case HARD_03:
                 msg = "HARD 03";
                 break;
         }

@@ -4,6 +4,8 @@
 #include <queue>
 #include <array>
 #include <utility>
+#include <stack>
+#include <unordered_set>
 
 using namespace std;
 
@@ -18,7 +20,7 @@ struct gridNum {
 struct posInfo {
     int num = 0;
     int possibilities = 9;
-    bool possible[9] = {true};
+    bool possible[9] = {true, true, true, true, true, true, true, true, true};
 };
 
 class HumanHeuristic {
@@ -39,11 +41,15 @@ private:
     void removeRow(posInfo (&probabilityBoard)[9][9], gridNum& currentSpot, bool output);
     void removeCol(posInfo (&probabilityBoard)[9][9], gridNum& currentSpot, bool output);
     void removeSquare(posInfo (&probabilityBoard)[9][9], gridNum& currentSpot, bool output);
-    bool getAvailable(posInfo (&probabilityBoard)[9][9], queue<gridNum> &possibleNums);
-    bool solveHeuristically(gridArr board, bool output);
+    bool getAvailable(posInfo (&probabilityBoard)[9][9]);
+    bool solveHeuristically(gridArr board, bool output, int curTotal);
 
-    queue<gridNum> known;
+    stack<gridNum> known;
     int totalKnown;
+    stack<gridNum> recursion;
+    int currentRecurseStack;
+    stack<gridNum> currentRecurse;
+    bool memo[9][9];
 };
 
 #endif

@@ -45,9 +45,9 @@ int main() {
         changeQueue.pop();
         board[change.row][change.col] = change.num;
 
-        // cout << change.row << " " << change.col << " " << change.num << endl;
+        cout << change.row << " " << change.col << " " << change.num << endl;
 
-        // printBoard(board);
+        printBoard(board);
     }
     cout << "Done" << endl;
 }

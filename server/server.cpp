@@ -1,15 +1,16 @@
 // includes
-
+#include "serialport.h"
 using namespace std;
 
 int main() {
     // Simple state machine based on initial input from serial
     // Timeouts bring back to main function
-  
+
     // State variables
     // int ...
     // bool ....
-  
+    SerialPort Serial("/dev/ttyACM0");
+    Serial.readline(10);  // Remove any leftover bytes in the buffer.
     /*
     string state;
     state = readInState();
@@ -33,4 +34,5 @@ s: A  // Acknowledge
 c: 1 3 7
 s: A
 */
+    return 0;
 }

@@ -41,9 +41,10 @@ private:
     std::queue<gridNum> *outputQueue;
     gridArr board;
     bool problemMatrix[ROWS][COLS];
-    Node matrix[ROWS][COLS];
+    Node matrix[ROWS + 1][COLS];
 
     void buildProblemMatrix();
+    void buildMatrix();
     void cover(Node *target);
     void uncover(Node *target);
     void search(int k);

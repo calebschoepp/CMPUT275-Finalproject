@@ -10,8 +10,70 @@ DancingLinks::DancingLinks(std::queue<gridNum> *displayQueue,
 
 }
 
-void buildProblemMatrix() {
+void DancingLinks::buildProblemMatrix() {
     
+}
+
+void DancingLinks::buildMatrix() {
+    // Column headers
+    for (int col = 0; col < COLS; ++col) {
+        matrix[0][col].nodeCount = 0;
+        
+    }
+
+
+    // Rest of matrix
+    for (int row = 1; row < ROWS + 1; ++row) {
+        for (int col = 0; col < COLS; ++col) {
+            // Build nodes only where problem matrix specifies
+            if (this->problemMatrix[row - 1][col]) {
+                // Increase node count of column header
+                matrix[0][col].nodeCount += 1;
+
+                // Link node to column header
+                matrix[row][col].col = &matrix[0][col];
+
+                // ids
+                matrix[row][col].rowID = row;
+                matrix[row][col].colID = col;
+
+                // Initalize search row and col vars
+                int srow, scol;
+
+                // Right pointer
+                srow = row;
+                scol = col;
+                do {
+                    scol = getRight(scol);
+                } while (scol != col && !problemMatrix[srow - 1][scol]);
+                matrix[row][col].right = &matrix[srow][scol];
+
+                // Left pointer
+                srow = row;
+                scol = col;
+                do {
+                    scol = getLeft(scol);
+                } while (scol != col && !problemMatrix[srow - 1][scol]);
+                matrix[row][col].left = &matrix[srow][scol];
+
+                // Up pointer
+                srow = row;
+                scol = col;
+                do {
+                    srow = getUp(srow);
+                } while (srow != row && !problemMatrix[srow - 1][scol]);
+                matrix[row][col].up = &matrix[srow][scol];
+
+                // Down pointer
+                srow = row;
+                scol = col;
+                do {
+                    srow = getDown(srow);
+                } while (srow != row && !problemMatrix[srow - 1][scol]);
+                matrix[row][col].down = &matrix[srow][scol];
+            }
+        }
+    }
 }
 
 void DancingLinks::solve() {

@@ -1,5 +1,8 @@
 Citations:
     - https://medium.com/@george.seif94/solving-sudoku-using-a-simple-search-algorithm-3ac44857fee8
+    - https://www.geeksforgeeks.org/exact-cover-problem-algorithm-x-set-2-implementation-dlx/
+    - http://garethrees.org/2007/06/10/zendoku-generation/
+    - Donald Knuth's paper on dancing links
     - circuit-wiring.txt provided by Assignment 2 Part 2
     - Client Makefile provided by eClass
     - lcd_image.h and lcd_image.cpp provided by eClass

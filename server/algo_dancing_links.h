@@ -22,6 +22,7 @@ struct Node {
     Node *right;
     Node *up;
     Node *down;
+    Node *col;
     int rowID;
     int colID;
     int nodeCount;
@@ -40,6 +41,7 @@ private:
     std::queue<gridNum> *outputQueue;
     gridArr board;
     bool problemMatrix[ROWS][COLS];
+    Node matrix[ROWS][COLS];
 
     void buildProblemMatrix();
     void cover(Node *target);

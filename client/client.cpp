@@ -117,7 +117,7 @@ state settings() {
             serial_comm->selectBoard(changes);
 
             // Update board
-            
+
 
             delay(250);
 
@@ -146,12 +146,12 @@ state solve() {
     while (true) {
         bool communication = true;
         // Serially communicate with server to start solving
-        int time = serial_comm->solve();
+        long int time = serial_comm->solve();
 
         // Display time that solving took
 
 
-        int disp_size = serial_comm->solvedSize();
+        long int disp_size = serial_comm->solvedSize();
         point_change change
 
         for (int change = 0; change < disp_size; ++change) {
@@ -321,7 +321,7 @@ int main() {
             case TRY_IT:
                 curr_state = try_it();
                 break;
-        
+
             default:
                 break;
         }

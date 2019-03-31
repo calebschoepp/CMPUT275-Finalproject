@@ -14,10 +14,10 @@ public:
     // some form of communication about solvablity, probably a number of methods
     // solveCurrentBoard(displayed version);
     bool getChange(point_change change);
-    selectAlgo();
-    selectBoard(point_change changes[81]);
-    solve();
-    solvedSize();
+    void selectAlgo();
+    void selectBoard(point_change changes[81]);
+    void solve();
+    int solvedSize();
 
 private:
 

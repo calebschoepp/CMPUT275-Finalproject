@@ -11,7 +11,6 @@ DancingLinks::DancingLinks(std::queue<gridNum> *displayQueue, gridArr boardCopy)
 }
 
 void DancingLinks::buildProblemMatrix() {
-    cout << "Building prob matrix" << endl;
     // Pre-initalize to false
     for (int i = 0; i < ROWS + 1; ++i) {
         for (int j = 0; j < COLS; ++j) {
@@ -49,11 +48,9 @@ void DancingLinks::buildProblemMatrix() {
             }
         }
     }
-    cout << "Done building prob matrix" << endl;
 }
 
 void DancingLinks::buildMatrix() {
-    cout << "Building matrix" << endl;
     // Build the matrix
     for (int row = 0; row < ROWS + 1; ++row) {
         for (int col = 0; col < COLS; ++col) {
@@ -120,7 +117,6 @@ void DancingLinks::buildMatrix() {
 
     matrix[0][0].left = root;
     matrix[0][COLS - 1].right = root;
-    cout << "Done building matrix" << endl;
 }
 
 void DancingLinks::solve() {
@@ -173,6 +169,7 @@ void DancingLinks::uncover(Node *target) {
 }
 
 void DancingLinks::search(int k) {
+    cerr << "search(" << k << ")" << endl;
     // Means we are done
     if (root->right == root) {
         // TODO
@@ -220,12 +217,12 @@ Node * DancingLinks::minColumn() {
 
 void DancingLinks::printSolutions() {
     for (auto itr = solution.begin(); itr != solution.end(); itr++) {
-        cout << (*itr)->rowID << " " << (*itr)->colID;
+        cout << (*itr)->rowID << " ";
     }
     cout << endl;
 }
 
-inline int DancingLinks::getRight(int i) {
+inline int DancingLinks::getLeft(int i) {
     if (i-1 < 0) {
         return COLS - 1;
     } else {
@@ -233,7 +230,7 @@ inline int DancingLinks::getRight(int i) {
     }
 }
 
-inline int DancingLinks::getLeft(int i) {
+inline int DancingLinks::getRight(int i) {
     return (i+1) % COLS;
 }
 

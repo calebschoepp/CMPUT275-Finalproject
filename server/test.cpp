@@ -266,7 +266,7 @@ Node * minColumn() {
 }
 
 void printSolutions() {
-    cout << "Printing solutions" << endl;
+    cerr << "Printing solutions" << endl;
     for (auto itr = solution.begin(); itr != solution.end(); itr++) {
         cout << "( " << (*itr)->rowID << " " << (*itr)->colID << " )";
     }

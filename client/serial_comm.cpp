@@ -38,12 +38,13 @@ void SerialComm::selectAlgo() {
 // selects the algorithm based on the consts and types algo.
 // case 'L'
     Serial.print("L ");
-    switch (algo) {
+    algo algorithm;
+    switch (algorithm) {
         case BACKTRACKING:
-            serial.print("B");
+            Serial.print("B");
 
         default:  // default case is the backtracking case.
-            serial.print("B");
+            Serial.print("B");
     }
     Serial.print("\n");
     Serial.flush();
@@ -69,8 +70,9 @@ void SerialComm::selectBoard(point_change (&changes)[81]) {
 // selects the board based on the consts and types board and gets the resulting
 // board as the point_change array with 81 points for the 9x9 board.
 // case 'B'
-    Serial.Print("B ");
-    switch (board_type) {
+    Serial.print("B ");
+    board_type board;
+    switch (board) {
         case EASY_00:
             Serial.print("E 0");
 
@@ -122,7 +124,7 @@ void SerialComm::selectBoard(point_change (&changes)[81]) {
     }
 }
 
-int SerialComm::solve() {
+long int SerialComm::solve() {
 // call for the server to solve. Return the time it took to solve.
 // case 'S'
     Serial.print("S\n");
@@ -149,6 +151,7 @@ int SerialComm::solvedSize() {
 // case 'I'
     Serial.print("I\n");
     Serial.flush();
+    unsigned long startTime = millis();
     while (millis() - startTime < 1000) {
         if (Serial.available() > 0) {
             char input[MAX_TIME_STR_LEN] = {};

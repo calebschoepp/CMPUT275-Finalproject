@@ -1,15 +1,24 @@
 CC = g++
 CFLAGS = -c -Wall -std=c++11 -g -O2
-OBJS = algo_backtracking.o test_algo_backtracking.o algo_human_heuristic.o
+OBJS = algo_backtracking.o test_algo_backtracking.o algo_human_heuristic.o server.o consts_and_types.o serialport.o
 LFLAGS = -std=c++11
-EXECUTABLES = test_algo_backtracking test_algo_human_heuristic
+EXECUTABLES = test_algo_backtracking test_algo_human_heuristic server
 
 all: $(EXECUTABLES)
+
+server: algo_human_heuristic.o algo_backtracking.o server.o serialport.o
+	$(CC) algo_human_heuristic.o algo_backtracking.o server.o serialport.o $(LFLAGS) -o server
+
+server.o: server.cpp serialport.o
+	$(CC) server.cpp $(CFLAGS) -o server.o
+
+consts_and_types.o: consts_and_types.h
+	$(CC) consts_and_types.h $(CFLAGS) -o consts_and_types.o
 
 test_algo_human_heuristic: algo_human_heuristic.o test_algo_human_heuristic.o
 	$(CC) algo_human_heuristic.o test_algo_human_heuristic.o $(LFLAGS) -o test_algo_human_heuristic
 
-algo_human_heuristic.o: algo_human_heuristic.cpp algo_human_heuristic.h
+algo_human_heuristic.o: algo_human_heuristic.cpp algo_human_heuristic.h consts_and_types.h
 	$(CC) algo_human_heuristic.cpp $(CFLAGS) -o algo_human_heuristic.o
 
 test_algo_human_heuristic.o: test_algo_human_heuristic.cpp algo_human_heuristic.h
@@ -18,11 +27,14 @@ test_algo_human_heuristic.o: test_algo_human_heuristic.cpp algo_human_heuristic.
 test_algo_backtracking: algo_backtracking.o test_algo_backtracking.o
 	$(CC) algo_backtracking.o test_algo_backtracking.o $(LFLAGS) -o test_algo_backtracking
 
-algo_backtracking.o: algo_backtracking.cpp algo_backtracking.h
+algo_backtracking.o: algo_backtracking.cpp algo_backtracking.h consts_and_types.h
 	$(CC) algo_backtracking.cpp $(CFLAGS) -o algo_backtracking.o
 
 test_algo_backtracking.o: test_algo_backtracking.cpp algo_backtracking.h
 	$(CC) test_algo_backtracking.cpp $(CFLAGS) -o test_algo_backtracking.o
+
+serialport.o: serialport.h serialport.cpp
+	$(CC) serialport.cpp $(CFLAGS) -o serialport.o
 
 clean:
 	rm -f $(OBJS) $(EXECUTABLES)

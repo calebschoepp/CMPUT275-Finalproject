@@ -6,17 +6,10 @@
 #include <utility>
 #include <stack>
 #include <unordered_set>
+#include "consts_and_types.h"
 
 using namespace std;
 
-// Constants and definitions
-#define FULL make_pair(-1, -1)
-typedef array<array<int, 9>, 9> gridArr;
-struct gridNum {
-    int row;
-    int col;
-    int num;
-};
 struct posInfo {
     int num = 0;
     int possibilities = 9;

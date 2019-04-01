@@ -4,18 +4,10 @@
 #include <queue>
 #include <array>
 #include <utility>
+#include "consts_and_types.h"
 
 #define COLS 324  // constraints
 #define ROWS 729  // ways to place numbers
-
-// Constants and definitions
-typedef std::array<std::array<int, 9>, 9> gridArr;
-
-struct gridNum {
-    int row;
-    int col;
-    int num;
-};
 
 struct Node {
     Node *left;

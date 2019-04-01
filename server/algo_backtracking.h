@@ -4,15 +4,7 @@
 #include <queue>
 #include <array>
 #include <utility>
-
-// Constants and definitions
-#define FULL std::make_pair(-1, -1)
-typedef std::array<std::array<int, 9>, 9> gridArr;
-struct gridNum {
-    int row;
-    int col;
-    int num;
-};
+#include "consts_and_types.h"
 
 class Backtracking {
 public:

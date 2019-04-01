@@ -281,13 +281,21 @@ int main() {
     shared._board_type = EASY_00;
     shared.algorithm = BACKTRACKING;
 
-    for (int i = 0; i < 9; ++i) {
-        for (int j = 0; j < 9; ++j) {
-            shared.board[i][j] = 0;
-        }
+    // Initialize board
+    point_change changes[81];
+    serial_comm->selectBoard(changes);
+
+    // Update board
+    for (int i = 0; i < 81; ++i) {
+        int row = changes[i].row;
+        int col = changes[i].col;
+        int num = changes[i].num;
+        shared.board[col][row] = num;
     }
 
-    shared.board[1][5] = 3;
+    // Draw the numbers on the board
+    render->drawBoard();
+
 
     // Infinite loop finite state machine that client will always live in
     while (true) {

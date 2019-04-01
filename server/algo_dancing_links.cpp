@@ -2,14 +2,16 @@
 
 #include <iostream>
 
-DancingLinks::DancingLinks(std::queue<gridNum> *displayQueue,
-        gridArr boardCopy) {
+DancingLinks::DancingLinks(std::queue<gridNum> *displayQueue, gridArr boardCopy) {
     board = boardCopy;
     outputQueue = displayQueue;
+    root = new Node();
     buildProblemMatrix();
+    buildMatrix();
 }
 
 void DancingLinks::buildProblemMatrix() {
+    cout << "Building prob matrix" << endl;
     // Pre-initalize to false
     for (int i = 0; i < ROWS + 1; ++i) {
         for (int j = 0; j < COLS; ++j) {
@@ -25,7 +27,7 @@ void DancingLinks::buildProblemMatrix() {
     for (int row = 0; row < 9; ++row) {
         for (int col = 0; col < 9; ++col) {
             for (int num = 1; num < 10; ++num) {
-                int i, j;
+                int j;
                 // Constraint: Number in each cell
                 j = ((row) * 9) + col;
                 problemMatrix[r][j] = true;
@@ -47,9 +49,11 @@ void DancingLinks::buildProblemMatrix() {
             }
         }
     }
+    cout << "Done building prob matrix" << endl;
 }
 
 void DancingLinks::buildMatrix() {
+    cout << "Building matrix" << endl;
     // Build the matrix
     for (int row = 0; row < ROWS + 1; ++row) {
         for (int col = 0; col < COLS; ++col) {
@@ -116,10 +120,12 @@ void DancingLinks::buildMatrix() {
 
     matrix[0][0].left = root;
     matrix[0][COLS - 1].right = root;
+    cout << "Done building matrix" << endl;
 }
 
 void DancingLinks::solve() {
     // Wrapper for public access
+    search(0);
 }
 
 bool DancingLinks::checkSolvability() {
@@ -168,8 +174,9 @@ void DancingLinks::uncover(Node *target) {
 
 void DancingLinks::search(int k) {
     // Means we are done
-    if (root->right = root) {
-        /// DO WHAT I NEED TODO
+    if (root->right == root) {
+        // TODO
+        printSolutions();
         return;
     }
 
@@ -209,6 +216,13 @@ Node * DancingLinks::minColumn() {
         }
     }
     return best;
+}
+
+void DancingLinks::printSolutions() {
+    for (auto itr = solution.begin(); itr != solution.end(); itr++) {
+        cout << (*itr)->rowID << " " << (*itr)->colID;
+    }
+    cout << endl;
 }
 
 inline int DancingLinks::getRight(int i) {

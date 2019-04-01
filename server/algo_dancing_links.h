@@ -5,7 +5,7 @@
 #include <array>
 #include <vector>
 #include <math.h>
-#inlude "consts_and_types.h"
+#include "consts_and_types.h"
 
 #define COLS 324  // constraints
 #define ROWS 729  // ways to place numbers
@@ -36,6 +36,7 @@ private:
     bool problemMatrix[ROWS + 1][COLS];
     Node matrix[ROWS + 1][COLS];
     Node *root;
+    vector<Node*> solution;
 
     void buildProblemMatrix();
     void buildMatrix();
@@ -43,6 +44,7 @@ private:
     void uncover(Node *target);
     void search(int k);
     Node * minColumn();
+    void printSolutions();
     int getRight(int i );
     int getLeft(int i );
     int getUp(int i );

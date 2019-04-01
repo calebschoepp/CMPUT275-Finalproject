@@ -37,29 +37,29 @@ void resetChangeQueue() {
 }
 
 void giveChange(SerialPort& Serial) {
-    while (!ChangeQueue.empty()) {
-        gridNum change = ChangeQueue.front();
-        ChangeQueue.pop();
-        string outputString;
-        outputString = to_string(change.row);
-        outputString += ' ';
-        outputString += to_string(change.col);
-        outputString += ' ';
-        outputString += to_string(change.num);
-        outputString += '\n';
-        cout << "Sending " << outputString << endl;
-        Serial.writeline(outputString);
-        // now wait for ack.
-        string acknowledge;
-        acknowledge = Serial.readline(1000);
-        if (acknowledge[0] == 'A') {
-            cout << "acknowledged" << endl;
-            continue;
-        } else {
-            cout << "Did not acknowledge" << endl;
-            break;
-        }
+    gridNum change = ChangeQueue.front();
+    ChangeQueue.pop();
+    string outputString;
+    outputString = to_string(change.row);
+    outputString += ' ';
+    outputString += to_string(change.col);
+    outputString += ' ';
+    outputString += to_string(change.num);
+    outputString += '\n';
+    cout << "Sending " << outputString;
+    Serial.writeline(outputString);
+    // now wait for ack.
+    string acknowledge;
+    acknowledge = Serial.readline(1000);
+    cout << "acknowledge " << acknowledge;
+    if (acknowledge[0] == 'A') {
+        cout << "acknowledged" << endl;
+    } else {
+        cout << "Did not acknowledge" << endl;
     }
+    string test;
+    test = Serial.readline();
+    cout << "test row col num " << test;
 }
 
 void selectAlgo(string inputString, SerialPort& Serial) {
@@ -85,6 +85,7 @@ void sendBoard(SerialPort& Serial) {
             currentPos += '\n';
             Serial.writeline(currentPos);
             string ack = Serial.readline(1000);
+            cout << "ack is " << ack << endl;
             if (ack[0] == 'A') {
                 continue;
             } else {
@@ -150,10 +151,12 @@ void solveBacktracking(SerialPort& Serial) {
         cout << "error trying to solveBacktracking, retrying" << endl;
         solveBacktracking(Serial);
     }
+    cout << "solved backtracking" << endl;
 }
 
 void startSolve(SerialPort& Serial) {
     if (Algorithm == "backtracking") {
+        cout << "algorithm backtracking" << endl;
         solveBacktracking(Serial);
     } else {
         solveBacktracking(Serial);
@@ -164,11 +167,15 @@ void solveSize(SerialPort& Serial) {
     string size = to_string(ChangeQueue.size());
     size += '\n';
     Serial.writeline(size);
+    cout << "size is " << size;
     string ack = Serial.readline(1000);
+    cout << "ack is " << ack;
     if (ack[0] != 'A') {
         cout << "errror trying to communicate solvedSize, retrying" << endl;
         solveSize(Serial);
     }
+    string test = Serial.readline();
+    cout << "test solve size " << test;
 }
 
 int main() {
@@ -182,7 +189,9 @@ int main() {
     Serial.readline(10);  // Remove any leftover bytes in the buffer.
     while (true) {
         string inputString;
+        cout << "waiting for input" << endl;
         inputString = Serial.readline();  // waits for any input from client.
+        cout << "input is " << inputString << endl;
         if (inputString[0] == 'C') {
             giveChange(Serial);
         } else if (inputString[0] == 'L') {

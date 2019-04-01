@@ -117,9 +117,12 @@ state settings() {
             serial_comm->selectBoard(changes);
 
             // Update board
-
-
-            delay(250);
+            for (int i = 0; i < 81; ++i) {
+                int row = changes[i].row;
+                int col = changes[i].col;
+                int num = changes[i].num;
+                shared.board[col][row] = num;
+            }
 
             // Redraw the board
             render->drawBoard();
@@ -149,20 +152,22 @@ state solve() {
         long int time = serial_comm->solve();
 
         // Display time that solving took
+        // TODO
 
 
         long int disp_size = serial_comm->solvedSize();
-        point_change change
+        point_change change;
 
-        for (int change = 0; change < disp_size; ++change) {
-            bool breakout = serial_comm->getChange(change);
+        for (int i = 0; i < disp_size; ++i) {
+            bool breakout = serial_comm->getChange(&change);
 
-            if (breakout) {
+            if (!breakout) {
                 communication = false;
                 break;
             }
 
             // Display the change
+            render->fillNum(change.col, change.row, change.num, ILI9341_BLUE);
 
         }
         if (communication) {
@@ -209,6 +214,9 @@ state try_it() {
         button touchInput = touch->readButtons();
         if (touchInput == BOTTOM) {
             shared.redraw_board = true;
+
+            // Empty the shared.board_input to 0's
+            // TODO
             return MAIN_MENU;
         }
 
@@ -273,33 +281,20 @@ int main() {
     shared._board_type = EASY_00;
     shared.algorithm = BACKTRACKING;
 
-    for (int i = 0; i < 9; ++i) {
-        for (int j = 0; j < 9; ++j) {
-            shared.board[i][j] = 0;
-        }
+    // Initialize board
+    point_change changes[81];
+    serial_comm->selectBoard(changes);
+
+    // Update board
+    for (int i = 0; i < 81; ++i) {
+        int row = changes[i].row;
+        int col = changes[i].col;
+        int num = changes[i].num;
+        shared.board[col][row] = num;
     }
 
-    shared.board[1][5] = 3;
-
-    /// TEST
-    // render->drawBoard();
-    // render->drawGrid();
-    // render->fillNum(0, 0, 5, ILI9341_BLACK);
-    // render->fillNum(1,1,3, ILI9341_BLACK);
-    // render->fillNum(0, 8, 4, ILI9341_BLACK);
-    // render->fillNum(3, 8, 7, ILI9341_BLACK);
-    // render->fillNum(5, 2, 8, ILI9341_BLACK);
-    // render->fillNum(6, 6, 9, ILI9341_BLACK);
-    // render->select(0, 0, ILI9341_RED);
-    // render->select(3, 5, ILI9341_RED);
-    // render->select(6, 6, ILI9341_RED);
-    // render->select(7, 7, ILI9341_RED);
-    // // render->drawButton(TOP, ILI9341_GREEN);
-    // // render->drawButton(MIDDLE, ILI9341_BLUE);
-    // render->drawButton(BOTTOM, ILI9341_RED);
-    // render->textBox();
-
-
+    // Draw the numbers on the board
+    render->drawBoard();
 
 
     // Infinite loop finite state machine that client will always live in

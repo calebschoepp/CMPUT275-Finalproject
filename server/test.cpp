@@ -229,8 +229,6 @@ void buildMatrix() {
     cout << "Done building matrix" << endl;
 }
 
-
-
 bool checkSolvability() {
     // Wrapper to see if given board is solvable
 }

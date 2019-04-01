@@ -33,6 +33,15 @@ algo_backtracking.o: algo_backtracking.cpp algo_backtracking.h consts_and_types.
 test_algo_backtracking.o: test_algo_backtracking.cpp algo_backtracking.h
 	$(CC) test_algo_backtracking.cpp $(CFLAGS) -o test_algo_backtracking.o
 
+test_algo_dancing_links: algo_dancing_links.o test_algo_dancing_links.o
+	$(CC) algo_dancing_links.o test_algo_dancing_links.o $(LFLAGS) -o test_algo_dancing_links
+
+algo_dancing_links.o: algo_dancing_links.cpp algo_dancing_links.h
+	$(CC) algo_dancing_links.cpp $(CFLAGS) -o algo_dancing_links.o
+
+test_algo_dancing_links.o: test_algo_dancing_links.cpp algo_dancing_links.h
+	$(CC) test_algo_dancing_links.cpp $(CFLAGS) -o test_algo_dancing_links.o
+
 serialport.o: serialport.h serialport.cpp
 	$(CC) serialport.cpp $(CFLAGS) -o serialport.o
 

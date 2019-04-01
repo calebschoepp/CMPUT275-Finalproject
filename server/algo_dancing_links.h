@@ -3,8 +3,9 @@
 
 #include <queue>
 #include <array>
-#include <utility>
-#include "consts_and_types.h"
+#include <vector>
+#include <math.h>
+#inlude "consts_and_types.h"
 
 #define COLS 324  // constraints
 #define ROWS 729  // ways to place numbers
@@ -32,8 +33,9 @@ public:
 private:
     std::queue<gridNum> *outputQueue;
     gridArr board;
-    bool problemMatrix[ROWS][COLS];
+    bool problemMatrix[ROWS + 1][COLS];
     Node matrix[ROWS + 1][COLS];
+    Node *root;
 
     void buildProblemMatrix();
     void buildMatrix();

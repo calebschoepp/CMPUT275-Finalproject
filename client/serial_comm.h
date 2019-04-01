@@ -3,9 +3,6 @@
 
 #include "consts_and_types.h"
 
-// Globally shared state variables
-shared_vars shared;
-
 class SerialComm {
 public:
     // constructor

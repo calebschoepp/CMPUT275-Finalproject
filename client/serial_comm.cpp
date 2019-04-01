@@ -4,6 +4,9 @@
 #define MAX_POINT_STR_LEN 10
 #define MAX_TIME_STR_LEN 25
 
+// Globally shared state variables
+extern shared_vars shared;
+
 SerialComm::SerialComm() {
     Serial.begin(9600);
     Serial.flush();

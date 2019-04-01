@@ -7,28 +7,56 @@ DancingLinks::DancingLinks(std::queue<gridNum> *displayQueue,
     board = boardCopy;
     outputQueue = displayQueue;
     buildProblemMatrix();
-
 }
 
 void DancingLinks::buildProblemMatrix() {
-    
+    // Pre-initalize to false
+    for (int i = 0; i < ROWS + 1; ++i) {
+        for (int j = 0; j < COLS; ++j) {
+            problemMatrix[i][j] = false;
+        }
+    }
+    // Make first row all true to make col headers
+    for (int i = 0; i < COLS; ++i) {
+        problemMatrix[0][i] = true;
+    }
+    // Build the rest of the problem matrix by using know sudoku constraints and options
+    int r = 1;
+    for (int row = 0; row < 9; ++row) {
+        for (int col = 0; col < 9; ++col) {
+            for (int num = 1; num < 10; ++num) {
+                int i, j;
+                // Constraint: Number in each cell
+                j = ((row) * 9) + col;
+                problemMatrix[r][j] = true;
+
+                // Constraint: 1-9 in each row
+                j = ((row) * 9) + num - 1 + 81;
+                problemMatrix[r][j] = true;
+
+                // Constraint: 1-9 in each col
+                j = ((col) * 9) + num - 1 + 162;
+                problemMatrix[r][j] = true;
+
+                // Constraint: 1-9 in each square
+                j = num - 1 + 243 + (9 * floor(col/3)) + (27 * floor(row/3));
+                // j = 9 * (3 * (floor(col/3) + 1)) + (3 * (floor(row/3) + 1)) + num - 1 + 243;
+                problemMatrix[r][j] = true;
+
+                r++;
+            }
+        }
+    }
 }
 
 void DancingLinks::buildMatrix() {
-    // Column headers
-    for (int col = 0; col < COLS; ++col) {
-        matrix[0][col].nodeCount = 0;
-        
-    }
-
-
-    // Rest of matrix
-    for (int row = 1; row < ROWS + 1; ++row) {
+    // Build the matrix
+    for (int row = 0; row < ROWS + 1; ++row) {
         for (int col = 0; col < COLS; ++col) {
             // Build nodes only where problem matrix specifies
-            if (this->problemMatrix[row - 1][col]) {
+            if (this->problemMatrix[row][col]) {
                 // Increase node count of column header
-                matrix[0][col].nodeCount += 1;
+                // matrix[0][col].nodeCount += 1;
 
                 // Link node to column header
                 matrix[row][col].col = &matrix[0][col];
@@ -45,7 +73,7 @@ void DancingLinks::buildMatrix() {
                 scol = col;
                 do {
                     scol = getRight(scol);
-                } while (scol != col && !problemMatrix[srow - 1][scol]);
+                } while (scol != col && !problemMatrix[srow][scol]);
                 matrix[row][col].right = &matrix[srow][scol];
 
                 // Left pointer
@@ -53,7 +81,7 @@ void DancingLinks::buildMatrix() {
                 scol = col;
                 do {
                     scol = getLeft(scol);
-                } while (scol != col && !problemMatrix[srow - 1][scol]);
+                } while (scol != col && !problemMatrix[srow][scol]);
                 matrix[row][col].left = &matrix[srow][scol];
 
                 // Up pointer
@@ -61,7 +89,7 @@ void DancingLinks::buildMatrix() {
                 scol = col;
                 do {
                     srow = getUp(srow);
-                } while (srow != row && !problemMatrix[srow - 1][scol]);
+                } while (srow != row && !problemMatrix[srow][scol]);
                 matrix[row][col].up = &matrix[srow][scol];
 
                 // Down pointer
@@ -69,11 +97,25 @@ void DancingLinks::buildMatrix() {
                 scol = col;
                 do {
                     srow = getDown(srow);
-                } while (srow != row && !problemMatrix[srow - 1][scol]);
+                } while (srow != row && !problemMatrix[srow][scol]);
                 matrix[row][col].down = &matrix[srow][scol];
             }
         }
     }
+
+    // Count ones for header column
+    for (Node *col = &matrix[0][0]; col != &matrix[0][0]; col = col->right) {
+        for (Node *row = col->down; row != col; row = row->down) {
+            col->nodeCount++;
+        }
+    }
+
+    // Link root of matrix to matrix
+    root->right = &matrix[0][0];
+    root->left = &matrix[0][COLS - 1];
+
+    matrix[0][0].left = root;
+    matrix[0][COLS - 1].right = root;
 }
 
 void DancingLinks::solve() {

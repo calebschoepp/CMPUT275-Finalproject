@@ -31,6 +31,13 @@ bool SerialComm::getChange(point_change *change) {
             change->num = atoi(currentString);
             Serial.print("A\n");
             Serial.flush();
+            Serial.print(change->row);
+            Serial.print(" ");
+            Serial.print(change->col);
+            Serial.print(" ");
+            Serial.print(change->num);
+            Serial.print("\n");
+            Serial.flush();
             return true;
         }
     }
@@ -41,8 +48,7 @@ void SerialComm::selectAlgo() {
 // selects the algorithm based on the consts and types algo.
 // case 'L'
     Serial.print("L ");
-    algo algorithm;
-    switch (algorithm) {
+    switch (shared.algorithm) {
         case BACKTRACKING:
             Serial.print("B");
 
@@ -74,8 +80,7 @@ void SerialComm::selectBoard(point_change (&changes)[81]) {
 // board as the point_change array with 81 points for the 9x9 board.
 // case 'B'
     Serial.print("B ");
-    board_type board;
-    switch (board) {
+    switch (shared._board_type) {
         case EASY_00:
             Serial.print("E 0");
 
@@ -163,6 +168,9 @@ int SerialComm::solvedSize() {
             currentString = strtok(input, "\n");
             long int size = atol(currentString);
             Serial.print("A\n");
+            Serial.flush();
+            Serial.print(size);
+            Serial.print("\n");
             Serial.flush();
             return size;
         }

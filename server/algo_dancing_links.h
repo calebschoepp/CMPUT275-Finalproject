@@ -5,7 +5,7 @@
 #include <array>
 #include <vector>
 #include <math.h>
-#inlude "consts_and_types.h"
+#include "consts_and_types.h"
 
 #define COLS 324  // constraints
 #define ROWS 729  // ways to place numbers

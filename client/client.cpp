@@ -161,7 +161,7 @@ state solve() {
         for (int i = 0; i < disp_size; ++i) {
             bool breakout = serial_comm->getChange(&change);
 
-            if (breakout) {
+            if (!breakout) {
                 communication = false;
                 break;
             }

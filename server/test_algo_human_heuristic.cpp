@@ -30,7 +30,7 @@ void printBoard(const gridArr &board) {
 }
 
 int main() {
-    gridArr board = readInSudoku("./sudokus/easy-00.txt");
+    gridArr board = readInSudoku("./sudokus/easy-02.txt");
     queue<gridNum> changeQueue;
 
     HumanHeuristic solver(&changeQueue, board);

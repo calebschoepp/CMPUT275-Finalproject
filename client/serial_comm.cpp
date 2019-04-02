@@ -51,7 +51,10 @@ void SerialComm::selectAlgo() {
     switch (shared.algorithm) {
         case BACKTRACKING:
             Serial.print("B");
-
+            break;
+        case HUMAN_HEURISTIC:
+            Serial.print("H");
+            break;
         default:  // default case is the backtracking case.
             Serial.print("B");
     }
@@ -83,21 +86,31 @@ void SerialComm::selectBoard(point_change (&changes)[81]) {
     switch (shared._board_type) {
         case EASY_00:
             Serial.print("E 0");
-
+            break;
+        case EASY_01:
+            Serial.print("E 1");
+            break;
+        case EASY_02:
+            Serial.print("E 2");
+            break;
         case MED_00:
             Serial.print("M 0");
-
+            break;
+        case MED_01:
+            Serial.print("M 1");
+            break;
         case HARD_00:
             Serial.print("H 0");
-
+            break;
         case HARD_01:
             Serial.print("H 1");
-
+            break;
         case HARD_02:
             Serial.print("H 2");
-
+            break;
         case HARD_03:
             Serial.print("H 3");
+            break;
         default:  // Puts the EASY_00 board as default.
             Serial.print("E 0");
     }
@@ -147,6 +160,9 @@ long int SerialComm::solve() {
             long int time = atol(currentString);
             Serial.print("A\n");
             Serial.flush();
+            Serial.print(time);
+            Serial.print("\n");
+            Serial.flush();
             return time;  // returns if successful.
         }
     }
@@ -169,6 +185,7 @@ int SerialComm::solvedSize() {
             long int size = atol(currentString);
             Serial.print("A\n");
             Serial.flush();
+            // right now size isn't right client side.
             Serial.print(size);
             Serial.print("\n");
             Serial.flush();

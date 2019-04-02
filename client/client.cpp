@@ -158,7 +158,7 @@ state solve() {
         long int disp_size = serial_comm->solvedSize();
         point_change change;
 
-        for (int i = 0; i < disp_size; ++i) {
+        for (long int i = 0; i < disp_size; ++i) {
             bool breakout = serial_comm->getChange(&change);
 
             if (!breakout) {

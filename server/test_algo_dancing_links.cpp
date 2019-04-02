@@ -30,7 +30,7 @@ void printBoard(const gridArr &board) {
 }
 
 int main() {
-    gridArr board = readInSudoku("./sudokus/hard-00.txt");
+    gridArr board = readInSudoku("./sudokus/easy-00.txt");
     queue<gridNum> changeQueue;
 
     DancingLinks solver(&changeQueue, board);

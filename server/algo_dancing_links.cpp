@@ -57,7 +57,7 @@ void DancingLinks::buildMatrix() {
             // Build nodes only where problem matrix specifies
             if (this->problemMatrix[row][col]) {
                 // Increase node count of column header
-                // matrix[0][col].nodeCount += 1;
+                if (row) matrix[0][col].nodeCount += 1;
 
                 // Link node to column header
                 matrix[row][col].col = &matrix[0][col];
@@ -103,14 +103,6 @@ void DancingLinks::buildMatrix() {
             }
         }
     }
-
-    // Count ones for header column
-    for (Node *col = &matrix[0][0]; col != &matrix[0][0]; col = col->right) {
-        for (Node *row = col->down; row != col; row = row->down) {
-            col->nodeCount++;
-        }
-    }
-
     // Link root of matrix to matrix
     root->right = &matrix[0][0];
     root->left = &matrix[0][COLS - 1];
@@ -166,10 +158,13 @@ void DancingLinks::uncover(Node *target) {
             matrix[0][col->colID].nodeCount += 1;
         }
     }
+
+    // Relink the col header
+    colHeader->right->left = colHeader;
+	colHeader->left->right = colHeader;
 }
 
 void DancingLinks::search(int k) {
-    cerr << "search(" << k << ")" << endl;
     // Means we are done
     if (root->right == root) {
         // TODO
@@ -179,6 +174,10 @@ void DancingLinks::search(int k) {
 
     // Find a column to cover
     Node *col = minColumn();
+
+    if (col->nodeCount == 0) {
+        return;
+    }
 
     // Now we cover the column
     cover(col);
@@ -196,11 +195,11 @@ void DancingLinks::search(int k) {
         search(k+1);
 
         // Undo what we did to the global data structure
-        solution.pop_back();
+        
         for (Node *deoverlap = row->left; deoverlap != row; deoverlap = deoverlap->left) {
             uncover(deoverlap);
         }
-
+        solution.pop_back();
     }
     uncover(col);
 }
@@ -219,7 +218,7 @@ void DancingLinks::printSolutions() {
     for (auto itr = solution.begin(); itr != solution.end(); itr++) {
         cout << (*itr)->rowID << " ";
     }
-    cout << endl;
+    cout << endl << endl;
 }
 
 inline int DancingLinks::getLeft(int i) {

@@ -155,6 +155,7 @@ state solve() {
 
 
         long int disp_size = serial_comm->solvedSize();
+        render->tft.print(disp_size);
         point_change change;
 
         for (long int i = 0; i < disp_size; ++i) {

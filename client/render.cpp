@@ -237,7 +237,7 @@ void Render::displayTime(long int time) {
     tft.setCursor(x, y + 15);
     tft.print(time);
     tft.setCursor(x, y + 30);
-    tft.print("ms");
+    tft.print("micro s");
 }
 
 void Render::drawSolvability(bool solvable) {

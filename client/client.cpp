@@ -104,7 +104,6 @@ state settings() {
             render->drawButton(TOP, "ALGO", ILI9341_YELLOW);
             // Update server algo
             serial_comm->selectAlgo();
-            delay(250);
 
 
         } else if (touchInput == MIDDLE) {

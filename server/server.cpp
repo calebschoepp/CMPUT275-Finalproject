@@ -66,9 +66,11 @@ void selectAlgo(string inputString, SerialPort& Serial) {
     char newAlgo = inputString[2];
     switch(newAlgo) {
         case 'B':
+            cout << "backtracking algorithm selected" << endl;
             Algorithm = "backtracking";
             break;
         case 'H':
+            cout << "human heuristic algorithm selected" << endl;
             Algorithm = "humanHeuristic";
             break;
         default:
@@ -81,6 +83,7 @@ void selectAlgo(string inputString, SerialPort& Serial) {
     //     cout << "no valid algorithm selected" << endl;
     //     Algorithm = "backtracking";
     // }
+    cout << "writing ack algo" << endl;
     Serial.writeline("A\n");
 }
 
@@ -122,9 +125,11 @@ void selectBoard(string inputString, SerialPort& Serial) {
         case 'E':
             switch(num) {
                 case 0:
+                    cout << "in easy 0 case" << endl;
                     BoardFileName = "./sudokus/easy-00.txt";
                     break;
                 case 1:
+                    cout << "in easy 1 case" << endl;
                     BoardFileName = "./sudokus/easy-01.txt";
                     break;
                 case 2:
@@ -215,7 +220,7 @@ void solveBacktracking(SerialPort& Serial) {
     auto startTime = high_resolution_clock::now();
     solver.solve();
     auto finalTime = high_resolution_clock::now();
-    auto duration = duration_cast<nanoseconds>(finalTime - startTime);
+    auto duration = duration_cast<milliseconds>(finalTime - startTime);
     string outputString = to_string(duration.count());
     outputString += '\n';
     Serial.writeline(outputString);
@@ -239,7 +244,7 @@ void solveHumanHeuristic(SerialPort& Serial) {
     auto startTime = high_resolution_clock::now();
     solver.solve();
     auto finalTime = high_resolution_clock::now();
-    auto duration = duration_cast<nanoseconds>(finalTime - startTime);
+    auto duration = duration_cast<milliseconds>(finalTime - startTime);
     string outputString = to_string(duration.count());
     outputString += '\n';
     cout << "outputString " << outputString;
@@ -292,7 +297,7 @@ int main() {
     // int ...
     // bool ....
     SerialPort Serial("/dev/ttyACM0");
-    Serial.readline(10);  // Remove any leftover bytes in the buffer.
+    Serial.readline(50);  // Remove any leftover bytes in the buffer.
     while (true) {
         string inputString;
         cout << "waiting for input" << endl;
@@ -304,18 +309,23 @@ int main() {
             case 'C':
                 giveChange(Serial);
                 break;
+
             case 'L':
                 selectAlgo(inputString, Serial);
                 break;
+
             case 'B':
                 selectBoard(inputString, Serial);
                 break;
+
             case 'S':
                 startSolve(Serial);
                 break;
+
             case 'I':
                 solveSize(Serial);
                 break;
+                
             default:
                 cout << "error in communication" << endl;
         }

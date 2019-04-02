@@ -292,11 +292,23 @@ void solveSize(SerialPort& Serial) {
 }
 
 void checkSolvability(SerialPort& Serial) {
-    string change = Serial.readline(1000);
+    gridNum change;
+    string row = Serial.readline(1000);
+    change.row = stoi(row);
+    string col = Serial.readline(1000);
+    change.col = stoi(col);
+    string num = Serial.readline(1000);
+    change.num = stoi(num);
+    Board[change.row][change.col] = change.num;
 
     Backtracking solver(&ChangeQueue, Board);
+    bool check = solver.checkSolvability();
 
-
+    if (check) {
+        Serial.writeline("1");
+    } else {
+        Serial.writeline("0");
+    }
 }
 
 int main() {

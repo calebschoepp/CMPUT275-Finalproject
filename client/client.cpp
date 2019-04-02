@@ -104,7 +104,6 @@ state settings() {
             render->drawButton(TOP, "ALGO", ILI9341_YELLOW);
             // Update server algo
             serial_comm->selectAlgo();
-            delay(250);
 
 
         } else if (touchInput == MIDDLE) {
@@ -209,6 +208,9 @@ state try_it() {
     int num_to_enter = 0;
     int sel_x = 0;
     int sel_y = 0;
+
+    point_change change;
+    bool solvable;
 
 
     ///////////////// bool yes serial_comm->checkSolvability(point_change change);

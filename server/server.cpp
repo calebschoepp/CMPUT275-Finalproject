@@ -300,11 +300,13 @@ void checkSolvability(SerialPort& Serial) {
     change.col = stoi(col);
     string num = Serial.readline(1000);
     change.num = stoi(num);
+    cout << "new row " << change.row << endl;
+    cout << "new col " << change.col << endl;
     cout << "new num " << change.num << endl;
     Board[change.row][change.col] = change.num;
 
     Backtracking solver(&ChangeQueue, Board);
-    bool check = solver.checkSolvability();
+    bool check = solver.checkSolvability(change.row, change.col, change.num);
 
     if (check) {
         Serial.writeline("1");

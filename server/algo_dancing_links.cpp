@@ -10,6 +10,19 @@ DancingLinks::DancingLinks(std::queue<gridNum> *displayQueue, gridArr boardCopy)
     buildMatrix();
 }
 
+void DancingLinks::addRowToSolution(Node *row) {
+    // Add row to solution
+    solution.push_back(row);
+
+    // Cover header
+    cover(row->col);
+
+    // Cover other headers
+    for (Node *right = row->right; right != row; right = right->right) {
+        cover(right->col);
+    }
+}
+
 void DancingLinks::buildProblemMatrix() {
     // Pre-initalize to false
     for (int i = 0; i < ROWS + 1; ++i) {
@@ -66,6 +79,9 @@ void DancingLinks::buildMatrix() {
                 matrix[row][col].rowID = row;
                 matrix[row][col].colID = col;
 
+                // row header
+                rowHeader[row] = &matrix[row][col];
+
                 // Initalize search row and col vars
                 int srow, scol;
 
@@ -111,9 +127,34 @@ void DancingLinks::buildMatrix() {
     matrix[0][COLS - 1].right = root;
 }
 
+void DancingLinks::pushToSolution(Node *row) {
+    // TODO Put it out to output queue
+
+    // Actually add it to the vector
+    solution.push_back(row);
+}
+
+inline int DancingLinks::getRowIndex(int row, int col, int num) {
+    return (81 * row) + (9 * col) + num;
+}
+
+void DancingLinks::addBoardToMatrix() {
+    // TODO Ensure order of indexing is correct
+    for (int row = 0; row < 9; ++row) {
+        for (int col = 0; col < 9; ++col) {
+            if (board[col][row] != 0) {
+                int num = board[col][row];
+                addRowToSolution(rowHeader[getRowIndex(row, col, num)]);
+            }
+        }
+    }
+}
+
 void DancingLinks::solve() {
     // Wrapper for public access
-    search(0);
+
+    addBoardToMatrix();
+    search(solution.size());
 }
 
 bool DancingLinks::checkSolvability() {

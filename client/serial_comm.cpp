@@ -47,19 +47,19 @@ bool SerialComm::getChange(point_change *change) {
 void SerialComm::selectAlgo() {
 // selects the algorithm based on the consts and types algo.
 // case 'L'
-    Serial.print("L ");
     switch (shared.algorithm) {
         case BACKTRACKING:
-            Serial.print("B");
+            Serial.print("L B\n");
+            Serial.flush();
             break;
         case HUMAN_HEURISTIC:
-            Serial.print("H");
+            Serial.print("L H\n");
+            Serial.flush();
             break;
         default:  // default case is the backtracking case.
-            Serial.print("B");
+            Serial.print("L B\n");
+            Serial.flush();
     }
-    Serial.print("\n");
-    Serial.flush();
     bool complete = false;
     unsigned long startTime = millis();
     while (millis() - startTime < 1000) {

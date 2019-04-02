@@ -40,6 +40,10 @@ private:
     vector<Node*> solution;
     Node *rowHeader[ROWS + 1];
 
+    inline int rowFromMatrixRow(Node *row);
+    inline int colFromMatrixRow(Node *row);
+    inline int numFromMatrixRow(Node *row);
+    void popFromSolution();
     void pushToSolution(Node *row);
     void addBoardToMatrix();
     void addRowToSolution(Node *row);

@@ -35,4 +35,20 @@ int main() {
 
     DancingLinks solver(&changeQueue, board);
     solver.solve();
+
+    printBoard(board);
+
+    cout << changeQueue.size() << endl;
+
+    cout << endl;
+
+    while (!changeQueue.empty()) {
+        gridNum change = changeQueue.front();
+        changeQueue.pop();
+        board[change.row][change.col] = change.num;
+
+        cout << change.row << " " << change.col << " " << change.num << endl;
+    }
+    printBoard(board);
+    cout << "Done" << endl;
 }

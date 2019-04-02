@@ -128,10 +128,40 @@ void DancingLinks::buildMatrix() {
 }
 
 void DancingLinks::pushToSolution(Node *row) {
-    // TODO Put it out to output queue
+    // Put it out to output queue
+    gridNum x;
+    x.row = rowFromMatrixRow(row);
+    x.col = colFromMatrixRow(row);
+    x.num = numFromMatrixRow(row);
+    outputQueue->push(x);
 
     // Actually add it to the vector
     solution.push_back(row);
+}
+
+void DancingLinks::popFromSolution() {
+    // Remove solution from vector
+    Node *row = solution.back();
+    solution.pop_back();
+
+    // Put it out to output queue
+    gridNum x;
+    x.row = rowFromMatrixRow(row);
+    x.col = colFromMatrixRow(row);
+    x.num = 0;
+    outputQueue->push(x);
+}
+
+inline int DancingLinks::rowFromMatrixRow(Node *row) {
+    return floor(row->rowID / 81) + 1;
+}
+
+inline int DancingLinks::colFromMatrixRow(Node *row) {
+    return (int)floor(row->rowID / 9) % 9 + 1;
+}
+
+inline int DancingLinks::numFromMatrixRow(Node *row) {
+    return row->rowID % 9;
 }
 
 inline int DancingLinks::getRowIndex(int row, int col, int num) {
@@ -225,7 +255,7 @@ void DancingLinks::search(int k) {
 
     // Now we recursively check each possible row
     for (Node *row = col->down; row != col; row = row->down) {
-        solution.push_back(row);
+        pushToSolution(row);
 
         // Now cover all the solution overlap from the chosen row
         for (Node *overlap = row->right; overlap != row; overlap = overlap->right) {
@@ -240,7 +270,7 @@ void DancingLinks::search(int k) {
         for (Node *deoverlap = row->left; deoverlap != row; deoverlap = deoverlap->left) {
             uncover(deoverlap);
         }
-        solution.pop_back();
+        popFromSolution();
     }
     uncover(col);
 }

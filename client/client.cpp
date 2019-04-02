@@ -223,7 +223,13 @@ state try_it() {
             shared.redraw_board = true;
 
             // Empty the shared.board_input to 0's
-            // TODO
+            for (int x = 0; x < 9; ++x) {
+                for (int y = 0; y < 9; ++y) {
+                    if (shared.board[x][y]) {
+                        shared.board_input[x][y] = 0;
+                    }
+                }
+            }
             return MAIN_MENU;
         }
 
@@ -233,6 +239,11 @@ state try_it() {
             if (shared.board[sel_x][sel_y] == 0) {
                 num_to_enter += 1;
                 num_to_enter %= 10;
+                change.row = sel_y;
+                change.col = sel_x;
+                change.num = num_to_enter;
+                solvable = serial_comm->checkSolvability(change);
+                render->drawSolvability(solvable);
                 render->fillNum(sel_x, sel_y, num_to_enter, ILI9341_BLUE);
                 shared.board_input[sel_x][sel_y] = num_to_enter;
                 delay(150);
@@ -247,35 +258,15 @@ state try_it() {
         }
 
         if (joyInput == UP) {
-            change.row = sel_y;
-            change.col = sel_x;
-            change.num = num_to_enter;
-            solvable = serial_comm->checkSolvability(change);
-            render->drawSolvability(solvable);
             sel_y -= 1;
             sel_y = constrain(sel_y, 0, 8);
         } else if (joyInput == DOWN) {
-            change.row = sel_y;
-            change.col = sel_x;
-            change.num = num_to_enter;
-            solvable = serial_comm->checkSolvability(change);
-            render->drawSolvability(solvable);
             sel_y += 1;
             sel_y = constrain(sel_y, 0, 8);
         } else if (joyInput == LEFT) {
-            change.row = sel_y;
-            change.col = sel_x;
-            change.num = num_to_enter;
-            solvable = serial_comm->checkSolvability(change);
-            render->drawSolvability(solvable);
             sel_x -= 1;
             sel_x = constrain(sel_x, 0, 8);
         } else if (joyInput == RIGHT) {
-            change.row = sel_y;
-            change.col = sel_x;
-            change.num = num_to_enter;
-            solvable = serial_comm->checkSolvability(change);
-            render->drawSolvability(solvable);
             sel_x += 1;
             sel_x = constrain(sel_x, 0, 8);
         }

@@ -84,7 +84,7 @@ void selectAlgo(string inputString, SerialPort& Serial) {
     //     Algorithm = "backtracking";
     // }
     cout << "writing ack algo" << endl;
-    Serial.writeline("A\n");
+    Serial.writeline("A");
 }
 
 void sendBoard(SerialPort& Serial) {
@@ -220,7 +220,7 @@ void solveBacktracking(SerialPort& Serial) {
     auto startTime = high_resolution_clock::now();
     solver.solve();
     auto finalTime = high_resolution_clock::now();
-    auto duration = duration_cast<milliseconds>(finalTime - startTime);
+    auto duration = duration_cast<microseconds>(finalTime - startTime);
     string outputString = to_string(duration.count());
     outputString += '\n';
     Serial.writeline(outputString);
@@ -244,7 +244,7 @@ void solveHumanHeuristic(SerialPort& Serial) {
     auto startTime = high_resolution_clock::now();
     solver.solve();
     auto finalTime = high_resolution_clock::now();
-    auto duration = duration_cast<milliseconds>(finalTime - startTime);
+    auto duration = duration_cast<microseconds>(finalTime - startTime);
     string outputString = to_string(duration.count());
     outputString += '\n';
     cout << "outputString " << outputString;
@@ -325,7 +325,7 @@ int main() {
             case 'I':
                 solveSize(Serial);
                 break;
-                
+
             default:
                 cout << "error in communication" << endl;
         }

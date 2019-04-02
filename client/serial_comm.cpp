@@ -66,7 +66,6 @@ void SerialComm::selectAlgo() {
         if (Serial.available() > 0) {
             char acknowledge;
             acknowledge = Serial.read();
-            Serial.read();  // Gets rid of the newline.
             if (acknowledge == 'A') {
                 complete = true;
                 break;

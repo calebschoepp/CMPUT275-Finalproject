@@ -263,6 +263,7 @@ void solveHumanHeuristic(SerialPort& Serial) {
 
 void startSolve(SerialPort& Serial) {
     CheckNum = 0;
+    Board = readInSudoku();
     if (Algorithm == "backtracking") {
         cout << "algorithm backtracking" << endl;
         solveBacktracking(Serial);

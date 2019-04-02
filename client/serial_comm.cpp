@@ -196,6 +196,14 @@ int SerialComm::solvedSize() {
 }
 
 bool SerialComm::checkSolvability(point_change change) {
+    Serial.print("H\n");
+    Serial.flush();
+    Serial.print(change.row);
+    Serial.print(" ");
+    Serial.print(change.col);
+    Serial.print(" ");
+    Serial.print(change.num);
+    Serial.print("\n");
+    Serial.flush();
     return true;
 }
-

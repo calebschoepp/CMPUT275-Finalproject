@@ -223,3 +223,19 @@ void Render::test() {
     char* s = "SETUP";
     tft.print(s);
 }
+
+void Render::displayTime(long int time) {
+    tft.setTextSize(2);
+    tft.setTextColor(ILI9341_BLACK);
+
+    int x = button_start_x + 5;
+    int y = border_pad + 5;
+
+    tft.setCursor(x, y);
+
+    tft.println("Time:");
+    tft.setCursor(x, y + 15);
+    tft.print(time);
+    tft.setCursor(x, y + 30);
+    tft.print("ms");
+}

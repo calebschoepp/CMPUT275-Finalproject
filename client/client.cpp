@@ -152,13 +152,19 @@ state solve() {
         long int time = serial_comm->solve();
 
         // Display time that solving took
-        // TODO
+        render->displayTime(time);
 
 
         long int disp_size = serial_comm->solvedSize();
         point_change change;
 
         for (long int i = 0; i < disp_size; ++i) {
+            // Take in touch input
+            button touchInput = touch->readButtons();
+            if (touchInput == BOTTOM) {
+                shared.redraw_board = true;
+                return MAIN_MENU;
+            }
             bool breakout = serial_comm->getChange(&change);
 
             if (!breakout) {

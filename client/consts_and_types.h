@@ -19,7 +19,7 @@ enum button {TOP, MIDDLE, BOTTOM, NONE_B};
 enum direction {UP, DOWN, LEFT, RIGHT, NONE_D};
 
 // Algorithm choices
-enum algo {BACKTRACKING, END_OF_ALGO};
+enum algo {BACKTRACKING, HUMAN_HEURISTIC, END_OF_ALGO};
 
 // ++ overloading for algo to iterate through it
 inline algo& operator++(algo &a) {
@@ -30,7 +30,8 @@ inline algo& operator++(algo &a) {
 }
 
 // Board choices
-enum board_type {EASY_00, MED_00, HARD_00, HARD_01, HARD_02, HARD_03, END_OF_BOARD};
+enum board_type {EASY_00, EASY_01, EASY_02, MED_00, MED_01, HARD_00, HARD_01,
+                  HARD_02, HARD_03, END_OF_BOARD};
 
 // ++ overloading for board to iterate through it
 inline board_type& operator++(board_type &a) {

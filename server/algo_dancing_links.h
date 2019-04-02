@@ -31,13 +31,22 @@ public:
     bool checkSolvability();
 
 private:
+    // Member variables
     std::queue<gridNum> *outputQueue;
     gridArr board;
     bool problemMatrix[ROWS + 1][COLS];
     Node matrix[ROWS + 1][COLS];
     Node *root;
     vector<Node*> solution;
+    Node *rowHeader[ROWS + 1];
 
+    inline int rowFromMatrixRow(Node *row);
+    inline int colFromMatrixRow(Node *row);
+    inline int numFromMatrixRow(Node *row);
+    void popFromSolution();
+    void pushToSolution(Node *row);
+    void addBoardToMatrix();
+    void addRowToSolution(Node *row);
     void buildProblemMatrix();
     void buildMatrix();
     void cover(Node *target);
@@ -49,6 +58,7 @@ private:
     int getLeft(int i );
     int getUp(int i );
     int getDown(int i );
+    inline int getRowIndex(int row, int col, int num);
 
 };
 

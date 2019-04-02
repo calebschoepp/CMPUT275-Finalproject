@@ -229,8 +229,6 @@ void buildMatrix() {
     cout << "Done building matrix" << endl;
 }
 
-
-
 bool checkSolvability() {
     // Wrapper to see if given board is solvable
 }
@@ -268,7 +266,7 @@ Node * minColumn() {
 }
 
 void printSolutions() {
-    cout << "Printing solutions" << endl;
+    cerr << "Printing solutions" << endl;
     for (auto itr = solution.begin(); itr != solution.end(); itr++) {
         cout << "( " << (*itr)->rowID << " " << (*itr)->colID << " )";
     }

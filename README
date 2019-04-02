@@ -1,3 +1,5 @@
+you must set stack size to 20 MB with command `ulimit -s 20000`
+
 Citations:
     - https://medium.com/@george.seif94/solving-sudoku-using-a-simple-search-algorithm-3ac44857fee8
     - https://www.geeksforgeeks.org/exact-cover-problem-algorithm-x-set-2-implementation-dlx/

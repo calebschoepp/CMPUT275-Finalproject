@@ -14,7 +14,7 @@ public:
 
     // Primary interface
     void solve();
-    bool checkSolvability();
+    bool checkSolvability(int row, int col, int num);
 
 private:
     gridArr board;

@@ -14,7 +14,7 @@ public:
     void selectAlgo();
     void selectBoard(point_change (&changes)[81]);
     long int solve();
-    int solvedSize();
+    long int solvedSize();
     bool checkSolvability(point_change change);
 
 private:

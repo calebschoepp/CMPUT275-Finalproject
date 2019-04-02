@@ -15,6 +15,8 @@ using namespace std::chrono;
 string Algorithm = "backtracking";
 string BoardFileName = "./sudokus/easy-00.txt";
 queue<gridNum> ChangeQueue;
+gridArr Board;
+long int CheckNum = 0;
 
 gridArr readInSudoku() {
     gridArr board;
@@ -37,6 +39,8 @@ void resetChangeQueue() {
 }
 
 void giveChange(SerialPort& Serial) {
+    cout << "Check Num " << CheckNum << endl;
+    CheckNum++;
     gridNum change = ChangeQueue.front();
     ChangeQueue.pop();
     string outputString;
@@ -210,13 +214,12 @@ void selectBoard(string inputString, SerialPort& Serial) {
     //     BoardFileName = "./sudokus/easy-00.txt";
     // }
     sendBoard(Serial);
+    Board = readInSudoku();
 }
 
 void solveBacktracking(SerialPort& Serial) {
-    gridArr board = readInSudoku();
-    cout << "Board " << BoardFileName << endl;
     resetChangeQueue();
-    Backtracking solver(&ChangeQueue, board);
+    Backtracking solver(&ChangeQueue, Board);
     auto startTime = high_resolution_clock::now();
     solver.solve();
     auto finalTime = high_resolution_clock::now();
@@ -237,10 +240,8 @@ void solveBacktracking(SerialPort& Serial) {
 }
 
 void solveHumanHeuristic(SerialPort& Serial) {
-    gridArr board = readInSudoku();
-    cout << "Board " << BoardFileName << endl;
     resetChangeQueue();
-    HumanHeuristic solver(&ChangeQueue, board);
+    HumanHeuristic solver(&ChangeQueue, Board);
     auto startTime = high_resolution_clock::now();
     solver.solve();
     auto finalTime = high_resolution_clock::now();
@@ -261,6 +262,7 @@ void solveHumanHeuristic(SerialPort& Serial) {
 }
 
 void startSolve(SerialPort& Serial) {
+    CheckNum = 0;
     if (Algorithm == "backtracking") {
         cout << "algorithm backtracking" << endl;
         solveBacktracking(Serial);
@@ -287,6 +289,26 @@ void solveSize(SerialPort& Serial) {
     // right now size isn't right client side.
     string test = Serial.readline();
     cout << "test solve size " << test;
+}
+
+void checkSolvability(SerialPort& Serial) {
+    gridNum change;
+    string row = Serial.readline(1000);
+    change.row = stoi(row);
+    string col = Serial.readline(1000);
+    change.col = stoi(col);
+    string num = Serial.readline(1000);
+    change.num = stoi(num);
+    Board[change.row][change.col] = change.num;
+
+    Backtracking solver(&ChangeQueue, Board);
+    bool check = solver.checkSolvability();
+
+    if (check) {
+        Serial.writeline("1");
+    } else {
+        Serial.writeline("0");
+    }
 }
 
 int main() {
@@ -324,6 +346,10 @@ int main() {
 
             case 'I':
                 solveSize(Serial);
+                break;
+
+            case 'H':
+                checkSolvability(Serial);
                 break;
 
             default:

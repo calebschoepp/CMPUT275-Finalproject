@@ -169,7 +169,7 @@ long int SerialComm::solve() {
     return 0;  // should never return 0.
 }
 
-int SerialComm::solvedSize() {
+long int SerialComm::solvedSize() {
 // pings the server to return the number of points in the output queue.
 // case 'I'
     Serial.print("I\n");
@@ -196,6 +196,28 @@ int SerialComm::solvedSize() {
 }
 
 bool SerialComm::checkSolvability(point_change change) {
-    return true;
+    Serial.print("H\n");
+    Serial.flush();
+    Serial.print(change.row);
+    Serial.print("\n");
+    Serial.flush();
+    Serial.print(change.col);
+    Serial.print("\n");
+    Serial.flush();
+    Serial.print(change.num);
+    Serial.print("\n");
+    Serial.flush();
+    unsigned long startTime = millis();
+    while (millis() - startTime < 1000) {
+        if (Serial.available() > 0) {
+            char check;
+            check = Serial.read();
+            if (check == '1') {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+    return false;
 }
-

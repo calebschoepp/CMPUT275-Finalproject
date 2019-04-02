@@ -116,6 +116,9 @@ void Render::buttonText(button btn, char * msg) {
             case BACKTRACKING:
                 msg = "BACKTRK";
                 break;
+            case HUMAN_HEURISTIC:
+                msg = "HUMAN";
+                break;
         }
     }
 
@@ -124,8 +127,17 @@ void Render::buttonText(button btn, char * msg) {
             case EASY_00:
                 msg = "EASY 00";
                 break;
+            case EASY_01:
+                msg = "EASY 01";
+                break;
+            case EASY_02:
+                msg = "EASY 02";
+                break;
             case MED_00:
                 msg = "MED 00";
+                break;
+            case MED_01:
+                msg = "MED 01";
                 break;
             case HARD_00:
                 msg = "HARD 00";
@@ -210,4 +222,20 @@ void Render::test() {
     tft.setTextSize(2);
     char* s = "SETUP";
     tft.print(s);
+}
+
+void Render::displayTime(long int time) {
+    tft.setTextSize(2);
+    tft.setTextColor(ILI9341_BLACK);
+
+    int x = button_start_x + 5;
+    int y = border_pad + 5;
+
+    tft.setCursor(x, y);
+
+    tft.println("Time:");
+    tft.setCursor(x, y + 15);
+    tft.print(time);
+    tft.setCursor(x, y + 30);
+    tft.print("ms");
 }

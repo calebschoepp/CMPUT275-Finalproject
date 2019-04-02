@@ -22,6 +22,7 @@ public:
     void cleanGridArea();
     void drawButton(button btn, char* msg, uint16_t color);
     void cleanButtonArea();
+    void displayTime(long int time);
 
 private:
     Adafruit_ILI9341 tft = Adafruit_ILI9341(clientpins::tft_cs, clientpins::tft_dc);

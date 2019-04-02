@@ -209,10 +209,11 @@ state try_it() {
     int sel_x = 0;
     int sel_y = 0;
 
-
-    ///////////////// bool yes serial_comm->checkSolvability(point_change change);
+    point_change change;
+    bool solvable = true;
 
     render->select(sel_x, sel_y, ILI9341_RED);
+    render->drawSolvability(solvable);
 
     while(true) {
         // Take in touch input
@@ -245,15 +246,35 @@ state try_it() {
         }
 
         if (joyInput == UP) {
+            change.row = sel_y;
+            change.col = sel_x;
+            change.num = num_to_enter;
+            solvable = serial_comm->checkSolvability(change);
+            render->drawSolvability(solvable);
             sel_y -= 1;
             sel_y = constrain(sel_y, 0, 8);
         } else if (joyInput == DOWN) {
+            change.row = sel_y;
+            change.col = sel_x;
+            change.num = num_to_enter;
+            solvable = serial_comm->checkSolvability(change);
+            render->drawSolvability(solvable);
             sel_y += 1;
             sel_y = constrain(sel_y, 0, 8);
         } else if (joyInput == LEFT) {
+            change.row = sel_y;
+            change.col = sel_x;
+            change.num = num_to_enter;
+            solvable = serial_comm->checkSolvability(change);
+            render->drawSolvability(solvable);
             sel_x -= 1;
             sel_x = constrain(sel_x, 0, 8);
         } else if (joyInput == RIGHT) {
+            change.row = sel_y;
+            change.col = sel_x;
+            change.num = num_to_enter;
+            solvable = serial_comm->checkSolvability(change);
+            render->drawSolvability(solvable);
             sel_x += 1;
             sel_x = constrain(sel_x, 0, 8);
         }

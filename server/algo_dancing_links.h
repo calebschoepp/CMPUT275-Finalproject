@@ -39,6 +39,7 @@ private:
     Node *root;
     vector<Node*> solution;
     Node *rowHeader[ROWS + 1];
+    bool finished;
 
     inline int rowFromMatrixRow(Node *row);
     inline int colFromMatrixRow(Node *row);

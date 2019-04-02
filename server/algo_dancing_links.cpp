@@ -5,6 +5,7 @@
 DancingLinks::DancingLinks(std::queue<gridNum> *displayQueue, gridArr boardCopy) {
     board = boardCopy;
     outputQueue = displayQueue;
+    finished = false;
     root = new Node();
     buildProblemMatrix();
     buildMatrix();
@@ -128,6 +129,7 @@ void DancingLinks::buildMatrix() {
 }
 
 void DancingLinks::pushToSolution(Node *row) {
+    cerr << "Pushed" << endl;
     // Put it out to output queue
     gridNum x;
     x.row = rowFromMatrixRow(row);
@@ -140,6 +142,7 @@ void DancingLinks::pushToSolution(Node *row) {
 }
 
 void DancingLinks::popFromSolution() {
+    cerr << "Popped" << endl;
     // Remove solution from vector
     Node *row = solution.back();
     solution.pop_back();
@@ -153,15 +156,15 @@ void DancingLinks::popFromSolution() {
 }
 
 inline int DancingLinks::rowFromMatrixRow(Node *row) {
-    return floor(row->rowID / 81) + 1;
+    return floor(row->rowID / 81);
 }
 
 inline int DancingLinks::colFromMatrixRow(Node *row) {
-    return (int)floor(row->rowID / 9) % 9 + 1;
+    return ((int)floor(row->rowID / 9) % 9);
 }
 
 inline int DancingLinks::numFromMatrixRow(Node *row) {
-    return row->rowID % 9;
+    return row->rowID % 9 + 1;
 }
 
 inline int DancingLinks::getRowIndex(int row, int col, int num) {
@@ -237,9 +240,12 @@ void DancingLinks::uncover(Node *target) {
 
 void DancingLinks::search(int k) {
     // Means we are done
+    cout << "Search(" << k << ")" << endl;
+    
     if (root->right == root) {
         // TODO
         printSolutions();
+        finished = true;
         return;
     }
 
@@ -264,7 +270,9 @@ void DancingLinks::search(int k) {
 
         // Here is the recursive search
         search(k+1);
-
+        if (finished) {
+                return;
+        }
         // Undo what we did to the global data structure
         
         for (Node *deoverlap = row->left; deoverlap != row; deoverlap = deoverlap->left) {

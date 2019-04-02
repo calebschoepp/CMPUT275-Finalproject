@@ -239,3 +239,15 @@ void Render::displayTime(long int time) {
     tft.setCursor(x, y + 30);
     tft.print("ms");
 }
+
+void Render::drawSolvability(bool solvable) {
+    int x = button_start_x + 10;
+    int y = border_pad + 10;
+    int width = 71;
+
+    if (solvable) {
+        tft.fillRect(x, y, width, width, ILI9341_GREEN);
+    } else {
+        tft.fillRect(x, y, width, width, ILI9341_RED);
+    }
+}

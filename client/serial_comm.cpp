@@ -195,3 +195,8 @@ int SerialComm::solvedSize() {
     solvedSize();  // timeout so it calls the server again.
     return 0;
 }
+
+bool SerialComm::checkSolvability(point_change change) {
+    return true;
+}
+

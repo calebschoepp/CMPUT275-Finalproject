@@ -155,7 +155,6 @@ state solve() {
 
 
         long int disp_size = serial_comm->solvedSize();
-        render->tft.print(disp_size);
         point_change change;
 
         for (long int i = 0; i < disp_size; ++i) {
@@ -225,7 +224,7 @@ state try_it() {
             // Empty the shared.board_input to 0's
             for (int x = 0; x < 9; ++x) {
                 for (int y = 0; y < 9; ++y) {
-                    if (shared.board[x][y]) {
+                    if (shared.board[x][y] == 0) {
                         shared.board_input[x][y] = 0;
                     }
                 }

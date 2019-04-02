@@ -24,9 +24,9 @@ public:
     void cleanButtonArea();
     void displayTime(long int time);
     void drawSolvability(bool solvable);
-    Adafruit_ILI9341 tft = Adafruit_ILI9341(clientpins::tft_cs, clientpins::tft_dc);
 
 private:
+    Adafruit_ILI9341 tft = Adafruit_ILI9341(clientpins::tft_cs, clientpins::tft_dc);
 
 };
 

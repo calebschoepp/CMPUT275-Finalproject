@@ -14,6 +14,7 @@ DancingLinks::DancingLinks(std::queue<gridNum> *displayQueue, gridArr boardCopy)
 void DancingLinks::addRowToSolution(Node *row) {
     // Add row to solution
     solution.push_back(row);
+    // pushToSolution(row);
 
     // Cover header
     cover(row->col);
@@ -129,20 +130,27 @@ void DancingLinks::buildMatrix() {
 }
 
 void DancingLinks::pushToSolution(Node *row) {
-    cerr << "Pushed" << endl;
     // Put it out to output queue
     gridNum x;
     x.row = rowFromMatrixRow(row);
     x.col = colFromMatrixRow(row);
     x.num = numFromMatrixRow(row);
     outputQueue->push(x);
+    // cerr << "Pushed from row " << row->rowID << ": " << x.row << " " << x.col << " " << x.num;
+    // cerr << " and should be row " << getRowIndex(x.row, x.col, x.num);
+
+    // if (getRowIndex(x.row, x.col, x.num) - row->rowID != 0) {
+    //     cerr << " ERROR" << endl;
+    // } else {
+    //     cerr << endl;
+    // }
 
     // Actually add it to the vector
     solution.push_back(row);
 }
 
 void DancingLinks::popFromSolution() {
-    cerr << "Popped" << endl;
+    // cerr << "Popped" << endl;
     // Remove solution from vector
     Node *row = solution.back();
     solution.pop_back();
@@ -156,15 +164,25 @@ void DancingLinks::popFromSolution() {
 }
 
 inline int DancingLinks::rowFromMatrixRow(Node *row) {
-    return floor(row->rowID / 81);
+    // return floor(row->rowID / 81);
+    return (row->rowID - 1) / 81;
 }
 
 inline int DancingLinks::colFromMatrixRow(Node *row) {
-    return ((int)floor(row->rowID / 9) % 9);
+    // return ((int)floor(row->rowID / 9) % 9);
+    return ((row->rowID - 1) / 9) % 9;
 }
 
 inline int DancingLinks::numFromMatrixRow(Node *row) {
-    return row->rowID % 9 + 1;
+    // return row->rowID % 9 + 1;
+
+    int x = (row->rowID - 0) % 9;
+    if (x == 0) {
+        return 9;
+    } else {
+        return x;
+    }
+    // return (row->rowID - 1) % 9;
 }
 
 inline int DancingLinks::getRowIndex(int row, int col, int num) {
@@ -172,7 +190,6 @@ inline int DancingLinks::getRowIndex(int row, int col, int num) {
 }
 
 void DancingLinks::addBoardToMatrix() {
-    // TODO Ensure order of indexing is correct
     for (int row = 0; row < 9; ++row) {
         for (int col = 0; col < 9; ++col) {
             if (board[col][row] != 0) {
@@ -192,6 +209,7 @@ void DancingLinks::solve() {
 
 bool DancingLinks::checkSolvability() {
     // Wrapper to see if given board is solvable
+    return false;
 }
 
 void DancingLinks::cover(Node *target) {
@@ -240,11 +258,10 @@ void DancingLinks::uncover(Node *target) {
 
 void DancingLinks::search(int k) {
     // Means we are done
-    cout << "Search(" << k << ")" << endl;
+    // cout << "Search(" << k << ")" << endl;
     
     if (root->right == root) {
-        // TODO
-        printSolutions();
+        // printSolutions();
         finished = true;
         return;
     }

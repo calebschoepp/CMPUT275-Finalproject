@@ -1,5 +1,5 @@
-#ifndef ALGO__HUMAN_HEURISTIC_H
-#define ALGO__HUMAN_HEURISTIC_H
+#ifndef ALGO_HUMAN_HEURISTIC_H
+#define ALGO_HUMAN_HEURISTIC_H
 
 // currently only works with "easy" sudokus
 #include <queue>
@@ -10,12 +10,6 @@
 #include "consts_and_types.h"
 
 using namespace std;
-
-struct posInfo {
-    int num = 0;
-    int possibilities = 9;
-    bool possible[9] = {true, true, true, true, true, true, true, true, true};
-};
 
 class HumanHeuristic {
 public:

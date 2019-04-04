@@ -59,7 +59,7 @@ void HumanHeuristic::removeRow(posInfo (&probabilityBoard)[9][9], gridNum &curre
                 for (int val = 0; val < 9; val++) {
                     if (probabilityBoard[i][currentSpot.col].possible[val] == true) {
                         // cout << "got true" << endl;
-                        cout << val + 1 << endl;
+                        // cout << val + 1 << endl;
                         newSpot.num = val + 1;  // +1 since 0 indexed.
                         probabilityBoard[i][currentSpot.col].num = val + 1;
                     }

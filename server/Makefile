@@ -1,13 +1,13 @@
 CC = g++
 CFLAGS = -c -Wall -std=c++11 -g -O2
-OBJS = algo_backtracking.o test_algo_backtracking.o algo_human_heuristic.o test_algo_human_heuristic.o server.o consts_and_types.o serialport.o algo_dancing_links.o test_algo_dancing_links.o
+OBJS = algo_backtracking.o test_algo_backtracking.o algo_human_heuristic.o test_algo_human_heuristic.o server.o consts_and_types.o serialport.o algo_dancing_links.o test_algo_dancing_links.o algo_improved_human_heuristic.o test_algo_improved_human_heuristic.o
 LFLAGS = -std=c++11
-EXECUTABLES = test_algo_backtracking test_algo_human_heuristic server test_algo_dancing_links
+EXECUTABLES = test_algo_backtracking test_algo_human_heuristic server test_algo_dancing_links test_algo_improved_human_heuristic
 
 all: $(EXECUTABLES)
 
-server: algo_human_heuristic.o algo_backtracking.o algo_dancing_links.o server.o serialport.o
-	$(CC) algo_human_heuristic.o algo_backtracking.o algo_dancing_links.o server.o serialport.o $(LFLAGS) -o server
+server: algo_human_heuristic.o algo_backtracking.o algo_dancing_links.o algo_improved_human_heuristic.o server.o serialport.o
+	$(CC) algo_human_heuristic.o algo_backtracking.o algo_dancing_links.o algo_improved_human_heuristic.o server.o serialport.o $(LFLAGS) -o server
 
 server.o: server.cpp serialport.o
 	$(CC) server.cpp $(CFLAGS) -o server.o
@@ -23,6 +23,15 @@ algo_human_heuristic.o: algo_human_heuristic.cpp algo_human_heuristic.h consts_a
 
 test_algo_human_heuristic.o: test_algo_human_heuristic.cpp algo_human_heuristic.h
 	$(CC) test_algo_human_heuristic.cpp $(CFLAGS) -o test_algo_human_heuristic.o
+
+test_algo_improved_human_heuristic: algo_improved_human_heuristic.o test_algo_improved_human_heuristic.o
+	$(CC) algo_improved_human_heuristic.o test_algo_improved_human_heuristic.o algo_backtracking.o $(LFLAGS) -o test_algo_improved_human_heuristic
+
+algo_improved_human_heuristic.o: algo_improved_human_heuristic.cpp algo_improved_human_heuristic.h consts_and_types.h algo_backtracking.h
+	$(CC) algo_improved_human_heuristic.cpp $(CFLAGS) -o algo_improved_human_heuristic.o
+
+test_algo_improved_human_heuristic.o: test_algo_improved_human_heuristic.cpp algo_improved_human_heuristic.h
+	$(CC) test_algo_improved_human_heuristic.cpp $(CFLAGS) -o test_algo_improved_human_heuristic.o
 
 test_algo_backtracking: algo_backtracking.o test_algo_backtracking.o
 	$(CC) algo_backtracking.o test_algo_backtracking.o $(LFLAGS) -o test_algo_backtracking

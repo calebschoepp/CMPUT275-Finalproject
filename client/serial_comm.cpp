@@ -60,6 +60,10 @@ void SerialComm::selectAlgo() {
             Serial.print("L D\n");
             Serial.flush();
             break;
+        case IMPROVED_HUMAN_HEURISTIC:
+            Serial.print("L I\n");
+            Serial.flush();
+            break;
         default:  // default case is the backtracking case.
             Serial.print("L B\n");
             Serial.flush();

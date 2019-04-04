@@ -122,6 +122,9 @@ void Render::buttonText(button btn, char * msg) {
             case DANCING_LINKS:
                 msg = "DANCING";
                 break;
+            case IMPROVED_HUMAN_HEURISTIC:
+                msg = "IHH";
+                break;
         }
     }
 

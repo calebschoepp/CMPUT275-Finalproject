@@ -90,12 +90,6 @@ void selectAlgo(string inputString, SerialPort& Serial) {
             cout << "default algorithm selected" << endl;
             Algorithm = "backtracking";
     }
-    // if (inputString[2] == 'B') {
-    //     Algorithm = "backtracking";
-    // } else {
-    //     cout << "no valid algorithm selected" << endl;
-    //     Algorithm = "backtracking";
-    // }
     cout << "writing ack algo" << endl;
     Serial.writeline("A");
 }
@@ -192,36 +186,6 @@ void selectBoard(string inputString, SerialPort& Serial) {
             cout << "default map selected" << endl;
             BoardFileName = "./sudokus/easy-00.txt";
     }
-    // if(inputString[2] == 'E') {
-    //     if (inputString[4] == '0') {
-    //         BoardFileName = "./sudokus/easy-00.txt";
-    //     } else if (inputString[4] == ) {
-    //
-    //     }else {
-    //         BoardFileName = "./sudokus/easy-00.txt";
-    //     }
-    // } else if (inputString[2] == 'M') {
-    //     if (inputString[4] == '0') {
-    //         BoardFileName = "./sudokus/med-00.txt";
-    //     } else {
-    //         BoardFileName = "./sudokus/med-00.txt";
-    //     }
-    // } else if (inputString[2] == 'H') {
-    //     if (inputString[4] == '0') {
-    //         BoardFileName = "./sudokus/hard-00.txt";
-    //     } else if (inputString[4] == '1') {
-    //         BoardFileName = "./sudokus/hard-01.txt";
-    //     } else if (inputString[4] == '2') {
-    //         BoardFileName = "./sudokus/hard-02.txt";
-    //     } else if (inputString[4] == '3') {
-    //         BoardFileName = "./sudokus/hard-03.txt";
-    //     } else {
-    //         BoardFileName = "./sudokus/hard-00.txt";
-    //     }
-    // } else {
-    //     cout << "no valid sudoku board selected" << endl;
-    //     BoardFileName = "./sudokus/easy-00.txt";
-    // }
     sendBoard(Serial);
     Board = readInSudoku();
 }
@@ -418,19 +382,6 @@ int main() {
             default:
                 cout << "error in communication" << endl;
         }
-        // if (inputString[0] == 'C') {
-        //     giveChange(Serial);
-        // } else if (inputString[0] == 'L') {
-        //     selectAlgo(inputString, Serial);
-        // } else if (inputString[0] == 'B') {
-        //     selectBoard(inputString, Serial);
-        // } else if (inputString[0] == 'S') {
-        //     startSolve(Serial);
-        // } else if (inputString[0] == 'I') {
-        //     solveSize(Serial);
-        // } else {
-        //     cout << "error in communication" << endl;
-        // }
     }
     return 0;
 }

@@ -104,6 +104,7 @@ state settings() {
             render->drawButton(TOP, "ALGO", ILI9341_YELLOW);
             // Update server algo
             serial_comm->selectAlgo();
+            delay(150);
 
 
         } else if (touchInput == MIDDLE) {
@@ -294,7 +295,7 @@ int main() {
     state curr_state = MAIN_MENU;
 
     // Initial shared states
-    shared.redraw_board = true;
+    shared.redraw_board = false;
     shared._board_type = EASY_00;
     shared.algorithm = BACKTRACKING;
 

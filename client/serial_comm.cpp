@@ -56,6 +56,10 @@ void SerialComm::selectAlgo() {
             Serial.print("L H\n");
             Serial.flush();
             break;
+        case DANCING_LINKS:
+            Serial.print("L D\n");
+            Serial.flush();
+            break;
         default:  // default case is the backtracking case.
             Serial.print("L B\n");
             Serial.flush();

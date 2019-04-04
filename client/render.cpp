@@ -96,7 +96,7 @@ void Render::_button(button btn, uint16_t color) {
     } else if (btn == BOTTOM) {
         y = 3 * border_pad + 2 * button_height;
     }
-    
+
     // Black containing rect
     tft.drawRect(x, y, button_width, button_height, ILI9341_BLACK);
     tft.drawRect(x + 1, y + 1, button_width - 2, button_height - 2, ILI9341_BLACK);
@@ -118,6 +118,9 @@ void Render::buttonText(button btn, char * msg) {
                 break;
             case HUMAN_HEURISTIC:
                 msg = "HUMAN";
+                break;
+            case DANCING_LINKS:
+                msg = "DANCING";
                 break;
         }
     }
@@ -178,7 +181,7 @@ void Render::buttonText(button btn, char * msg) {
 
     // print
     tft.setCursor(x, y);
-    tft.print(msg);  
+    tft.print(msg);
 }
 
 void Render::textBox() {

@@ -77,6 +77,10 @@ void selectAlgo(string inputString, SerialPort& Serial) {
             cout << "human heuristic algorithm selected" << endl;
             Algorithm = "humanHeuristic";
             break;
+        case 'D':
+            cout << "dancing links algorithm selected" << endl;
+            Algorithm = "dancingLinks";
+            break;
         default:
             cout << "default algorithm selected" << endl;
             Algorithm = "backtracking";
@@ -261,6 +265,27 @@ void solveHumanHeuristic(SerialPort& Serial) {
     cout << "solved humanHeuristic" << endl;
 }
 
+void solveDancingLinks(SerialPort& Serial) {
+    resetChangeQueue();
+    DancingLinks solver(&ChangeQueue, Board);
+    auto startTime = high_resolution_clock::now();
+    solver.solve();
+    auto finalTime = high_resolution_clock::now();
+    auto duration = duration_cast<microseconds>(finalTime - startTime);
+    string outputString = to_string(duration.count());
+    outputString += '\n';
+    cout << "outputString " << outputString;
+    Serial.writeline(outputString);
+    string ack = Serial.readline(1000);
+    cout << "ack is " << ack << endl;
+    if (ack[0] != 'A')  {
+        cout << "error trying to solveDancingLinks, retrying" << endl;
+        solveDancingLinks(Serial);
+    }
+    string test = Serial.readline(1000);
+    cout << "test time " << test;
+    cout << "solved dancingLinks" << endl;
+}
 void startSolve(SerialPort& Serial) {
     CheckNum = 0;
     Board = readInSudoku();
@@ -270,6 +295,9 @@ void startSolve(SerialPort& Serial) {
     } else if (Algorithm == "humanHeuristic") {
         cout << "algorithm humanHeuristic" << endl;
         solveHumanHeuristic(Serial);
+    } else if (Algorithm == "dancingLinks") {
+        cout << "algorithm dancingLinks" << endl;
+        solveDancingLinks(Serial);
     } else {
         cout << "default algo" << endl;
         solveBacktracking(Serial);

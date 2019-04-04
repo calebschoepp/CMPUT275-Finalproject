@@ -1,13 +1,13 @@
 CC = g++
 CFLAGS = -c -Wall -std=c++11 -g -O2
-OBJS = algo_backtracking.o test_algo_backtracking.o algo_human_heuristic.o server.o consts_and_types.o serialport.o algo_dancing_links.o test_algo_dancing_links.o
+OBJS = algo_backtracking.o test_algo_backtracking.o algo_human_heuristic.o test_algo_human_heuristic.o server.o consts_and_types.o serialport.o algo_dancing_links.o test_algo_dancing_links.o
 LFLAGS = -std=c++11
-EXECUTABLES = test_algo_backtracking test_algo_human_heuristic server
+EXECUTABLES = test_algo_backtracking test_algo_human_heuristic server test_algo_dancing_links
 
 all: $(EXECUTABLES)
 
-server: algo_human_heuristic.o algo_backtracking.o server.o serialport.o
-	$(CC) algo_human_heuristic.o algo_backtracking.o server.o serialport.o $(LFLAGS) -o server
+server: algo_human_heuristic.o algo_backtracking.o algo_dancing_links.o server.o serialport.o
+	$(CC) algo_human_heuristic.o algo_backtracking.o algo_dancing_links.o server.o serialport.o $(LFLAGS) -o server
 
 server.o: server.cpp serialport.o
 	$(CC) server.cpp $(CFLAGS) -o server.o

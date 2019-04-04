@@ -19,7 +19,7 @@ enum button {TOP, MIDDLE, BOTTOM, NONE_B};
 enum direction {UP, DOWN, LEFT, RIGHT, NONE_D};
 
 // Algorithm choices
-enum algo {BACKTRACKING, HUMAN_HEURISTIC, END_OF_ALGO};
+enum algo {BACKTRACKING, HUMAN_HEURISTIC, DANCING_LINKS, END_OF_ALGO};
 
 // ++ overloading for algo to iterate through it
 inline algo& operator++(algo &a) {

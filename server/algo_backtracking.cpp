@@ -17,17 +17,11 @@ void Backtracking::solve() {
 bool Backtracking::checkSolvability(int row, int col, int num) {
     // Wrapper on solveRecur() to see if given board is solvable
     board[row][col] = 0;
-    if (!cellPermitted(board, row, col, num)) {
+    if (!cellPermitted(board, row, col, num) && num != 0) {
         cout << "returned false" << endl;
         return false;
     }
-    // for (int x = 0; x < 9; ++x) {
-    //     for (int y = 0; y < 9; ++y) {
-    //         if (!cellPermitted(board, x, y, num)) {
-    //             return false;
-    //         }
-    //     }
-    // }
+    
     cout << "solving recursively" << endl;
     board[row][col] = num;
     return solveRecur(board, false);

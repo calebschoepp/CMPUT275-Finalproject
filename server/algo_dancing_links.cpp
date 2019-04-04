@@ -132,18 +132,18 @@ void DancingLinks::buildMatrix() {
 void DancingLinks::pushToSolution(Node *row) {
     // Put it out to output queue
     gridNum x;
-    x.row = rowFromMatrixRow(row);
-    x.col = colFromMatrixRow(row);
+    x.col = rowFromMatrixRow(row);
+    x.row = colFromMatrixRow(row);
     x.num = numFromMatrixRow(row);
     outputQueue->push(x);
-    // cerr << "Pushed from row " << row->rowID << ": " << x.row << " " << x.col << " " << x.num;
-    // cerr << " and should be row " << getRowIndex(x.row, x.col, x.num);
+    cerr << "Pushed from row " << row->rowID << ": " << x.row << " " << x.col << " " << x.num;
+    cerr << " and should be row " << getRowIndex(x.row, x.col, x.num);
 
-    // if (getRowIndex(x.row, x.col, x.num) - row->rowID != 0) {
-    //     cerr << " ERROR" << endl;
-    // } else {
-    //     cerr << endl;
-    // }
+    if (getRowIndex(x.row, x.col, x.num) - row->rowID != 0) {
+        cerr << " ERROR" << endl;
+    } else {
+        cerr << endl;
+    }
 
     // Actually add it to the vector
     solution.push_back(row);
@@ -157,8 +157,8 @@ void DancingLinks::popFromSolution() {
 
     // Put it out to output queue
     gridNum x;
-    x.row = rowFromMatrixRow(row);
-    x.col = colFromMatrixRow(row);
+    x.col = rowFromMatrixRow(row);
+    x.row = colFromMatrixRow(row);
     x.num = 0;
     outputQueue->push(x);
 }

@@ -3,4 +3,5 @@
 build-mega2560/
 test_algo_backtracking
 test_algo_human_heuristic
+server
 test_algo_dancing_links

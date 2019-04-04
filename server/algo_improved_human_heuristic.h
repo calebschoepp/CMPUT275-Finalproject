@@ -34,9 +34,6 @@ private:
     stack<gridNum> known;
     int totalKnown;
 
-    stack<gridNum> recursionStack;
-    stack<gridNum> reset;
-
 };
 
 #endif

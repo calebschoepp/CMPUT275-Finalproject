@@ -14,4 +14,9 @@ struct gridNum {
     int num;
 };
 
+struct posInfo {
+    int num = 0;
+    int possibilities = 9;
+    bool possible[9] = {true, true, true, true, true, true, true, true, true};
+};
 #endif

@@ -26,6 +26,8 @@ void Backtracking::solve() {
 
 bool Backtracking::checkSolvability(int row, int col, int num) {
     // Wrapper on solveRecur() to see if given board is solvable
+    // Takes in row col and num of what is to be checked
+    // and first checks if that is solvable before calling recursive part
     board[row][col] = 0;
     for (int x = 0; x < 9; x++) {
         for (int y = 0; y < 9; y++) {
@@ -96,24 +98,11 @@ bool Backtracking::solveRecur(gridArr board, bool output) {
             }
         }
     }
-
-    // // All numbers attempted have failed and we must backtrack
-    // // Set the cell to blank (0)
-    // board[newCell.first][newCell.second] = 0;
-
-    // // Output to queue for serial comms
-    // if (output) {
-    //     gridNum change;
-    //     change.row = newCell.first;
-    //     change.col = newCell.second;
-    //     change.num = 0;
-    //     outputQueue->push(change);
-    // }
-
     return false;
 }
 
 bool Backtracking::cellPermitted(const gridArr &board, int row, int col, int num) {
+    // Test if a particular number is permitted in a particular cell given a board state
     if (!rowPermitted(board, row, num)) {
         return false;
     } else if (!colPermitted(board, col, num)) {
@@ -149,6 +138,7 @@ bool Backtracking::squarePermitted(const gridArr &board, int realRow, int realCo
     int row_start = -1;
     int col_start = -1;
 
+    // Determine the bounds to check within for the particular square
     if (realRow >= 0 && realRow < 3) {
         row_start = 0;
     } else if (realRow >= 3 && realRow < 6) {
@@ -165,10 +155,12 @@ bool Backtracking::squarePermitted(const gridArr &board, int realRow, int realCo
         col_start = 6;
     }
 
+    // Error checking
     if (row_start == -1 || col_start == -1) {
         return false;
     }
 
+    // Now actually check for duplicates in the square
     for (int row = row_start; row < row_start + 3; ++row) {
         for (int col = col_start; col < col_start + 3; ++col) {
             if (board[row][col] == num) {

@@ -70,7 +70,6 @@ private:
     int getUp(int i );
     int getDown(int i );
     inline int getRowIndex(int row, int col, int num);
-
 };
 
 #endif

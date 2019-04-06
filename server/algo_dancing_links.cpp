@@ -13,6 +13,7 @@ Arduino Sudoku Solver
 #include <iostream>
 
 DancingLinks::DancingLinks(std::queue<gridNum> *displayQueue, gridArr boardCopy) {
+    // Constructor
     board = boardCopy;
     outputQueue = displayQueue;
     finished = false;
@@ -146,6 +147,8 @@ void DancingLinks::pushToSolution(Node *row) {
     x.row = colFromMatrixRow(row);
     x.num = numFromMatrixRow(row);
     outputQueue->push(x);
+
+    // Error checking and sanity output
     cerr << "Pushed from row " << row->rowID << ": " << x.row << " " << x.col << " " << x.num;
     cerr << " and should be row " << getRowIndex(x.row, x.col, x.num);
 
@@ -174,32 +177,32 @@ void DancingLinks::popFromSolution() {
 }
 
 inline int DancingLinks::rowFromMatrixRow(Node *row) {
-    // return floor(row->rowID / 81);
+    // Sudoku row number from matrix row number
     return (row->rowID - 1) / 81;
 }
 
 inline int DancingLinks::colFromMatrixRow(Node *row) {
-    // return ((int)floor(row->rowID / 9) % 9);
+    // Sudoku col number from matrix row number
     return ((row->rowID - 1) / 9) % 9;
 }
 
 inline int DancingLinks::numFromMatrixRow(Node *row) {
-    // return row->rowID % 9 + 1;
-
+    // Sudoku number from matrix row number
     int x = (row->rowID - 0) % 9;
     if (x == 0) {
         return 9;
     } else {
         return x;
     }
-    // return (row->rowID - 1) % 9;
 }
 
 inline int DancingLinks::getRowIndex(int row, int col, int num) {
+    // Return matrix row number based on sudoku col, row, num
     return (81 * row) + (9 * col) + num;
 }
 
 void DancingLinks::addBoardToMatrix() {
+    // For every non zero number in sudoku add the appropriate row to solution set
     for (int row = 0; row < 9; ++row) {
         for (int col = 0; col < 9; ++col) {
             if (board[col][row] != 0) {
@@ -219,6 +222,7 @@ void DancingLinks::solve() {
 
 bool DancingLinks::checkSolvability() {
     // Wrapper to see if given board is solvable
+    // Unimplemented, but left to keep interface as default
     return false;
 }
 
@@ -267,8 +271,7 @@ void DancingLinks::uncover(Node *target) {
 }
 
 void DancingLinks::search(int k) {
-    // Means we are done
-    // cout << "Search(" << k << ")" << endl;
+    // Primary part of algo
 
     if (root->right == root) {
         // printSolutions();
@@ -311,6 +314,7 @@ void DancingLinks::search(int k) {
 }
 
 Node * DancingLinks::minColumn() {
+    // Find the column with the least number of nodes, S heuristic
     Node *best = root->right;
     for (Node *test = root->right->right; test != root; test = test->right) {
         if (test->nodeCount < best->nodeCount) {
@@ -321,6 +325,7 @@ Node * DancingLinks::minColumn() {
 }
 
 void DancingLinks::printSolutions() {
+    // Print all the row numbers of the solution set
     for (auto itr = solution.begin(); itr != solution.end(); itr++) {
         cout << (*itr)->rowID << " ";
     }
@@ -328,6 +333,7 @@ void DancingLinks::printSolutions() {
 }
 
 inline int DancingLinks::getLeft(int i) {
+    // Next left node
     if (i-1 < 0) {
         return COLS - 1;
     } else {
@@ -336,10 +342,12 @@ inline int DancingLinks::getLeft(int i) {
 }
 
 inline int DancingLinks::getRight(int i) {
+    // Next right node
     return (i+1) % COLS;
 }
 
 inline int DancingLinks::getUp(int i) {
+    // Next up node
     if (i-1 < 0) {
         return ROWS - 1;
     } else {
@@ -348,5 +356,6 @@ inline int DancingLinks::getUp(int i) {
 }
 
 inline int DancingLinks::getDown(int i) {
+    // Next down node
     return (i+1) % ROWS;
 }

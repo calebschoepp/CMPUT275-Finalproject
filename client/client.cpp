@@ -80,13 +80,13 @@ state main_menu() {
     render->drawButton(BOTTOM, "SETUP", ILI9341_PINK);
 
     while (true) {
-        // Take in touch input
-        button touchInput = touch->readButtons();
-        if (touchInput == TOP) {
+        // Take in touch input and go to proper state
+        button touch_input = touch->readButtons();
+        if (touch_input == TOP) {
             return SOLVE;
-        } else if (touchInput == MIDDLE) {
+        } else if (touch_input == MIDDLE) {
             return TRY_IT;
-        } else if (touchInput == BOTTOM) {
+        } else if (touch_input == BOTTOM) {
             return SETUP;
         }
     }
@@ -106,8 +106,8 @@ state settings() {
 
     while (true) {
         // Take in touch input
-        button touchInput = touch->readButtons();
-        if (touchInput == TOP) {
+        button touch_input = touch->readButtons();
+        if (touch_input == TOP) {
             // Iterate to next algorithm
             ++shared.algorithm;
             // Redraw the button
@@ -117,7 +117,7 @@ state settings() {
             delay(150);
 
 
-        } else if (touchInput == MIDDLE) {
+        } else if (touch_input == MIDDLE) {
             // Iterate to the next board
             ++shared._board_type;
             // Redraw the button
@@ -137,7 +137,7 @@ state settings() {
             // Redraw the board
             render->drawBoard();
 
-        } else if (touchInput == BOTTOM) {
+        } else if (touch_input == BOTTOM) {
             return MAIN_MENU;
         }
     }
@@ -168,10 +168,11 @@ state solve() {
         long int disp_size = serial_comm->solvedSize();
         point_change change;
 
+        // For the number of changes update the change and display it
         for (long int i = 0; i < disp_size; ++i) {
             // Take in touch input
-            button touchInput = touch->readButtons();
-            if (touchInput == BOTTOM) {
+            button touch_input = touch->readButtons();
+            if (touch_input == BOTTOM) {
                 shared.redraw_board = true;
                 return MAIN_MENU;
             }
@@ -195,8 +196,8 @@ state solve() {
 
     while (true) {
         // Take in touch input
-        button touchInput = touch->readButtons();
-        if (touchInput == BOTTOM) {
+        button touch_input = touch->readButtons();
+        if (touch_input == BOTTOM) {
             return MAIN_MENU;
         }
     }
@@ -223,13 +224,14 @@ state try_it() {
     point_change change;
     bool solvable = true;
 
+    // Initial graphics
     render->select(sel_x, sel_y, ILI9341_RED);
     render->drawSolvability(solvable);
 
     while(true) {
         // Take in touch input
-        button touchInput = touch->readButtons();
-        if (touchInput == BOTTOM) {
+        button touch_input = touch->readButtons();
+        if (touch_input == BOTTOM) {
             shared.redraw_board = true;
 
             // Empty the shared.board_input to 0's
@@ -260,40 +262,34 @@ state try_it() {
             }
             continue;
         }
-        direction joyInput = joy->joyMoved();
+        direction joy_input = joy->joyMoved();
 
-        if (joyInput != NONE_D) {
+        if (joy_input != NONE_D) {
             // Deselect
             render->select(sel_x, sel_y, ILI9341_WHITE);
         }
 
-        if (joyInput == UP) {
+        // Deal with movement of joystick
+        if (joy_input == UP) {
             sel_y -= 1;
             sel_y = constrain(sel_y, 0, 8);
-        } else if (joyInput == DOWN) {
+        } else if (joy_input == DOWN) {
             sel_y += 1;
             sel_y = constrain(sel_y, 0, 8);
-        } else if (joyInput == LEFT) {
+        } else if (joy_input == LEFT) {
             sel_x -= 1;
             sel_x = constrain(sel_x, 0, 8);
-        } else if (joyInput == RIGHT) {
+        } else if (joy_input == RIGHT) {
             sel_x += 1;
             sel_x = constrain(sel_x, 0, 8);
         }
 
-        if (joyInput != NONE_D) {
+        if (joy_input != NONE_D) {
             // Reselect
             render->select(sel_x, sel_y, ILI9341_RED);
             num_to_enter = shared.board_input[sel_x][sel_y];
             delay(250);
-
-            // Check solvability
-            // TODO
-            // serial_comm->
         }
-
-        // If the board is full and it can be solved then display solved
-        // TODO
     }
 }
 

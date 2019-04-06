@@ -13,6 +13,8 @@ Arduino Sudoku Solver
 #include "consts_and_types.h"
 
 bool Joy::joyPressed() {
+    // Read in digital data from pin
+    // LOW is a joystick press
     int read = digitalRead(JOY_SEL);
     if (read == HIGH) {
         return false;
@@ -21,6 +23,7 @@ bool Joy::joyPressed() {
 }
 
 direction Joy::joyMoved() {
+    // Read in the analog values
     int xVal = analogRead(JOY_HORIZ);
     int yVal = analogRead(JOY_VERT);
 

@@ -25,6 +25,7 @@ using namespace renderconsts;
 extern shared_vars shared;
 
 Render::Render() {
+    // initialize
     tft.begin();
     tft.setRotation(3);
     tft.fillScreen(ILI9341_WHITE);
@@ -36,6 +37,8 @@ void Render::reset() {
 }
 
 void Render::drawGrid() {
+    // Draw the grid that holds the sudoku
+
     // Horizontal lines
     int x = border_pad;
     int y = border_pad;
@@ -64,6 +67,7 @@ void Render::drawGrid() {
 }
 
 void Render::clearNum(int gridx, int gridy) {
+    // Remove any number from an x, y square
     // 5 is experimental
     int x = border_pad + 5 + cell_width * gridx;
     int y = border_pad + 5 + cell_height * gridy;
@@ -71,6 +75,7 @@ void Render::clearNum(int gridx, int gridy) {
 }
 
 void Render::fillNum(int gridx, int gridy, int num, uint16_t color) {
+    // Put a num of a specific color in a specific square
     // Grid is 0 indexed
     if (num == 0) {
         clearNum(gridx, gridy);
@@ -117,6 +122,8 @@ void Render::_button(button btn, uint16_t color) {
 }
 
 void Render::buttonText(button btn, char * msg) {
+    // Fill a button with text, max of 7 chars
+
     tft.setTextSize(2);
     tft.setTextColor(ILI9341_BLACK);
 
@@ -198,6 +205,8 @@ void Render::buttonText(button btn, char * msg) {
 }
 
 void Render::textBox() {
+    // Draw a box to write text in, takes spot of top two buttons
+
     int x = button_start_x;
     int y = border_pad;
     int height = 2 * button_height + border_pad;
@@ -208,6 +217,7 @@ void Render::textBox() {
 }
 
 void Render::drawBoard() {
+    // Compose other functions to draw grid and fill with numbers
     cleanGridArea();
     drawGrid();
     for (int x = 0; x < 9; ++x) {
@@ -219,19 +229,23 @@ void Render::drawBoard() {
 }
 
 void Render::cleanGridArea() {
+    // Make whole grid area clean
     tft.fillRect(0, 0, 222, 240, ILI9341_WHITE);
 }
 
 void Render::drawButton(button btn, char* msg, uint16_t color) {
+    // Composition of the drawing of a button and the writing of the text
     _button(btn, color);
     buttonText(btn, msg);
 }
 
 void Render::cleanButtonArea() {
+    // Make the whole button area white
     tft.fillRect(222, 0, 320, 240, ILI9341_WHITE);
 }
 
 void Render::test() {
+    // For testing purposes
     int x = button_start_x;
     int y = border_pad + 2 + cell_height;
     tft.setCursor(x, y);
@@ -241,6 +255,7 @@ void Render::test() {
 }
 
 void Render::displayTime(long int time) {
+    // Print the solving time of algo, meant to be done in a text box
     tft.setTextSize(2);
     tft.setTextColor(ILI9341_BLACK);
 
@@ -257,6 +272,8 @@ void Render::displayTime(long int time) {
 }
 
 void Render::drawSolvability(bool solvable) {
+    // Draw a green or red square based on solvability
+    // Meant to be done in a text box
     int x = button_start_x + 10;
     int y = border_pad + 10;
     int width = 71;

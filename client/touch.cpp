@@ -31,6 +31,7 @@ button Touch::readButtons() {
                        displayconsts::tft_height - 1,
                        0);
 
+    // From on screen coords determine what was pressed
     if (x > button_start_x) {
         if (y > 0 && y < button_height + border_pad) {
             return BOTTOM;

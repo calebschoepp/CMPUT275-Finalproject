@@ -1,3 +1,12 @@
+/*
+Names: Robert Mah, Caleb Schoepp
+ID: 1532565, 1534577
+CCID: rjmah1, cwschoep
+CMPUT 275 , Winter 2019
+
+Arduino Sudoku Solver
+*/
+
 #ifndef CONSTS_AND_TYPES_H
 #define CONSTS_AND_TYPES_H
 

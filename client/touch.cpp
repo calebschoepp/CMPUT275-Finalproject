@@ -1,3 +1,13 @@
+/*
+Names: Robert Mah, Caleb Schoepp
+ID: 1532565, 1534577
+CCID: rjmah1, cwschoep
+CMPUT 275 , Winter 2019
+
+Arduino Sudoku Solver
+*/
+
+
 #include "touch.h"
 
 using namespace renderconsts;
@@ -19,7 +29,7 @@ button Touch::readButtons() {
     int16_t y = map(touch.x, touchconsts::TS_MINX,
                        touchconsts::TS_MAXX,
                        displayconsts::tft_height - 1,
-                       0);     
+                       0);
 
     if (x > button_start_x) {
         if (y > 0 && y < button_height + border_pad) {

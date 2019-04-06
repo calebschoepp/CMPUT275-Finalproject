@@ -1,4 +1,14 @@
 /*
+Names: Robert Mah, Caleb Schoepp
+ID: 1532565, 1534577
+CCID: rjmah1, cwschoep
+CMPUT 275 , Winter 2019
+
+Arduino Sudoku Solver
+*/
+
+
+/*
 
 All of the primary functionality will live in here
 For now I think we should just keep this as a script and not a class

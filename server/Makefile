@@ -1,3 +1,9 @@
+# Names: Robert Mah, Caleb Schoepp
+# ID: 1532565, 1534577
+# CCID: rjmah1, cwschoep
+# CMPUT 275 , Winter 2019
+# Arduino Sudoku Solver
+
 CC = g++
 CFLAGS = -c -Wall -std=c++11 -g -O2
 OBJS = algo_backtracking.o test_algo_backtracking.o algo_human_heuristic.o test_algo_human_heuristic.o server.o consts_and_types.o serialport.o algo_dancing_links.o test_algo_dancing_links.o algo_improved_human_heuristic.o test_algo_improved_human_heuristic.o

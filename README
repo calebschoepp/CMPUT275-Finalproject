@@ -1,4 +1,16 @@
+---------------------------------------------------
+Names: Robert Mah, Caleb Schoepp
+ID: 1532565, 1534577
+CCID: rjmah1, cwschoep
+CMPUT 275 , Winter 2019
+
+Arduino Sudoku Solver
+---------------------------------------------------
+
 you must set stack size to 20 MB with command `ulimit -s 20000`
+
+many debug statements are left in the code for easy tracing of the program in
+the terminal.
 
 Citations:
     - https://medium.com/@george.seif94/solving-sudoku-using-a-simple-search-algorithm-3ac44857fee8
@@ -8,3 +20,5 @@ Citations:
     - circuit-wiring.txt provided by Assignment 2 Part 2
     - Client Makefile provided by eClass
     - lcd_image.h and lcd_image.cpp provided by eClass
+    - serialport.cpp and serialport.h are taken from the eClass assignment 2 files.
+    - Client consts_and_types.h is adapted from the eClass assignment 2 file.

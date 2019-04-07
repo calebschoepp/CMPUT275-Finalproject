@@ -30,11 +30,10 @@ gridArr Board;  // the current board. Global since any changes need to be saved.
 
 gridArr readInSudoku() {
     /*
-    Description: Reads in the sudoku board from the sudoku at the file path
-        specified by the global variable BoardFileName.
-    Returns:
-        gridArr board: the complete board read in from the file.
+    Reads in the sudoku board from the sudoku at the file path specified by
+    the global variable BoardFileName.
     */
+
     gridArr board;
     fstream file;
     file.open(BoardFileName);
@@ -50,8 +49,7 @@ gridArr readInSudoku() {
 
 void resetChangeQueue() {
     /*
-    Description: Pops the ChangeQueue until it's empty. Useful for when a new
-    solve is called so the changeQueue is previous solve isn't in the queue.
+    Pops the ChangeQueue until it's empty.
     */
     while (!ChangeQueue.empty()) {
         ChangeQueue.pop();
@@ -60,13 +58,9 @@ void resetChangeQueue() {
 
 void outputChange(SerialPort& Serial, gridNum& change) {
     /*
-    Description: Sends the current change through serial communication to the
-        client.
-    Arguments:
-        SerialPort& Serial: the instance of the serialPort class to communicate
-            with the arduino.
-        gridNum& change: the current change to be sent.
+    Sends the current change through serial communication to the client.
     */
+
     string outputString;
     outputString = to_string(change.row);
     outputString += ' ';
@@ -80,15 +74,15 @@ void outputChange(SerialPort& Serial, gridNum& change) {
 
 void giveChange(SerialPort& Serial) {
     /*
-    Description: gives a change to the client and waits for an acknowledgemnt.
-        If no acknowledgement is sent then an error message is displayed on the
-        terminal and returns back to the main running of the server.
+    Gives a change to the client and waits for an acknowledgemnt. If no
+    acknowledgement is sent then an error message is displayed on the terminal
+    and returns back to the main running of the server.
     */
+
     gridNum change = ChangeQueue.front();
     ChangeQueue.pop();
     string outputString;
     outputChange(Serial, change);
-    // now wait for ack.
     string acknowledge;
     acknowledge = Serial.readline(1000);
     cout << "acknowledge " << acknowledge;
@@ -97,40 +91,53 @@ void giveChange(SerialPort& Serial) {
     } else {
         cout << "Error: Did not acknowledge" << endl;
     }
+
+    // debug code.
     string test;
     test = Serial.readline();
     cout << "test row col num " << test;
 }
 
 void selectAlgo(string inputString, SerialPort& Serial) {
+    /*
+    Selects which algorithm is currently selected based on the input string.
+    */
+
     char newAlgo = inputString[2];
     switch(newAlgo) {
         case 'B':
             cout << "backtracking algorithm selected" << endl;
             Algorithm = "backtracking";
             break;
+
         case 'H':
             cout << "human heuristic algorithm selected" << endl;
             Algorithm = "humanHeuristic";
             break;
+
         case 'D':
             cout << "dancing links algorithm selected" << endl;
             Algorithm = "dancingLinks";
             break;
+
         case 'I':
             cout << "improved human heuristic algorithm selected" << endl;
             Algorithm = "improvedHumanHeuristic";
             break;
+
         default:
             cout << "default algorithm selected" << endl;
             Algorithm = "backtracking";
     }
-    cout << "writing ack algo" << endl;
-    Serial.writeline("A");
+    Serial.writeline("A");  // acknowledge.
 }
 
 void sendBoard(SerialPort& Serial) {
-    gridArr board = readInSudoku();
+    /*
+    Sends the current board to the client.
+    */
+
+    gridArr board = readInSudoku();  // resets changes from the try it.
     bool error = false;
     for (int row = 0; row < 9; row++) {
         for (int col = 0; col < 9; col++) {
@@ -158,8 +165,14 @@ void sendBoard(SerialPort& Serial) {
 }
 
 void selectBoard(string inputString, SerialPort& Serial) {
+    /*
+    Determines which board has been selected from the client. Defaults to the 00
+    case if number not properly read, and easy-00 if no difficulty selected.
+    */
+
     char difficulty = inputString[2];
-    int num = inputString[4] - '0';
+    // Max of 10 sudokus per difficulty.
+    int num = inputString[4] - '0';  // converts ascii to int.
     switch(difficulty) {
         case 'E':
             switch(num) {
@@ -167,13 +180,17 @@ void selectBoard(string inputString, SerialPort& Serial) {
                     cout << "in easy 0 case" << endl;
                     BoardFileName = "./sudokus/easy-00.txt";
                     break;
+
                 case 1:
+
                     cout << "in easy 1 case" << endl;
                     BoardFileName = "./sudokus/easy-01.txt";
                     break;
+
                 case 2:
                     BoardFileName = "./sudokus/easy-02.txt";
                     break;
+
                 default:
                     cout << "default easy map selected" << endl;
                     BoardFileName = "./sudokus/easy-00.txt";
@@ -185,9 +202,11 @@ void selectBoard(string inputString, SerialPort& Serial) {
                 case 0:
                     BoardFileName = "./sudokus/med-00.txt";
                     break;
+
                 case 1:
                     BoardFileName = "./sudokus/med-01.txt";
                     break;
+
                 default:
                     cout << "default medium map selected" << endl;
                     BoardFileName = "./sudokus/med-00.txt";
@@ -199,15 +218,19 @@ void selectBoard(string inputString, SerialPort& Serial) {
                 case 0:
                     BoardFileName = "./sudokus/hard-00.txt";
                     break;
+
                 case 1:
                     BoardFileName = "./sudokus/hard-01.txt";
                     break;
+
                 case 2:
                     BoardFileName = "./sudokus/hard-02.txt";
                     break;
+
                 case 3:
                     BoardFileName = "./sudokus/hard-03.txt";
                     break;
+
                 default:
                     cout << "default hard map selected" << endl;
                     BoardFileName = "./sudokus/hard-00.txt";
@@ -219,11 +242,34 @@ void selectBoard(string inputString, SerialPort& Serial) {
             BoardFileName = "./sudokus/easy-00.txt";
     }
     sendBoard(Serial);
-    Board = readInSudoku();
+    Board = readInSudoku();  // sets the new board for the server.
+}
+
+void outputTime(SerialPort& Serial, string outputString) {
+    /*
+    Sends the time it took to solve an algorithm.
+    */
+
+    Serial.writeline(outputString);
+    cout << "outputString " << outputString;
+    string ack = Serial.readline(1000);
+    cout << "ack is " << ack;
+    if (ack[0] != 'A')  {
+        cout << "Error: did not receive acknowledgement." << endl;
+    }
+
+    // Show the communication was successful.
+    string test = Serial.readline();
+    cout << "test time " << test;
 }
 
 void solveBacktracking(SerialPort& Serial) {
-    resetChangeQueue();
+    /*
+    Solve the current Sudoku board using backtracking and send the time it took
+    to solve to the client.
+    */
+
+    resetChangeQueue();  // empty the ChangeQueue.
     Backtracking solver(&ChangeQueue, Board);
     auto startTime = high_resolution_clock::now();
     solver.solve();
@@ -231,20 +277,16 @@ void solveBacktracking(SerialPort& Serial) {
     auto duration = duration_cast<microseconds>(finalTime - startTime);
     string outputString = to_string(duration.count());
     outputString += '\n';
-    Serial.writeline(outputString);
-    cout << "outputString " << outputString;
-    string ack = Serial.readline(1000);
-    cout << "ack is " << ack;
-    if (ack[0] != 'A')  {
-        cout << "error trying to solve Backtracking, retrying" << endl;
-        solveBacktracking(Serial);
-    }
-    string test = Serial.readline(1000);
-    cout << "test time " << test;
+    outputTime(Serial, outputString);
     cout << "solved backtracking" << endl;
 }
 
 void solveHumanHeuristic(SerialPort& Serial) {
+    /*
+    Solve the current Sudoku board using human heuristic and send the time it
+    took to solve to the client.
+    */
+
     resetChangeQueue();
     HumanHeuristic solver(&ChangeQueue, Board);
     auto startTime = high_resolution_clock::now();
@@ -253,20 +295,16 @@ void solveHumanHeuristic(SerialPort& Serial) {
     auto duration = duration_cast<microseconds>(finalTime - startTime);
     string outputString = to_string(duration.count());
     outputString += '\n';
-    cout << "outputString " << outputString;
-    Serial.writeline(outputString);
-    string ack = Serial.readline(1000);
-    cout << "ack is " << ack << endl;
-    if (ack[0] != 'A')  {
-        cout << "error trying to solve HumanHeuristic, retrying" << endl;
-        solveHumanHeuristic(Serial);
-    }
-    string test = Serial.readline(1000);
-    cout << "test time " << test;
+    outputTime(Serial, outputString);
     cout << "solved humanHeuristic" << endl;
 }
 
 void solveDancingLinks(SerialPort& Serial) {
+    /*
+    Solve the current Sudoku board using dancing links and send the time it
+    took to solve to the client.
+    */
+
     resetChangeQueue();
     DancingLinks solver(&ChangeQueue, Board);
     auto startTime = high_resolution_clock::now();
@@ -275,20 +313,16 @@ void solveDancingLinks(SerialPort& Serial) {
     auto duration = duration_cast<microseconds>(finalTime - startTime);
     string outputString = to_string(duration.count());
     outputString += '\n';
-    cout << "outputString " << outputString;
-    Serial.writeline(outputString);
-    string ack = Serial.readline(1000);
-    cout << "ack is " << ack << endl;
-    if (ack[0] != 'A')  {
-        cout << "error trying to solve DancingLinks, retrying" << endl;
-        solveDancingLinks(Serial);
-    }
-    string test = Serial.readline(1000);
-    cout << "test time " << test;
+    outputTime(Serial, outputString);
     cout << "solved dancingLinks" << endl;
 }
 
 void solveImprovedHumanHeuristic(SerialPort& Serial) {
+    /*
+    Solve the current Sudoku board using the improved human heuristic algorithm
+    and send the time it took to solve to the client.
+    */
+
     resetChangeQueue();
     ImprovedHumanHeuristic solver(&ChangeQueue, Board);
     auto startTime = high_resolution_clock::now();
@@ -297,20 +331,16 @@ void solveImprovedHumanHeuristic(SerialPort& Serial) {
     auto duration = duration_cast<microseconds>(finalTime - startTime);
     string outputString = to_string(duration.count());
     outputString += '\n';
-    cout << "outputString " << outputString;
-    Serial.writeline(outputString);
-    string ack = Serial.readline(1000);
-    cout << "ack is " << ack << endl;
-    if (ack[0] != 'A')  {
-        cout << "error trying to solve ImprovedHumanHeuristic, retrying" << endl;
-        solveImprovedHumanHeuristic(Serial);
-    }
-    string test = Serial.readline(1000);
-    cout << "test time " << test;
+    outputTime(Serial, outputString);
     cout << "solved improvedHumanHeuristic" << endl;
 }
 
 void startSolve(SerialPort& Serial) {
+    /*
+    Find which algorithm is currently selected and call for that algorithm to be
+    solved.
+    */
+
     Board = readInSudoku();
     if (Algorithm == "backtracking") {
         cout << "algorithm backtracking" << endl;
@@ -331,6 +361,11 @@ void startSolve(SerialPort& Serial) {
 }
 
 void solveSize(SerialPort& Serial) {
+    /*
+    Send the size of the changeQueue for the client to know how much data to
+    read in.
+    */
+
     string size = to_string(ChangeQueue.size());
     size += '\n';
     Serial.writeline(size);
@@ -338,15 +373,18 @@ void solveSize(SerialPort& Serial) {
     string ack = Serial.readline(1000);
     cout << "ack is " << ack;
     if (ack[0] != 'A') {
-        cout << "errror trying to communicate solvedSize, retrying" << endl;
-        solveSize(Serial);
+        cout << "Error: communicate solvedSize failed" << endl;
     }
-    // right now size isn't right client side.
+
+    // Ensure sent message was correct.
     string test = Serial.readline();
     cout << "test solve size " << test;
 }
 
-void checkSolvability(SerialPort& Serial) {
+gridNum updateBoard(SerialPort& Serial) {
+    /*
+    Read in a change from the client and add it to the Board.
+    */
     gridNum change;
     string row = Serial.readline(1000);
     change.row = stoi(row);
@@ -358,9 +396,18 @@ void checkSolvability(SerialPort& Serial) {
     cout << "new col " << change.col << endl;
     cout << "new num " << change.num << endl;
     Board[change.row][change.col] = change.num;
+    return change;
+}
 
+void checkSolvability(SerialPort& Serial) {
+    /*
+    Checks to see if the current board state with the new change is solvable.
+    Only uses backtracking for simplicity.
+    */
+    gridNum change = updateBoard(Serial);
     Backtracking solver(&ChangeQueue, Board);
-    bool check = solver.checkSolvability(change.row, change.col, change.num);
+    bool check = solver.checkSolvability(change.row, change.col,
+            change.num);
 
     if (check) {
         Serial.writeline("1");
@@ -370,6 +417,10 @@ void checkSolvability(SerialPort& Serial) {
 }
 
 int main() {
+    /*
+    Handles initial setup for the server and then selects the action to take
+    based on the input from the client.
+    */
     SerialPort Serial("/dev/ttyACM0");
     Serial.readline(50);  // Remove any leftover bytes in the buffer.
     while (true) {

@@ -23,26 +23,29 @@ using namespace std;
 class ImprovedHumanHeuristic {
 public:
     // Constructors and deconstructors
-    ImprovedHumanHeuristic(queue<gridNum> *displayQueue,
-        gridArr boardCopy);
+    ImprovedHumanHeuristic(queue<gridNum> *displayQueue, gridArr boardCopy);
 
     // Primary interface
     void solve();
     bool checkSolvability();
 
 private:
+    // Variables.
     gridArr board;
     queue<gridNum> *outputQueue;
-
-    void setboard(gridArr board, posInfo (&probabilityBoard)[9][9]);
-    void removeRow(posInfo (&probabilityBoard)[9][9], gridNum& currentSpot, bool output);
-    void removeCol(posInfo (&probabilityBoard)[9][9], gridNum& currentSpot, bool output);
-    void removeSquare(posInfo (&probabilityBoard)[9][9], gridNum& currentSpot, bool output);
-    bool solveHeuristically(gridArr board, bool output, int curTotal);
-
     stack<gridNum> known;
     int totalKnown;
 
+    // Private methods.
+    void removeAll(posInfo (&probBoard)[9][9], gridNum &curSpot, bool output);
+    void setboard(gridArr board, posInfo (&probBoard)[9][9]);
+    void checkPos(posInfo (&probBoard)[9][9], int row, int col, bool output);
+    void removeRow(posInfo (&probBoard)[9][9], gridNum& curSpot, bool output);
+    void removeCol(posInfo (&probBoard)[9][9], gridNum& curSpot, bool output);
+    void removeSquare(posInfo (&probBoard)[9][9], gridNum& curSpot,
+            bool output);
+    gridArr setNewBoard(posInfo (&probBoard)[9][9]);
+    bool solveHeuristically(gridArr board, bool output);
 };
 
 #endif

@@ -9,13 +9,11 @@ Arduino Sudoku Solver
 
 
 /*
-
 This will be the class that will wrap all of the rendering functionality.
 Anytime client needs to draw to screen it calls this class. Perhaps one public
-render method correlating to each state in client.cpp. There will be one large state
-containing struct it will have access to with things like current selected board, algo,
-etc.
-
+render method correlating to each state in client.cpp. There will be one large
+state containing struct it will have access to with things like current selected
+board, algo,etc.
 */
 
 #include "render.h"
@@ -46,8 +44,10 @@ void Render::drawGrid() {
         tft.drawLine(x, y, x + (num_cells * cell_width), y, ILI9341_BLACK);
         // Thicker lines every 3
         if (i % 3 == 0) {
-            tft.drawLine(x, y + 1, x + (num_cells * cell_width), y + 1, ILI9341_BLACK);
-            tft.drawLine(x, y - 1, x + (num_cells * cell_width), y - 1, ILI9341_BLACK);
+            tft.drawLine(x, y + 1, x + (num_cells * cell_width), y + 1,
+                    ILI9341_BLACK);
+            tft.drawLine(x, y - 1, x + (num_cells * cell_width), y - 1,
+                    ILI9341_BLACK);
         }
         y += cell_height;
     }
@@ -59,8 +59,10 @@ void Render::drawGrid() {
         tft.drawLine(x, y, x, y + (num_cells * cell_height), ILI9341_BLACK);
         // Thicker lines every 3
         if (i % 3 == 0) {
-            tft.drawLine(x - 1, y, x - 1, y + (num_cells * cell_height), ILI9341_BLACK);
-            tft.drawLine(x + 1, y, x + 1, y + (num_cells * cell_height), ILI9341_BLACK);
+            tft.drawLine(x - 1, y, x - 1, y + (num_cells * cell_height),
+                    ILI9341_BLACK);
+            tft.drawLine(x + 1, y, x + 1, y + (num_cells * cell_height),
+                    ILI9341_BLACK);
         }
         x += cell_width;
     }
@@ -114,8 +116,10 @@ void Render::_button(button btn, uint16_t color) {
 
     // Black containing rect
     tft.drawRect(x, y, button_width, button_height, ILI9341_BLACK);
-    tft.drawRect(x + 1, y + 1, button_width - 2, button_height - 2, ILI9341_BLACK);
-    tft.drawRect(x + 2, y + 2, button_width - 4, button_height - 4, ILI9341_BLACK);
+    tft.drawRect(x + 1, y + 1, button_width - 2, button_height - 2,
+            ILI9341_BLACK);
+    tft.drawRect(x + 2, y + 2, button_width - 4, button_height - 4,
+            ILI9341_BLACK);
 
     // Fill in color
     tft.fillRect(x + 3, y + 3, button_width - 6, button_height - 6, color);

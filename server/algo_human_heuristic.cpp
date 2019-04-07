@@ -15,26 +15,41 @@ using namespace std;
 
 HumanHeuristic::HumanHeuristic(queue<gridNum> *displayQueue,
         gridArr boardCopy) {
-    // Constructor, copy board over
+    // Constructor, copy board over.
+
     board = boardCopy;
     outputQueue = displayQueue;
 }
 
 void HumanHeuristic::solve() {
-    // Wrapper on solveRecur() for public access
+    // Wrapper on solveRecur() for public access.
+
     totalKnown = 0;
-    // cout << "solving" << endl;
-    solveHeuristically(board, true, totalKnown);
+    solveHeuristically(board, true);
 }
 
 bool HumanHeuristic::checkSolvability() {
-    // Wrapper on solveRecur() to see if given board is solvable
+    // Wrapper on solveRecur() to see if given board is solvable.
+
     totalKnown = 0;
-    return solveHeuristically(board, false, totalKnown);
+    return solveHeuristically(board, false);
 }
 
-void HumanHeuristic::setboard(gridArr board, posInfo (&probabilityBoard)[9][9]) {
-    // cout << "setting board" << endl;
+void HumanHeuristic::removeAll(posInfo (&probBoard)[9][9], gridNum &curSpot,
+        bool output) {
+    // Removes the value from the row, column, and square where the number is
+    // contained.
+
+    removeRow(probBoard, curSpot, output);
+    removeCol(probBoard, curSpot, output);
+    removeSquare(probBoard, curSpot, output);
+}
+
+void HumanHeuristic::setboard(gridArr board, posInfo (&probBoard)[9][9]) {
+    // Fills in all of the non zero elements of the board into a probability
+    // board and appends the values to the queue of known values to be
+    // processed.
+
     gridNum knownPos;
     // Fill in the known positions into a queue.
     for (int row = 0; row < 9; row++) {
@@ -43,107 +58,88 @@ void HumanHeuristic::setboard(gridArr board, posInfo (&probabilityBoard)[9][9]) 
                 knownPos.row = row;
                 knownPos.col = col;
                 knownPos.num = board[row][col];
-                // cout << "row " << knownPos.row;
-                // cout << " col " << knownPos.col;
-                // cout << " num " << knownPos.num << endl;
                 known.push(knownPos);
                 totalKnown += 1;
-                probabilityBoard[row][col].num = board[row][col];
-                probabilityBoard[row][col].possibilities = 0;  // Added to queue.
+                probBoard[row][col].num = board[row][col];
+                probBoard[row][col].possibilities = 0;
             }
         }
     }
 }
 
-void HumanHeuristic::removeRow(posInfo (&probabilityBoard)[9][9], gridNum &currentSpot, bool output) {
+void HumanHeuristic::checkPos(posInfo (&probBoard)[9][9], int row, int col,
+        bool output) {
+    /*
+    Checks if the number of possibilities at a position is 1, if it is then
+    that value is known so it finds the value and adds it to the output
+    queue. Also calls for that value to be removed from the board (runs in
+    the middle to prevent the row and col this value is in from having the
+    value be true.)
+    */
+
+    if (probBoard[row][col].possibilities == 1) {
+        gridNum newSpot;
+        probBoard[row][col].possibilities -= 1;
+        newSpot.row = row;
+        newSpot.col = col;
+        // finds the value for that position
+        for (int val = 0; val < 9; val++) {
+            if (probBoard[row][col].possible[val] == true) {
+                newSpot.num = val + 1;  // +1 since 0 indexed.
+                probBoard[row][col].num = val + 1;
+            }
+        }
+        removeAll(probBoard, newSpot, output);
+        totalKnown += 1;
+        if (output) {
+            outputQueue->push(newSpot);
+        }
+    }
+}
+
+void HumanHeuristic::removeRow(posInfo (&probBoard)[9][9], gridNum &curSpot,
+        bool output) {
+    // Removes the number at the current spot from its row.
+
     for (int i = 0; i < 9; i++) {
-        if (probabilityBoard[i][currentSpot.col].possible[currentSpot.num - 1]) {
-            probabilityBoard[i][currentSpot.col].possible[currentSpot.num - 1] = false;
-            probabilityBoard[i][currentSpot.col].possibilities -= 1;
-            if (probabilityBoard[i][currentSpot.col].possibilities == 1) {
-                gridNum newSpot;
-                probabilityBoard[i][currentSpot.col].possibilities -= 1;
-                newSpot.row = i;
-                newSpot.col = currentSpot.col;
-                for (int val = 0; val < 9; val++) {
-                    if (probabilityBoard[i][currentSpot.col].possible[val] == true) {
-                        // cout << "got true" << endl;
-                        // cout << val + 1 << endl;
-                        newSpot.num = val + 1;  // +1 since 0 indexed.
-                        probabilityBoard[i][currentSpot.col].num = val + 1;
-                    }
-                }
-                // cout << "newSpot.row " <<  newSpot.row;
-                // cout << " newSpot.col " << newSpot.col;
-                // cout << " newSpot.num " << newSpot.num << endl;
-                // cout << "removed row" << endl;
-                removeRow(probabilityBoard, newSpot, output);
-                // cout << "removed col" << endl;
-                removeCol(probabilityBoard, newSpot, output);
-                // cout << "removed square" << endl;
-                removeSquare(probabilityBoard, newSpot, output);
-                known.push(newSpot);
-                totalKnown += 1;
-                if (output) {
-                    // cout << "pushing" << endl;
-                    outputQueue->push(newSpot);
-                }
-            }
+        if (probBoard[i][curSpot.col].possible[curSpot.num - 1]) {
+            probBoard[i][curSpot.col].possible[curSpot.num - 1] = false;
+            probBoard[i][curSpot.col].possibilities -= 1;
+            checkPos(probBoard, i, curSpot.col, output);
         }
     }
 }
 
-void HumanHeuristic::removeCol(posInfo (&probabilityBoard)[9][9], gridNum &currentSpot, bool output) {
+void HumanHeuristic::removeCol(posInfo (&probBoard)[9][9], gridNum &curSpot,
+        bool output) {
+    // Removes the number at the currenst spot from its column.
+
     for (int i = 0; i < 9; i++) {
-        if (probabilityBoard[currentSpot.row][i].possible[currentSpot.num - 1]) {
-            probabilityBoard[currentSpot.row][i].possible[currentSpot.num - 1] = false;
-            probabilityBoard[currentSpot.row][i].possibilities -= 1;
-            if (probabilityBoard[currentSpot.row][i].possibilities == 1) {
-                gridNum newSpot;
-                probabilityBoard[currentSpot.row][i].possibilities -= 1;
-                newSpot.row = currentSpot.row;
-                newSpot.col = i;
-                for (int val = 0; val < 9; val++) {
-                    if (probabilityBoard[currentSpot.row][i].possible[val] == true) {
-                        // cout << "got true" << endl;
-                        // cout << val + 1 << endl;
-                        probabilityBoard[currentSpot.row][i].num = val + 1;
-                        newSpot.num = val + 1;  // +1 since 0 indexed.
-                    }
-                }
-                // cout << "newSpot.row " <<  newSpot.row;
-                // cout << " newSpot.col " << newSpot.col;
-                // cout << " newSpot.num " << newSpot.num << endl;
-                // cout << "removed row" << endl;
-                removeRow(probabilityBoard, newSpot, output);
-                // cout << "removed col" << endl;
-                removeCol(probabilityBoard, newSpot, output);
-                // cout << "removed square" << endl;
-                removeSquare(probabilityBoard, newSpot, output);
-                known.push(newSpot);
-                totalKnown += 1;
-                if (output) {
-                    outputQueue->push(newSpot);
-                }
-            }
+        if (probBoard[curSpot.row][i].possible[curSpot.num - 1]) {
+            probBoard[curSpot.row][i].possible[curSpot.num - 1] = false;
+            probBoard[curSpot.row][i].possibilities -= 1;
+            checkPos(probBoard, curSpot.row, i, output);
         }
     }
 }
 
-void HumanHeuristic::removeSquare(posInfo (&probabilityBoard)[9][9], gridNum& currentSpot, bool output) {
+void HumanHeuristic::removeSquare(posInfo (&probBoard)[9][9], gridNum& curSpot,
+        bool output) {
+    // Removes the number at the current spot from the square containing it.
+
     int rowStart;
     int colStart;
-    if (currentSpot.row >= 0 && currentSpot.row < 3) {
+    if (curSpot.row >= 0 && curSpot.row < 3) {
         rowStart = 0;
-    } else if (currentSpot.row >=3 && currentSpot.row < 6) {
+    } else if (curSpot.row >=3 && curSpot.row < 6) {
         rowStart = 3;
     } else {
         rowStart = 6;
     }
 
-    if (currentSpot.col >= 0 && currentSpot.col < 3) {
+    if (curSpot.col >= 0 && curSpot.col < 3) {
         colStart = 0;
-    } else if (currentSpot.col >=3 && currentSpot.col < 6) {
+    } else if (curSpot.col >=3 && curSpot.col < 6) {
         colStart = 3;
     } else {
         colStart = 6;
@@ -151,64 +147,32 @@ void HumanHeuristic::removeSquare(posInfo (&probabilityBoard)[9][9], gridNum& cu
 
     for (int row = rowStart; row < rowStart + 3; row++) {
         for (int col = colStart; col < colStart + 3; col++) {
-            if (probabilityBoard[row][col].possible[currentSpot.num - 1]) {
-                probabilityBoard[row][col].possibilities -= 1;
-                probabilityBoard[row][col].possible[currentSpot.num - 1] = false;
-                if (probabilityBoard[row][col].possibilities == 1) {
-                    gridNum newSpot;
-                    probabilityBoard[row][col].possibilities -= 1;
-                    newSpot.row = row;
-                    newSpot.col = col;
-                    for (int val = 0; val < 9; val++) {
-                        if (probabilityBoard[row][col].possible[val] == true) {
-                            // cout << val + 1 << endl;
-                            probabilityBoard[row][col].num = val + 1;
-                            newSpot.num = val + 1;
-                        }
-                    }
-                    // cout << "newSpot.row " <<  newSpot.row;
-                    // cout << " newSpot.col " << newSpot.col;
-                    // cout << " newSpot.num " << newSpot.num << endl;
-                    // cout << "removed row" << endl;
-                    removeRow(probabilityBoard, newSpot, output);
-                    // cout << "removed col" << endl;
-                    removeCol(probabilityBoard, newSpot, output);
-                    // cout << "removed square" << endl;
-                    removeSquare(probabilityBoard, newSpot, output);
-                    known.push(newSpot);
-                    totalKnown += 1;
-                    if (output) {
-                        outputQueue->push(newSpot);
-                    }
-                }
+            if (probBoard[row][col].possible[curSpot.num - 1]) {
+                probBoard[row][col].possibilities -= 1;
+                probBoard[row][col].possible[curSpot.num - 1] = false;
+                checkPos(probBoard, row, col, output);
             }
         }
     }
 }
 
-bool HumanHeuristic::solveHeuristically(gridArr board, bool output, int curTotal) {
-    totalKnown = curTotal;
-    posInfo probabilityBoard[9][9];  // 81 total squares.
-    setboard(board, probabilityBoard);
+bool HumanHeuristic::solveHeuristically(gridArr board, bool output) {
+    // solves the sudoku board using the human heuristic algorithm. If the
+    // board can be completely filled it returns true, otherwise it returns
+    // false with all known values appended to the outputQueue.
+
+    posInfo probBoard[9][9];  // 81 total squares.
+    setboard(board, probBoard);
     while (known.size() != 0) {
         // cout << "in while loop" << endl;
         gridNum currentSpot = known.top();
         known.pop();
-        // cout << "removed row" << endl;
-        removeRow(probabilityBoard, currentSpot, output);
-        // cout << "removed col" << endl;
-        removeCol(probabilityBoard, currentSpot, output);
-        // cout << "removed square" << endl;
-        removeSquare(probabilityBoard, currentSpot, output);
+        removeAll(probBoard, currentSpot, output);
     }
     // If all of the squares are filled then we are done.
-    // cout << "done while loop" << endl;
-    // cout << "total known " << totalKnown << endl;
     if (totalKnown == 81) {
         return true;
     }
 
-    // Need to fix recursion. use memoisation? need to reset probabilities
-    // totalKnown is seemingly being carried over instead of being reset.
     return false;
 }

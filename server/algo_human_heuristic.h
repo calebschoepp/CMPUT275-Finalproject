@@ -10,7 +10,6 @@ Arduino Sudoku Solver
 #ifndef ALGO_HUMAN_HEURISTIC_H
 #define ALGO_HUMAN_HEURISTIC_H
 
-// currently only works with "easy" sudokus
 #include <queue>
 #include <array>
 #include <utility>
@@ -23,26 +22,28 @@ using namespace std;
 class HumanHeuristic {
 public:
     // Constructors and deconstructors
-    HumanHeuristic(queue<gridNum> *displayQueue,
-        gridArr boardCopy);
+    HumanHeuristic(queue<gridNum> *displayQueue, gridArr boardCopy);
 
     // Primary interface
-    void solve();
+    void solve();  // only works with "easy" sudokus.
     bool checkSolvability();
 
 private:
+    // Variables.
     gridArr board;
     queue<gridNum> *outputQueue;
-
-    void setboard(gridArr board, posInfo (&probabilityBoard)[9][9]);
-    void removeRow(posInfo (&probabilityBoard)[9][9], gridNum& currentSpot, bool output);
-    void removeCol(posInfo (&probabilityBoard)[9][9], gridNum& currentSpot, bool output);
-    void removeSquare(posInfo (&probabilityBoard)[9][9], gridNum& currentSpot, bool output);
-    bool solveHeuristically(gridArr board, bool output, int curTotal);
-
     stack<gridNum> known;
     int totalKnown;
 
+    // Private methods.
+    void removeAll(posInfo (&probBoard)[9][9], gridNum &curSpot, bool output);
+    void setboard(gridArr board, posInfo (&probBoard)[9][9]);
+    void checkPos(posInfo (&probBoard)[9][9], int row, int col, bool output);
+    void removeRow(posInfo (&probBoard)[9][9], gridNum& curSpot, bool output);
+    void removeCol(posInfo (&probBoard)[9][9], gridNum& curSpot, bool output);
+    void removeSquare(posInfo (&probBoard)[9][9], gridNum& curSpot,
+            bool output);
+    bool solveHeuristically(gridArr board, bool output);
 };
 
 #endif

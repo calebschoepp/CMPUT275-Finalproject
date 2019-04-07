@@ -135,34 +135,34 @@ bool Backtracking::colPermitted(const gridArr &board, int col, int num) {
 
 bool Backtracking::squarePermitted(const gridArr &board, int realRow, int realCol, int num) {
     // Return true if num is not found in given square of the board
-    int row_start = -1;
-    int col_start = -1;
+    int rowStart = -1;
+    int colStart = -1;
 
     // Determine the bounds to check within for the particular square
     if (realRow >= 0 && realRow < 3) {
-        row_start = 0;
+        rowStart = 0;
     } else if (realRow >= 3 && realRow < 6) {
-        row_start = 3;
+        rowStart = 3;
     } else {
-        row_start = 6;
+        rowStart = 6;
     }
 
     if (realCol >= 0 && realCol < 3) {
-        col_start = 0;
+        colStart = 0;
     } else if (realCol >= 3 && realCol < 6) {
-        col_start = 3;
+        colStart = 3;
     } else {
-        col_start = 6;
+        colStart = 6;
     }
 
     // Error checking
-    if (row_start == -1 || col_start == -1) {
+    if (rowStart == -1 || colStart == -1) {
         return false;
     }
 
     // Now actually check for duplicates in the square
-    for (int row = row_start; row < row_start + 3; ++row) {
-        for (int col = col_start; col < col_start + 3; ++col) {
+    for (int row = rowStart; row < rowStart + 3; ++row) {
+        for (int col = colStart; col < colStart + 3; ++col) {
             if (board[row][col] == num) {
                 return false;
             }

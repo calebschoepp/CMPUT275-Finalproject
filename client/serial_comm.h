@@ -28,7 +28,8 @@ public:
     bool checkSolvability(point_change change);
 
 private:
-
+    void sendBoardMessage();
+    void sendChange(point_change change);
 };
 
 #endif

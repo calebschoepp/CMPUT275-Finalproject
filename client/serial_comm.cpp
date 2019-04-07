@@ -18,13 +18,14 @@ Arduino Sudoku Solver
 extern shared_vars shared;
 
 SerialComm::SerialComm() {
+    // Constructor that initializes the serial port.
     Serial.begin(9600);
     Serial.flush();
 }
 
 bool SerialComm::getChange(point_change *change) {
-// get the changed point 1 point at a time
-// case 'C'
+// Get the changed point 1 point at a time.
+// Case 'C'.
     Serial.print("C\n");
     Serial.flush();
     unsigned long startTime = millis();
@@ -41,6 +42,8 @@ bool SerialComm::getChange(point_change *change) {
             change->num = atoi(currentString);
             Serial.print("A\n");
             Serial.flush();
+
+            // Send the point back to the server to ensure it's correct.
             Serial.print(change->row);
             Serial.print(" ");
             Serial.print(change->col);
@@ -80,6 +83,8 @@ void SerialComm::selectAlgo() {
     }
     bool complete = false;
     unsigned long startTime = millis();
+
+    // receive the acknowledgement.
     while (millis() - startTime < 1000) {
         if (Serial.available() > 0) {
             char acknowledge;
@@ -95,10 +100,8 @@ void SerialComm::selectAlgo() {
     }
 }
 
-void SerialComm::selectBoard(point_change (&changes)[81]) {
-// selects the board based on the consts and types board and gets the resulting
-// board as the point_change array with 81 points for the 9x9 board.
-// case 'B'
+void SerialComm::sendBoardMessage() {
+    // Sends the current selected board to the server.
     Serial.print("B ");
     switch (shared._board_type) {
         case EASY_00:
@@ -133,6 +136,13 @@ void SerialComm::selectBoard(point_change (&changes)[81]) {
     }
     Serial.print("\n");
     Serial.flush();
+}
+
+void SerialComm::selectBoard(point_change (&changes)[81]) {
+// selects the board based on the consts and types board and gets the resulting
+// board as the point_change array with 81 points for the 9x9 board.
+// case 'B'
+    sendBoardMessage();
     int pos = 0;
     bool complete = false;
     unsigned long startTime = millis();
@@ -177,6 +187,8 @@ long int SerialComm::solve() {
             long int time = atol(currentString);
             Serial.print("A\n");
             Serial.flush();
+
+            // resend time to ensure it's correct server side.
             Serial.print(time);
             Serial.print("\n");
             Serial.flush();
@@ -202,7 +214,8 @@ long int SerialComm::solvedSize() {
             long int size = atol(currentString);
             Serial.print("A\n");
             Serial.flush();
-            // right now size isn't right client side.
+
+            // resend size to confirm it's correct server side.
             Serial.print(size);
             Serial.print("\n");
             Serial.flush();
@@ -213,9 +226,8 @@ long int SerialComm::solvedSize() {
     return 0;
 }
 
-bool SerialComm::checkSolvability(point_change change) {
-    Serial.print("H\n");
-    Serial.flush();
+void SerialComm::sendChange(point_change change) {
+    // Sends the change to the server.
     Serial.print(change.row);
     Serial.print("\n");
     Serial.flush();
@@ -225,6 +237,14 @@ bool SerialComm::checkSolvability(point_change change) {
     Serial.print(change.num);
     Serial.print("\n");
     Serial.flush();
+}
+
+bool SerialComm::checkSolvability(point_change change) {
+    // Sends a message to the server to check whether the change made creates a
+    // solvable board state.
+    Serial.print("H\n");
+    Serial.flush();
+    sendChange(change);
     unsigned long startTime = millis();
     while (millis() - startTime < 1000) {
         if (Serial.available() > 0) {

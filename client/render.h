@@ -36,7 +36,8 @@ public:
     void drawSolvability(bool solvable);
 
 private:
-    Adafruit_ILI9341 tft = Adafruit_ILI9341(clientpins::tft_cs, clientpins::tft_dc);
+    Adafruit_ILI9341 tft = Adafruit_ILI9341(clientpins::tft_cs,
+        clientpins::tft_dc);
 
 };
 

@@ -1,0 +1,89 @@
+---------------------------------------------------
+Names: Robert Mah, Caleb Schoepp
+ID: 1532565, 1534577
+CCID: rjmah1, cwschoep
+CMPUT 275 , Winter 2019
+
+Arduino Sudoku Solver
+---------------------------------------------------
+
+Included Files:
+    - README
+    - circuit-wiring.txt
+    /server
+        - algo_backtracking.cpp
+        - algo_backtracking.h
+        - algo_dancing_links.cpp
+        - algo_dancing_links.h
+        - algo_human_heuristic.cpp
+        - algo_human_heuristic.h
+        - algo_improved_human_heuristic.cpp
+        - algo_improved_human_heuristic.h
+        - consts_and_types.h
+        - Makefile
+        - serialport.cpp
+        - serialport.h
+        - server.cpp
+        /sudokus
+            - easy-00.txt
+            - easy-01.txt
+            - easy-02.txt
+            - med-00.txt
+            - med-01.txt
+            - hard-00.txt
+            - hard-01.txt
+            - hard-02.txt
+            - hard-03.txt
+    /client
+        - client.cpp
+        - consts_and_types.h
+        - joy.cpp
+        - joy.h
+        - Makefile
+        - render.cpp
+        - render.h
+        - serial_comm.cpp
+        - serial_comm.h
+        - touch.cpp
+        - touch.h
+
+
+Running Instructions:
+    1. After downloading the tar file extract it in your working directory with
+        the command `tar -zxvf NAMEHERE`.
+    2. Before going any further make sure that you have your Arduino Mega wired
+        up correctly (see circuit-wiring.txt) and it is plugged into your
+        computer.
+    3. Now in the working directory call `ulimit -s 20000`, this makes the stack
+        size big enough to run some of our algorithms.
+    4. Now navigate into the client folder and run `make upload`.
+    5. Now navigate into the server folder and run `maker server && ./server`.
+    6. The program is now running, STEPS ON HOW TO ACUTALLY USE THE PROGRAM HERE TODO
+
+
+Assumptions and Comments:
+    - many debug statements are left in the code for easy tracing of the program
+        in the terminal.
+
+
+Makefile Targets:
+TODO
+
+
+Wiring Instructions:
+    See circuit-wiring.txt in the root folder
+
+
+Citations:
+    - https://medium.com/@george.seif94/solving-sudoku-using-a-simple-search-
+        algorithm-3ac44857fee8
+    - https://www.geeksforgeeks.org/exact-cover-problem-algorithm-x-set-2-
+        implementation-dlx/
+    - http://garethrees.org/2007/06/10/zendoku-generation/
+    - Donald Knuth's paper on dancing links
+    - circuit-wiring.txt provided by Assignment 2 Part 2
+    - Client Makefile provided by eClass
+    - lcd_image.h and lcd_image.cpp provided by eClass
+    - serialport.cpp and serialport.h are taken from the eClass assignment 2
+        files.
+    - Client consts_and_types.h is adapted from the eClass assignment 2 file.

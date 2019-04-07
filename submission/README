@@ -50,7 +50,7 @@ Included Files:
 
 Running Instructions:
     1. After downloading the tar file extract it in your working directory with
-        the command `tar -zxvf NAMEHERE`.
+        the command `tar -zxvf finalproject.tar.gz`.
     2. Before going any further make sure that you have your Arduino Mega wired
         up correctly (see circuit-wiring.txt) and it is plugged into your
         computer.

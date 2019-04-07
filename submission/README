@@ -58,16 +58,42 @@ Running Instructions:
         size big enough to run some of our algorithms.
     4. Now navigate into the client folder and run `make upload`.
     5. Now navigate into the server folder and run `maker server && ./server`.
-    6. The program is now running, STEPS ON HOW TO ACUTALLY USE THE PROGRAM HERE TODO
+    6. Now that the program is running you will see a menu appear on the screen of
+        the arduino client. The three options are Solve, Try It, and Setup.
+        These can be selected via the touchscreen.
+    7. Choosing solve will solve the current sudoku board using the currently
+        selected algorithm and will display the process. At any time you can 
+        leave with the back button.
+    8. Choosing Try It will let you solve the sudoku yourself while always telling
+        you whether you are on the right track or not. To navigate the board use
+        the joystick and press the joystick to cycle through numbers in your current
+        grid square. At any time you can leave with the back button.
+    9. Choosing Setup will let modify some of the programs settings. The first thing
+        you can modify is the algorithm that Solve uses. The second things you can 
+        change is the board that Solve or Try It works off of. Cycle through both of
+        these options by using the touchscreen. At any time you can leave with the back
+        button.
 
 
 Assumptions and Comments:
-    - many debug statements are left in the code for easy tracing of the program
+    - Many debug statements are left in the code for easy tracing of the program
         in the terminal.
+    - We assume that the stack size will be increased with the command provided in the running
+        instructions. If this does not happen the server will segfault.
+    - We assume your Arduino will be properly wired to run this program.
 
 
 Makefile Targets:
-TODO
+    all: Compile and link everything
+    server: Create executable for server using objects
+    server.o: Compile the object for the server
+    consts_and_types.o: Compile the object for shared consts and types
+    algo_human_heuristic.o: Compile the object to solve sudokus via human heuristic
+    algo_improved_human_heuristic.o: Compile the object to solve sudokus via improved human heuristic
+    algo_backtracking.o: Compile the object to solve sudokus via backtracking
+    algo_dancing_links.o: Compile the object to solve sudokus via dancing links
+    serialport.o: Compile the object for serial communication
+    clean: Remove all objects and executables
 
 
 Wiring Instructions:
@@ -87,3 +113,4 @@ Citations:
     - serialport.cpp and serialport.h are taken from the eClass assignment 2
         files.
     - Client consts_and_types.h is adapted from the eClass assignment 2 file.
+    - https://github.com/matefh/sudoku
